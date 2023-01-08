@@ -2,7 +2,6 @@
 
 #include <array>
 #include <iostream>
-#include <string>
 
 using Destroyer = std::function<void(std::FILE*)>;
 void closeFile(std::FILE* file) { std::fclose(file); }
