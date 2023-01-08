@@ -1,0 +1,2 @@
+
+auto doWork() -> int;
