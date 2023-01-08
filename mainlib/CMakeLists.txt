@@ -8,6 +8,7 @@ set(CMAKE_EXTENSIONS OFF)
 
 set(Library_SOURCES
     src/modernLibrary.cpp
+    src/fileHandling.cpp
     )
 
 add_library(${PROJECT_NAME}
