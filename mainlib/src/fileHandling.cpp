@@ -6,7 +6,7 @@
 using Destroyer = std::function<void(std::FILE*)>;
 void closeFile(std::FILE* file) { std::fclose(file); }
 
-std::unique_ptr<std::FILE, std::function<void(std::FILE*)>> getFileInMode(
+std::unique_ptr<std::FILE, std::function<void(std::FILE*)>> openFileInMode(
     const char* name, const char* mode) {
   FILE* file;
 
