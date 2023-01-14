@@ -11,10 +11,7 @@ std::unique_ptr<std::FILE, std::function<void(std::FILE*)>> openFileInMode(
   FILE* file;
 
   if (const auto err = fopen_s(&file, name, mode); err != 0) {
-    std::array<char, 256> buffer;
-    strerror_s(buffer.data(), 255, err);
-    std::string error = "Cannot open file " + std::string(name) +
-                        " with error " + buffer.data();
+    std::string error = "Cannot open file " + std::string(name);
     std::cerr << error;
     throw std::invalid_argument(error);
   }

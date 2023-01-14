@@ -80,28 +80,54 @@ void vectors() {
 }
 
 bool isPalindrome(const std::string_view&& word) {
-  std::vector<char> vec(word.begin(), word.end());
-  auto second = vec.rbegin();
-  size_t sz = vec.size();
-  for (auto first = 0; first != sz / 2; first++) {
-    std::cout << vec[first] << " : " << *second << std::endl;
-    if (std::toupper(vec[first]) != std::toupper(*second)) {
-      return false;
-    }
-    second++;
-  }
-  return true;
+  std::for_each(word.begin(), word.end() - 1,
+                [](const auto& ch) { std::cout << ch << " - "; });
+  std::cout << *word.crbegin() << "\n";
+  return std::equal(word.begin(), word.begin() + word.size() / 2, word.rbegin(),
+                    [](char first, char second) {
+                      return std::toupper(first) == std::toupper(second);
+                    });
+}
+
+void printPalindromes(const std::string& word) {
+  isPalindrome(word) ? std::cout << "ist ein Palindrom.\n"
+                     : std::cout << "ist kein Palindrom.\n";
 }
 
 void palindromes() {
   std::cout << std::boolalpha;
-  std::cout << isPalindrome("Otto") << std::endl;
-  std::cout << isPalindrome("Volker") << std::endl;
-  std::cout << isPalindrome("Reliefpfeiler") << std::endl;
+  printPalindromes("Otto");
+  printPalindromes("Volker");
+  printPalindromes("Reliefpfeiler");
+}
+
+void generator() {
+  std::vector<int> sq(10);
+  std::generate(sq.begin(), sq.end(), Squares{});
+  std::for_each(sq.begin(), sq.end(), [](auto n) { std::cout << n << " "; });
+  std::cout << '\n';
+  std::string a = "NCC-";
+  std::vector<int> b{1, 7, 0, 1};
+  std::vector<std::string> c(4);
+  auto f = [](char d, int i) { return d + std::to_string(i); };
+  std::transform(a.begin(), a.end(), b.begin(), c.begin(), f);
+  std::for_each(c.begin(), c.end(), [](auto s) { std::cout << s << " "; });
+  std::cout << '\n';
+}
+
+void permutate() {
+  int i = 1;
+  std::string text = "build";
+  do {
+    std::cout << i << ':' << text << " - ";
+    i++;
+  } while (std::next_permutation(text.begin(), text.end()));
 }
 
 auto doWork() -> int {
   vectors();
   palindromes();
+  generator();
+  permutate();
   return 0;
 }
