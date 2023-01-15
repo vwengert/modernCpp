@@ -1,21 +1,35 @@
 #include "fileHandling.h"
 
 #include <array>
+#include <cstring>
 #include <iostream>
 
-using Destroyer = std::function<void(std::FILE*)>;
-void closeFile(std::FILE* file) { std::fclose(file); }
+#ifdef __unix
+#define fopen_s(pFile, filename, mode) \
+  ((*(pFile)) = fopen((filename), (mode))) == NULL
+#define strerror_s(buffer, length, errorcode) \
+  strerror_r(errorcode, buffer, length)
+#endif
+#ifdef __win
+using std::FILE
+#endif
 
-std::unique_ptr<std::FILE, std::function<void(std::FILE*)>> openFileInMode(
+    using Destroyer = std::function<void(FILE*)>;
+void closeFile(FILE* file) { std::fclose(file); }
+
+std::unique_ptr<FILE, std::function<void(FILE*)>> openFileInMode(
     const char* name, const char* mode) {
   FILE* file;
 
   if (const auto err = fopen_s(&file, name, mode); err != 0) {
-    std::string error = "Cannot open file " + std::string(name);
+    char buffer[256];
+    strerror_s(buffer, 255, err);
+    std::string error =
+        "Cannot open file " + std::string(name) + " with error " + buffer;
     std::cerr << error;
     throw std::invalid_argument(error);
   }
-  auto ptr = std::unique_ptr<std::FILE, Destroyer>(file, &closeFile);
+  auto ptr = std::unique_ptr<FILE, Destroyer>(file, &closeFile);
 
   return ptr;
 }

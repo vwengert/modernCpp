@@ -6,21 +6,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXTENSIONS OFF)
 
-#SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fsanitize=address -lc")
-
-set(Library_SOURCES
-    src/modernLibrary.cpp
-    src/fileHandling.cpp
-    )
+file(GLOB Library_SOURCES "src/*.cpp")
+file(GLOB Library_HEADER "include/*.h")
 
 add_library(${PROJECT_NAME}
     ${Library_SOURCES}
+    ${Library_HEADER}
     )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES 
+set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     )
 
-target_include_directories(${PROJECT_NAME} PUBLIC 
+target_include_directories(${PROJECT_NAME} PUBLIC
     include
     )
