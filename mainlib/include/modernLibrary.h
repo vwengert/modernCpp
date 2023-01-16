@@ -5,8 +5,8 @@ auto doWork() -> int;
 auto isPalindrome(const std::string_view&& word) -> bool;
 
 struct Squares {
-  mutable int n = 1;
-  int operator()() const { return n * n++; }
+  mutable int n = 0;
+  int operator()() const { ++n; return n * n; }
 };
 
 class Picture {

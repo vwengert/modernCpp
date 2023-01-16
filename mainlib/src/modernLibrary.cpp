@@ -2,6 +2,7 @@
 #include "fileHandling.h"
 
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <iterator>
 #include <set>
@@ -41,6 +42,7 @@ auto loadVector() -> std::vector<int>
         std::cerr << "Fehler beim Lesen" << std::endl;
         return gelesen;
     }
+    std::list<int> n;
     return gelesen;
 }
 
@@ -131,7 +133,8 @@ void generator()
     std::transform( a.begin(), a.end(), b.begin(), c.begin(), f );
     std::for_each( c.begin(), c.end(), []( auto s )
     {
-        std::cout << s << " ";
+        auto n = new int( 3 );
+        std::cout << s << " " << n;
     } );
     std::cout << '\n';
 }
