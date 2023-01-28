@@ -5,29 +5,34 @@
 #include <array>
 #include <iostream>
 #include <iterator>
+#include <list>
 #include <set>
 #include <vector>
+#include <thread>
+#include <future>
+#include <exception>
 
-std::ostream &operator<<( std::ostream &os, const std::vector<int> &data )
+std::ostream& operator<<( std::ostream& os, const std::vector<int>& data )
 {
-    for( auto &e : data )
-    {
+    for( auto& e : data ) {
         os << e << ' ';
     }
+
     return os;
 }
 
-static const char *const FILENAME = "nums.dat";
+static const char* const FILENAME = "nums.dat";
 
-int saveVector( const std::vector<int> &nums )
+int saveVector( const std::vector<int>& nums )
 {
     const auto file = openFileInMode( FILENAME, "wb" );
+
     if( const auto ok = fwrite( nums.data(), sizeof( int ), nums.size(),
-                                file.get() ); ok != nums.size() )
-    {
+                                file.get() ); ok != nums.size() ) {
         std::cerr << "Fehler beim Schreiben" << std::endl;
         return -1;
     }
+
     return 0;
 }
 
@@ -37,40 +42,41 @@ auto loadVector() -> std::vector<int>
     std::vector<int> gelesen{};
     const size_t sz = 4;
     gelesen.resize( sz );
-    if( auto ok = fread( gelesen.data(), sizeof( int ), sz, file.get() ); ok != sz )
-    {
+
+    if( auto ok = fread( gelesen.data(), sizeof( int ), sz, file.get() ); ok != sz ) {
         std::cerr << "Fehler beim Lesen" << std::endl;
         return gelesen;
     }
+
     std::list<int> n;
     return gelesen;
 }
 
 void vectors()
 {
-    try
-    {
+    try {
         const std::vector<int> nums{10, 11, 22, 34};
-        if( auto ok = saveVector( nums ); ok != 0 )
-        {
+
+        if( auto ok = saveVector( nums ); ok != 0 ) {
             return;
         }
+
         const std::vector<int> gelesen = loadVector();
-        if( gelesen.size() < 4 )
-        {
+
+        if( gelesen.size() < 4 ) {
             return;
         }
+
         std::cout << nums << std::endl;
         std::cout << gelesen << std::endl;
-    }
-    catch( std::invalid_argument )
-    {
+    } catch( std::invalid_argument ) {
         return;
     }
-    if( remove( FILENAME ) == -1 )
-    {
+
+    if( remove( FILENAME ) == -1 ) {
         std::cerr << "Fehler beim Löschen der Datei" << std::endl;
     }
+
     std::vector<int> v1 = {1, 2, 4, 4, 3};
     std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7};
     std::vector<int> result;
@@ -85,22 +91,20 @@ void vectors()
     std::cout << result << std::endl;
 }
 
-bool isPalindrome( const std::string_view &&word )
+bool isPalindrome( const std::string_view&& word )
 {
     std::for_each( word.begin(), word.end() - 1,
-                   []( const auto & ch )
-    {
+    []( const auto & ch ) {
         std::cout << ch << " - ";
     } );
     std::cout << *word.crbegin() << "\n";
     return std::equal( word.begin(), word.begin() + word.size() / 2, word.rbegin(),
-                       []( char first, char second )
-    {
+    []( char first, char second ) {
         return std::toupper( first ) == std::toupper( second );
     } );
 }
 
-void printPalindromes( const std::string &word )
+void printPalindromes( const std::string& word )
 {
     isPalindrome( word ) ? std::cout << "ist ein Palindrom.\n"
                                      : std::cout << "ist kein Palindrom.\n";
@@ -118,21 +122,18 @@ void generator()
 {
     std::vector<int> sq( 10 );
     std::generate( sq.begin(), sq.end(), Squares{} );
-    std::for_each( sq.begin(), sq.end(), []( auto n )
-    {
+    std::for_each( sq.begin(), sq.end(), []( auto n ) {
         std::cout << n << " ";
     } );
     std::cout << '\n';
     std::string a = "NCC-";
     std::vector<int> b{1, 7, 0, 1};
     std::vector<std::string> c( 4 );
-    auto f = []( char d, int i )
-    {
+    auto f = []( char d, int i ) {
         return d + std::to_string( i );
     };
     std::transform( a.begin(), a.end(), b.begin(), c.begin(), f );
-    std::for_each( c.begin(), c.end(), []( auto s )
-    {
+    std::for_each( c.begin(), c.end(), []( auto s ) {
         auto n = new int( 3 );
         std::cout << s << " " << n;
     } );
@@ -143,28 +144,28 @@ void permutate()
 {
     int i = 1;
     std::string text = "build";
-    do
-    {
+
+    do {
         std::cout << i << ':' << text << " - ";
         i++;
-    }
-    while( std::next_permutation( text.begin(), text.end() ) );
+    } while( std::next_permutation( text.begin(), text.end() ) );
 }
 
 void streamVector()
 {
     std::vector<char> pfad{};
-    for( char ch = 'a'; ch <= 'z'; ch++ )
-    {
+
+    for( char ch = 'a'; ch <= 'z'; ch++ ) {
         pfad.push_back( ch );
     }
+
     std::copy( pfad.begin(), pfad.end(), std::ostream_iterator<char>( std::cout,
-               "-" ) );
+                                                                      "-" ) );
 }
 
 template<typename T, size_t S, std::size_t... Idx>
 constexpr std::array < T, S + 1 >
-help_append( std::array<T, S> &&data, T &&elem, std::index_sequence<Idx...> )
+help_append( std::array<T, S>&& data, T&& elem, std::index_sequence<Idx...> )
 {
     return {std::get<Idx>( std::forward<std::array<T, S>>( data ) )..., std::forward<T>( elem ) };
 }
@@ -181,26 +182,72 @@ void resizeArray()
 {
     std::cout << '\n';
     std::array<Picture, 3> pics{Picture{"Mona"}, Picture{"Schrei"}, Picture{"Vincent"}};
-    std::for_each( pics.begin(), pics.end(), []( auto p )
-    {
+    std::for_each( pics.begin(), pics.end(), []( auto p ) {
         std::cout << p.name() << '\n';
     } );
     std::cout << '\n';
     Picture neu {"Uhren"};
     auto mehr = append( std::move( pics ), std::move( neu ) );
-    std::for_each( mehr.begin(), mehr.end(), []( auto p )
-    {
+    std::for_each( mehr.begin(), mehr.end(), []( auto p ) {
         std::cout << p.name() << '\n';
     } );
 }
 
+int ackermann( int m, int n )
+{
+    if( m == 0 ) {
+        return n + 1;
+    }
+
+    if( n == 0 ) {
+        return ackermann( m - 1, 1 );
+    }
+
+    return ackermann( m - 1, ackermann( m, n - 1 ) );
+}
+
+void langeBerechnung( std::promise<int> intPromise )
+{
+    try {
+        int result = ackermann( 3, 12 );
+        intPromise.set_value( result );
+    } catch( std::exception& e ) {
+        intPromise.set_exception( std::make_exception_ptr( e ) );
+    } catch( ... ) {
+        intPromise.set_exception( std::current_exception() );
+    }
+}
+
+void usePromise()
+{
+    std::promise<int> intPromise;
+    std::future<int> intFuture = intPromise.get_future();
+    std::thread th{ langeBerechnung,
+                    std::move( intPromise ) };
+    th.detach();
+    int result = intFuture.get();
+    std::cout << result << std::endl;
+}
+
 auto doWork() -> int
 {
-    vectors();
-    palindromes();
-    generator();
-    permutate();
-    streamVector();
-    resizeArray();
+    std::thread thread1{ [] {
+            vectors();
+            palindromes();
+        } };
+    std::thread thread2{ [] {
+            generator();
+            permutate();
+        } };
+    std::thread thread3{ [] {
+            streamVector();
+            resizeArray();
+        } };
+    thread1.join();
+    thread2.join();
+    thread3.join();
+
+    usePromise();
+
     return 0;
 }

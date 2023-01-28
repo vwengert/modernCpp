@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-auto main() -> int {
-  std::cout << "Hello, world\n";
-  doWork();
+auto main() -> int
+{
+    std::cout << "Hello, world\n";
+    doWork();
 }
