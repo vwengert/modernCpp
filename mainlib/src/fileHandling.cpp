@@ -1,7 +1,7 @@
 #include "fileHandling.h"
 
 #include <array>
-#include <cstring>
+#include <string>
 #include <iostream>
 
 #ifdef __unix
@@ -21,11 +21,12 @@ std::unique_ptr<FILE, std::function<void(FILE*)>> openFileInMode(
     const char* name, const char* mode) {
   FILE* file;
 
-  if (const auto err = fopen_s(&file, name, mode); err != 0) {
-    char buffer[256];
-    strerror_s(buffer, 255, err);
+  if (const auto err = fopen_s(&file, name, mode); err != 0) 
+  {
+    std::array<char, 256> buffer;
+    strerror_s(buffer.data(), 255, err);
     std::string error =
-        "Cannot open file " + std::string(name) + " with error " + buffer;
+        "Cannot open file " + std::string(name) + " with error " + buffer.data();
     std::cerr << error;
     throw std::invalid_argument(error);
   }
