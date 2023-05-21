@@ -1,3 +1,4 @@
+#include <cassert>
 #include <future>
 #include <initializer_list>
 #include <memory>
@@ -90,6 +91,32 @@ auto get_ok()
 {
     return std::string( "OK" );
 }
+
+class Widget
+{
+    public:
+        Widget( const int& x, const int& y ) : x_{x}, y_{y}
+        {
+            assert( is_valid() );
+        }
+
+        auto update( const int& x, const int& y )
+        {
+            assert( x != y && is_valid() );
+            auto temp_x = x;
+            auto temp_y = y;
+            std::swap( x_, temp_x );
+            std::swap( y_, temp_y );
+            assert( is_valid() );
+        }
+    private:
+        int x_{};
+        int y_{};
+        bool is_valid() const
+        {
+            return x_ != y_;
+        }
+};
 
 auto main() -> int
 {
