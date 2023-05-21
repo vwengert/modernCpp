@@ -13,7 +13,7 @@ add_executable(${Test}
 target_link_libraries(${Test} PUBLIC
     gtest_main
     gmock_main
-    test_modernLibrary
+    modernLibrary
 )
 
 add_test(
@@ -26,4 +26,5 @@ FetchContent_Declare(GoogleTest
     GIT_TAG release-1.12.1
 )
 
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(GoogleTest)

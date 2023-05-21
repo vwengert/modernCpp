@@ -1,5 +1,8 @@
-#include "modernLibrary.h"
-#include "fileHandling.h"
+#include <forward_list>
+#include <memory>
+#include <modernLibrary.h>
+#include <effictive.h>
+#include <fileHandling.h>
 
 #include <algorithm>
 #include <array>
@@ -11,6 +14,22 @@
 #include <thread>
 #include <future>
 #include <exception>
+
+struct Foo {
+    auto val() const
+    {
+        return m_;
+    }
+    auto& cref() const
+    {
+        return m_;
+    }
+    auto& mref()
+    {
+        return m_;
+    }
+    int m_{};
+};
 
 std::ostream& operator<<( std::ostream& os, const std::vector<int>& data )
 {
@@ -26,6 +45,8 @@ static const char* const FILENAME = "nums.dat";
 int saveVector( const std::vector<int>& nums )
 {
     const auto file = openFileInMode( FILENAME, "wb" );
+
+    std::cerr << std::endl;
 
     if( const auto ok = fwrite( nums.data(), sizeof( int ), nums.size(),
                                 file.get() ); ok != nums.size() ) {
@@ -134,7 +155,7 @@ void generator()
     };
     std::transform( a.begin(), a.end(), b.begin(), c.begin(), f );
     std::for_each( c.begin(), c.end(), []( auto s ) {
-        auto n = new int( 3 );
+        auto n = int( 3 );
         std::cout << s << " " << n;
     } );
     std::cout << '\n';
@@ -229,7 +250,7 @@ void usePromise()
     std::cout << result << std::endl;
 }
 
-auto doWork() -> int
+void threads()
 {
     std::thread thread1{ [] {
             vectors();
@@ -248,6 +269,61 @@ auto doWork() -> int
     thread3.join();
 
     usePromise();
+}
+
+class iCol
+{
+    public:
+        virtual void output() = 0;
+};
+
+template<class T>
+class collector : public iCol
+{
+    public:
+        collector( std::unique_ptr<T> t ) : t( std::move( t ) ) {};
+        std::unique_ptr<T> t;
+
+        void output() override
+        {
+            std::cout << "class: " << typeid( *t ).name() << "\nvalue: " << *t << "\n";
+        }
+
+};
+
+auto num_hamlet( const std::forward_list<std::string>& books )
+{
+    return std::count( books.begin(), books.end(), "Hamlet" );
+}
+
+
+auto doWork() -> int
+{
+
+#ifdef _
+    threads();
+#endif
+    auto count = num_hamlet( {"Hamlet", "or not to be", "Hamlet"} );
+    std::cout << count << " numbers of Hamlet found \n";
+
+    Foo foo{5};
+
+    auto z = foo.mref() = 7;
+    auto x = foo.val();
+    auto y = foo.cref();
+
+    std::cout << x << " " << y << " " << z << "\n";
+
+    runEffective();
+    std::vector<std::unique_ptr<iCol>> data;
+    data.emplace_back( std::make_unique<collector<int>>(
+                           std::make_unique<int>( 1 ) ) );
+    data.emplace_back( std::make_unique<collector<std::string>>(
+                           std::make_unique<std::string>( "hello world" ) ) );
+
+    for( const auto& d : data ) {
+        d->output();
+    }
 
     return 0;
 }
