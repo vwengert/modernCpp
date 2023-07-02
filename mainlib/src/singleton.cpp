@@ -1,18 +1,10 @@
 #include "singleton.h"
 
+std::shared_ptr<Singleton> Singleton::s_instance;
 
-Singleton* Singleton::s_instance = new Singleton();
-
-Singleton* Singleton::instance()
-{
-    return s_instance;
-}
+std::shared_ptr<Singleton> Singleton::instance() { return s_instance; }
 
 std::string Singleton::configuration()
 {
     return "Configuration";
-}
-
-Singleton::Singleton()
-{
 }

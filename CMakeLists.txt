@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.18)
 
-#project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    # Support Unix Makefiles and Ninja
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-fuse-ld=lld")
+set(CMAKE_MODULE_LINKER_FLAGS_INIT "-fuse-ld=lld")
+set(CMAKE_SHARED_LINKER_FLAGS_INIT "-fuse-ld=lld")
+
+project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId} CXX)
@@ -28,11 +38,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${LINK_LIBRARY}
 )
 
-add_subdirectory(Tests)
-
 enable_testing()
-
-add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME}.exe)
-set_tests_properties(${PROJECT_NAME}
-    PROPERTIES PASS_REGULAR_EXPRESSION "^[0-9 ]+"
-)
+add_subdirectory(Tests)

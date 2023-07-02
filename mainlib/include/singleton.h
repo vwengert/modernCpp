@@ -1,14 +1,18 @@
 #pragma once
+#include <memory>
 #include <string>
 
 class Singleton final
 {
     public:
-        static Singleton* instance();
+     static std::shared_ptr<Singleton> instance();
 
-        std::string configuration();
+     std::string configuration() const;
+
+     auto configuration() -> std::string;
+
     private:
-        Singleton();
+     Singleton() = default;
 
-        static Singleton* s_instance;
+     static std::shared_ptr<Singleton> s_instance;
 };

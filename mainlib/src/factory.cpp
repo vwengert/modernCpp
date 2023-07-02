@@ -13,13 +13,11 @@ enum class ShapeType {
 
 ShapeFactory::CallBackMap ShapeFactory::s_objects;
 
-ShapeFactory::ShapeFactory()
-{
-}
+ShapeFactory::ShapeFactory() = default;
 
-void ShapeFactory::RegisterObject( const ShapeType& type, CreateObjectCallback cb )
-{
-    s_objects[type] = cb;
+void ShapeFactory::RegisterObject(const ShapeType& type,
+                                  CreateObjectCallback&& cb) {
+  s_objects[type] = std::move<>(cb);
 }
 
 void ShapeFactory::UnregisterObject( const ShapeType& type )
@@ -27,12 +25,9 @@ void ShapeFactory::UnregisterObject( const ShapeType& type )
     s_objects.erase( type );
 }
 
-Shape* ShapeFactory::CreateSingleObject( const ShapeType& type )
-{
-    auto it = s_objects.find( type );
-
-    if( it != s_objects.end() ) {
-        return ( it->second )();
+std::unique_ptr<Shape> ShapeFactory::CreateSingleObject(const ShapeType& type) {
+    if (auto it = s_objects.find(type); it != s_objects.end()) {
+      return (it->second)();
     }
 
     return nullptr;
