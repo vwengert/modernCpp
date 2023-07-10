@@ -3,23 +3,23 @@
 #include <chrono>
 #include <iostream>
 
-const int n = 5155;
+const int n = 1655;
 const int a = 843458;
 static std::chrono::time_point start = std::chrono::steady_clock::now();
 static std::chrono::time_point end = std::chrono::steady_clock::now();
 
 void doMultiply()
 {
-    clockTime( ( func2 )multiply0 );
-    clockTime( ( func2 )multiply1 );
-    clockTime3( ( func3 )mult_acc0 );
-    clockTime3( ( func3 )mult_acc1 );
-    clockTime3( ( func3 )mult_acc2 );
-    clockTime3( ( func3 )mult_acc3 );
-    clockTime3( ( func3 )mult_acc4 );
-    clockTime( ( func2 )multiply2 );
-    clockTime( ( func2 )multiply3 );
-    clockTime( ( func2 )multiply4 );
+    clockTime( ( func2 )multiply0, "multiply0" );
+    clockTime( ( func2 )multiply1, "multiply1" );
+    clockTime3( ( func3 )mult_acc0, "mult_acc0" );
+    clockTime3( ( func3 )mult_acc1, "mult_acc1" );
+    clockTime3( ( func3 )mult_acc2, "mult_acc2" );
+    clockTime3( ( func3 )mult_acc3, "mult_acc3" );
+    clockTime3( ( func3 )mult_acc4, "mult_acc4" );
+    clockTime( ( func2 )multiply2, "multiply2" );
+    clockTime( ( func2 )multiply3, "multiply3" );
+    clockTime( ( func2 )multiply4, "multiply4" );
 }
 
 void getStart()
@@ -30,21 +30,21 @@ void getStart()
 void getEnd()
 {
     end = std::chrono::steady_clock::now();
-    std::cout << "time needed for calculation: "
-              << std::chrono::duration_cast<std::chrono::microseconds>( end - start ).count() << " microseconds" << std::endl;
+    std::cout << "time needed for calculation: \t\t"
+              << std::chrono::duration_cast<std::chrono::nanoseconds>( end - start ).count() << " ns" << std::endl;
 }
 
-void clockTime( func2 function )
+void clockTime( func2 function, std::string name )
 {
     getStart();
-    std::cout << n << " x " << a << " = " << function( n, a ) << std::endl;
+    std::cout << name << " : " << n << " x " << a << " = " << function( n, a ) << std::endl;
     getEnd();
 }
 
-void clockTime3( func3 function )
+void clockTime3( func3 function, std::string name )
 {
     getStart();
-    std::cout << n << " x " << a << " = " << function( 0, n, a ) << std::endl;
+    std::cout <<  name << " : " << n << " x " << a << " = " << function( 0, n, a ) << std::endl;
     getEnd();
 }
 
