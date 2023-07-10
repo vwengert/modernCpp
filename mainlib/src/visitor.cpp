@@ -140,7 +140,7 @@ VisitorWorker::VisitorWorker()
     m_elements.push_back( new Movie{3, 4.1, std::string( "Spiderman" )} );
     m_elements.push_back( new Game{1, 12.3, std::string( "DCS" )} );
     m_elements.push_back( new Movie{1, 1.24, std::string( "The Rock" )} );
-    m_elements.push_back( new Book{12, 3.1, std::string( "Götz von Berlichingen" )} );
+    m_elements.push_back( new Book{12, 3.1, std::string( "Goetz von Berlichingen" )} );
 }
 
 std::vector<Element*> VisitorWorker::getElements()

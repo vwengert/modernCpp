@@ -4,6 +4,7 @@
 
 #include "abstractfabric.h"
 #include "factory.h"
+#include "mathematics.h"
 #include "singleton.h"
 #include "visitor.h"
 
@@ -16,6 +17,7 @@ auto doWork() -> int
     VisitorWorker worker;
     worker.showPrices();
 
+    doMultiply();
 
     return 0;
 }
