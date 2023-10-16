@@ -3,3 +3,6 @@ build/
 .vscode/
 .vs/
 .idea
+.cache/clangd/index
+Debug
+compile_commands.json
