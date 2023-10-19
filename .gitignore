@@ -2,7 +2,7 @@ CMakeLists.txt.user
 build/
 .vscode/
 .vs/
-.cache/clangd/index
 .idea
+.cache/clangd/index
 Debug
 compile_commands.json
