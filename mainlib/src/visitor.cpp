@@ -8,30 +8,30 @@
 /// \param title
 ///
 Element::Element( int amount, float price, std::string&& title )
-    : m_amount{amount}
-    , m_price{price}
-    , m_title{title}
+  : m_amount{ amount }
+  , m_price{ price }
+  , m_title{ title }
 {
 }
 
 void Element::changeAmount( int amount )
 {
-    m_amount = amount;
+  m_amount = amount;
 }
 
 int Element::getAmount()
 {
-    return m_amount;
+  return m_amount;
 }
 
 float Element::getPrice()
 {
-    return m_price;
+  return m_price;
 }
 
 std::string Element::getTitle()
 {
-    return m_title;
+  return m_title;
 }
 
 ///
@@ -41,43 +41,43 @@ std::string Element::getTitle()
 /// \param title
 ///
 Book::Book( int amount, float price, std::string&& title )
-    : Element( amount, price, std::move( title ) )
+  : Element( amount, price, std::move( title ) )
 {
 }
 
 std::string Book::isbn() const
 {
-    return m_isbn;
+  return m_isbn;
 }
 
 void Book::setIsbn( const std::string& isbn )
 {
-    m_isbn = isbn;
+  m_isbn = isbn;
 }
 
 std::string Book::author() const
 {
-    return m_author;
+  return m_author;
 }
 
 void Book::setAuthor( const std::string& author )
 {
-    m_author = author;
+  m_author = author;
 }
 
 std::string Book::getPublisher() const
 {
-    return publisher;
+  return publisher;
 }
 
 void Book::setPublisher( const std::string& value )
 {
-    publisher = value;
+  publisher = value;
 }
 
 void Book::acceptVisitor( Visitor& visitor )
 {
-    visitor.visitBook( *this );
+  visitor.visitBook( *this );
 }
 
 ///
@@ -87,13 +87,13 @@ void Book::acceptVisitor( Visitor& visitor )
 /// \param title
 ///
 Movie::Movie( int amount, float price, std::string&& title )
-    : Element( amount, price, std::move( title ) )
+  : Element( amount, price, std::move( title ) )
 {
 }
 
 void Movie::acceptVisitor( Visitor& visitor )
 {
-    visitor.visitMovie( *this );
+  visitor.visitMovie( *this );
 }
 
 ///
@@ -103,13 +103,13 @@ void Movie::acceptVisitor( Visitor& visitor )
 /// \param title
 ///
 Game::Game( int amount, float price, std::string&& title )
-    : Element( amount, price, std::move( title ) )
+  : Element( amount, price, std::move( title ) )
 {
 }
 
 void Game::acceptVisitor( Visitor& visitor )
 {
-    visitor.visitGame( *this );
+  visitor.visitGame( *this );
 }
 
 ///
@@ -118,17 +118,17 @@ void Game::acceptVisitor( Visitor& visitor )
 ///
 void CalculatePriceVisitor::visitBook( Book& book )
 {
-    std::cout << "Preis Book: " << book.getPrice() << " from " << book.getTitle() << '\n';
+  std::cout << "Preis Book: " << book.getPrice() << " from " << book.getTitle() << '\n';
 }
 
 void CalculatePriceVisitor::visitMovie( Movie& movie )
 {
-    std::cout << "Preis Movie: " << movie.getPrice() << " from " << movie.getTitle() << '\n';
+  std::cout << "Preis Movie: " << movie.getPrice() << " from " << movie.getTitle() << '\n';
 }
 
 void CalculatePriceVisitor::visitGame( Game& game )
 {
-    std::cout << "Preis Game: " << game.getPrice() << " from " << game.getTitle() << '\n';
+  std::cout << "Preis Game: " << game.getPrice() << " from " << game.getTitle() << '\n';
 }
 
 ///
@@ -136,23 +136,33 @@ void CalculatePriceVisitor::visitGame( Game& game )
 ///
 VisitorWorker::VisitorWorker()
 {
-    m_elements.push_back( new Book{13, 2.4, std::string( "Herr der Ringe" )} );
-    m_elements.push_back( new Movie{3, 4.1, std::string( "Spiderman" )} );
-    m_elements.push_back( new Game{1, 12.3, std::string( "DCS" )} );
-    m_elements.push_back( new Movie{1, 1.24, std::string( "The Rock" )} );
-    m_elements.push_back( new Book{12, 3.1, std::string( "Goetz von Berlichingen" )} );
+  m_elements.push_back( new Book{ 13, 2.4, std::string( "Herr der Ringe" ) } );
+  m_elements.push_back( new Movie{ 3, 4.1, std::string( "Spiderman" ) } );
+  m_elements.push_back( new Game{ 1, 12.3, std::string( "DCS" ) } );
+  m_elements.push_back( new Movie{ 1, 1.24, std::string( "The Rock" ) } );
+  m_elements.push_back( new Book{ 12, 3.1, std::string( "Goetz von Berlichingen" ) } );
 }
 
-std::vector<Element*> VisitorWorker::getElements()
+VisitorWorker::~VisitorWorker()
 {
-    return m_elements;
+  for( auto elem : m_elements )
+  {
+    delete elem;
+  }
+  m_elements.clear();
+}
+
+std::vector< Element* > VisitorWorker::getElements()
+{
+  return m_elements;
 }
 
 void VisitorWorker::showPrices()
 {
-    CalculatePriceVisitor calculator;
+  CalculatePriceVisitor calculator;
 
-    for( auto element : m_elements ) {
-        element->acceptVisitor( calculator );
-    }
+  for( auto element : m_elements )
+  {
+    element->acceptVisitor( calculator );
+  }
 }
