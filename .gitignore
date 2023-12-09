@@ -6,3 +6,4 @@ build/
 .cache/clangd/index
 Debug
 compile_commands.json
+/cmake-build-debug/
