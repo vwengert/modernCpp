@@ -125,3 +125,21 @@ void OpenGL::drawVertices( unsigned int shaderProgram, float* vertices, long lon
   glBindVertexArray( VAO );
   glDrawArrays( GL_TRIANGLES, 0, 3 );
 }
+
+void OpenGL::processInput()
+{
+  if( glfwGetKey( m_window, GLFW_KEY_ESCAPE ) == GLFW_PRESS )
+  {
+    glfwSetWindowShouldClose( m_window, true );
+  }
+}
+
+void OpenGL::pollEvents()
+{
+  glfwPollEvents();
+}
+
+void OpenGL::swapBuffers()
+{
+  glfwSwapBuffers( m_window );
+}
