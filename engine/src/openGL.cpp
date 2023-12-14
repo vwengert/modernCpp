@@ -37,9 +37,9 @@ OpenGL::OpenGL( int width, int height, const char* title )
 
 OpenGL::~OpenGL()
 {
-  glDeleteVertexArrays(1, &m_VAO);
-  glDeleteBuffers(1, &m_VBO);
-  glDeleteProgram(m_shaderProgram);
+  glDeleteVertexArrays( 1, &m_VAO );
+  glDeleteBuffers( 1, &m_VBO );
+  glDeleteProgram( m_shaderProgram );
   glfwTerminate();
 }
 
@@ -108,11 +108,16 @@ void OpenGL::prepareVertices( float* vertices, long long size )
   glBindBuffer( GL_ARRAY_BUFFER, m_VBO );
   glBufferData( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 
-  glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof( float ), ( void* ) nullptr );
+  glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof( float ), ( void* ) 0 );
   glEnableVertexAttribArray( 0 );
+}
 
-  glBindBuffer( GL_ARRAY_BUFFER, 0 );
-  glBindVertexArray(0);
+void OpenGL::prepareIndices( unsigned int* indices, long long int size )
+{
+  glGenBuffers( 1, &m_EBO );
+
+  glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_EBO );
+  glBufferData( GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW );
 }
 
 void OpenGL::processInput()
@@ -130,8 +135,23 @@ void OpenGL::pollEvents()
 
 void OpenGL::drawVertices() const
 {
-  glUseProgram(m_shaderProgram);
-  glBindVertexArray(m_VAO);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glUseProgram( m_shaderProgram );
+  glBindVertexArray( m_VAO );
+  static int x = 0;
+  if( x > 40 )
+  {
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  }
+  else
+  {
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+  }
+  if( x > 80 )
+  {
+    x = 0;
+  }
+  ++x;
+  glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+  glBindVertexArray( 0 );
   glfwSwapBuffers( m_window );
 }

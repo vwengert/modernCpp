@@ -19,9 +19,12 @@ auto main() -> int
                                     " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
                                     "}\n",
       GL_FRAGMENT_SHADER ) } );
-  float vertices[] = { -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f };
+  float vertices[] = { -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f };
+
+  unsigned int indices[] = { 0, 1, 2, 0, 2, 3 };
 
   engine.prepareVertices( vertices, sizeof vertices );
+  engine.prepareIndices( indices, sizeof indices );
 
   while( !glfwWindowShouldClose( engine.window() ) )
   {
