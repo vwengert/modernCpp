@@ -13,9 +13,6 @@ class OpenGL
     static unsigned int createShaderProgram( const std::vector< unsigned int >& shaders );
     static void drawVertices( unsigned int shaderProgram, float* vertices, long long size );
     static void setBackgroundColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha );
-    static void pollEvents();
-    void processInput();
-    void swapBuffers();
     GLFWwindow* window();
 
   private:
