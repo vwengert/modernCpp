@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
 
-include(FetchContent)
-
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
     # Support Unix Makefiles and Ninja
@@ -14,10 +12,11 @@ string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId} CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-FetchContent_Declare(glfw
-        GIT_REPOSITORY https://github.com/glfw/glfw.git
-        GIT_TAG 3.3.8
-)
+#file(CREATE_LINK
+#  "${CMAKE_BINARY_DIR}/compile_commands.json"
+#  "${CMAKE_SOURCE_DIR}/compile_commands.json"
+#  SYMBOLIC
+#)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -31,20 +30,17 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 
 file(GLOB Library_SOURCES "src/*.cpp")
+file(GLOB Library_HEADER "include/*.h")
 
 add_subdirectory(mainlib)
-add_subdirectory(glad)
 
 add_executable(${PROJECT_NAME}
     ${Library_SOURCES}
+    ${Library_HEADER}
 )
 
-FetchContent_MakeAvailable(glfw)
-
 SET(LINK_LIBRARY
-        modernLibrary
-        glad
-        glfw
+    modernLibrary
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
