@@ -51,11 +51,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${LINK_LIBRARY}
 )
 
-if(WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
-    target_link_options(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
-endif(WIN32)
-
 enable_testing()
 add_subdirectory(Tests)
 
