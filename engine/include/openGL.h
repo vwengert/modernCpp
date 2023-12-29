@@ -14,15 +14,13 @@ class OpenGL
     static void setBackgroundColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha );
     static void pollEvents();
     void prepareVertices( float* vertices, long long size );
-    void prepareIndices( unsigned int* indices, long long size );
     void drawVertices() const;
     void processInput();
     GLFWwindow* window();
 
   private:
     GLFWwindow* m_window;
-    unsigned int m_VAO{ 0 };
-    unsigned int m_VBO{ 0 };
-    unsigned int m_EBO{ 0 };
-    unsigned int m_shaderProgram{ 0 };
+    unsigned int m_VAO{0};
+    unsigned int m_VBO{0};
+    unsigned int m_shaderProgram{0};
 };
