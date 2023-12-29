@@ -10,17 +10,14 @@ class OpenGL
     ~OpenGL();
 
     static unsigned int createAndCompileShader( const char* shaderGLSL, unsigned int shaderType );
-    void createShaderProgram( const std::vector< unsigned int >& shaders );
+    static unsigned int createShaderProgram( const std::vector< unsigned int >& shaders );
+    static void drawVertices( unsigned int shaderProgram, float* vertices, long long size );
     static void setBackgroundColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha );
     static void pollEvents();
-    void prepareVertices( float* vertices, long long size );
-    void drawVertices() const;
     void processInput();
+    void swapBuffers();
     GLFWwindow* window();
 
   private:
     GLFWwindow* m_window;
-    unsigned int m_VAO{0};
-    unsigned int m_VBO{0};
-    unsigned int m_shaderProgram{0};
 };

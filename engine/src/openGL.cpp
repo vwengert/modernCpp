@@ -37,9 +37,6 @@ OpenGL::OpenGL( int width, int height, const char* title )
 
 OpenGL::~OpenGL()
 {
-  glDeleteVertexArrays(1, &m_VAO);
-  glDeleteBuffers(1, &m_VBO);
-  glDeleteProgram(m_shaderProgram);
   glfwTerminate();
 }
 
@@ -67,27 +64,28 @@ unsigned int OpenGL::createAndCompileShader( const char* shaderGLSL, unsigned in
   if( !success )
   {
     glGetShaderInfoLog( vertexShader, 512, nullptr, infoLog );
-    std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     throw;
   }
   return vertexShader;
 }
 
-void OpenGL::createShaderProgram( const std::vector< unsigned int >& shaders )
+unsigned int OpenGL::createShaderProgram( const std::vector< unsigned int >& shaders )
 {
-  m_shaderProgram = glCreateProgram();
+  unsigned int shaderProgram;
+  shaderProgram = glCreateProgram();
   for( auto shader : shaders )
   {
-    glAttachShader( m_shaderProgram, shader );
+    glAttachShader( shaderProgram, shader );
   }
-  glLinkProgram( m_shaderProgram );
+  glLinkProgram( shaderProgram );
 
   int success;
   char infoLog[ 512 ];
-  glGetProgramiv( m_shaderProgram, GL_LINK_STATUS, &success );
+  glGetProgramiv( shaderProgram, GL_LINK_STATUS, &success );
   if( !success )
   {
-    glGetProgramInfoLog( m_shaderProgram, 512, nullptr, infoLog );
+    glGetProgramInfoLog( shaderProgram, 512, nullptr, infoLog );
     std::cout << "ERROR::SHADER::PROGRAM::LINK_FAILED\n" << infoLog << std::endl;
     throw;
   }
@@ -96,23 +94,36 @@ void OpenGL::createShaderProgram( const std::vector< unsigned int >& shaders )
   {
     glDeleteShader( shader );
   }
+
+  return shaderProgram;
 }
 
-void OpenGL::prepareVertices( float* vertices, long long size )
+void OpenGL::drawVertices( unsigned int shaderProgram, float* vertices, long long size )
 {
-  glGenVertexArrays( 1, &m_VAO );
-  glGenBuffers( 1, &m_VBO );
+  unsigned int VBO;
+  unsigned int VAO;
+  glGenBuffers( 1, &VBO );
+  glBindBuffer( GL_ARRAY_BUFFER, VBO );
+  glBufferData( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 
-  glBindVertexArray( m_VAO );
-
-  glBindBuffer( GL_ARRAY_BUFFER, m_VBO );
+  glBindBuffer( GL_ARRAY_BUFFER, VBO );
   glBufferData( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 
   glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof( float ), ( void* ) nullptr );
   glEnableVertexAttribArray( 0 );
+  glUseProgram( shaderProgram );
+  glGenVertexArrays( 1, &VAO );
+  glBindVertexArray( VAO );
+  glBindBuffer( GL_ARRAY_BUFFER, VBO );
+  glBufferData( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 
-  glBindBuffer( GL_ARRAY_BUFFER, 0 );
-  glBindVertexArray(0);
+  glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof( float ), ( void* ) nullptr );
+  glEnableVertexAttribArray( 0 );
+  glUseProgram( shaderProgram );
+  glBindVertexArray( VAO );
+  glUseProgram( shaderProgram );
+  glBindVertexArray( VAO );
+  glDrawArrays( GL_TRIANGLES, 0, 3 );
 }
 
 void OpenGL::processInput()
@@ -128,10 +139,7 @@ void OpenGL::pollEvents()
   glfwPollEvents();
 }
 
-void OpenGL::drawVertices() const
+void OpenGL::swapBuffers()
 {
-  glUseProgram(m_shaderProgram);
-  glBindVertexArray(m_VAO);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
   glfwSwapBuffers( m_window );
 }
