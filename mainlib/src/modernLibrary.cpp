@@ -22,6 +22,17 @@ class MyPair {
   }
 };
 
+template< typename Range >
+void printRange( Range const& range )
+{
+  using std::begin;
+  using std::end;
+  for( auto pos = begin( range ); pos != end( range ); ++pos )
+  {
+    pos->get()->print( std::cout );
+  }
+}
+
 auto doWork() -> int {
   std::cout << Singleton::instance()->configuration() << '\n';
   factoryDoWork();
@@ -41,9 +52,18 @@ auto doWork() -> int {
   vec.emplace_back(std::make_unique<MyPair<std::string, int>>("April", 5));
   vec.emplace_back(std::make_unique<MyPair<std::string, int>>("Mai", 13));
 
-  for (auto const& pair : vec) {
-    pair->print(std::cout);
-  }
+  printRange( vec );
+
+  std::unique_ptr< MyPair< std::string, int > > arr[] = {
+
+    std::make_unique< MyPair< std::string, int > >( "Januar", -5 ),
+    std::make_unique< MyPair< std::string, int > >( "Februar", -1 ),
+    std::make_unique< MyPair< std::string, int > >( "March", 2 ),
+    std::make_unique< MyPair< std::string, int > >( "April", 5 ),
+    std::make_unique< MyPair< std::string, int > >( "Mai", 13 )
+  };
+
+  printRange( arr );
 
   return 0;
 }
