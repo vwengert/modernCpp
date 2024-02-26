@@ -54,16 +54,5 @@ auto doWork() -> int {
 
   printRange( vec );
 
-  std::unique_ptr< MyPair< std::string, int > > arr[] = {
-
-    std::make_unique< MyPair< std::string, int > >( "Januar", -5 ),
-    std::make_unique< MyPair< std::string, int > >( "Februar", -1 ),
-    std::make_unique< MyPair< std::string, int > >( "March", 2 ),
-    std::make_unique< MyPair< std::string, int > >( "April", 5 ),
-    std::make_unique< MyPair< std::string, int > >( "Mai", 13 )
-  };
-
-  printRange( arr );
-
   return 0;
 }
