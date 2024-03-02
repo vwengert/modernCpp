@@ -1,5 +1,6 @@
 #include "modernLibrary.h"
 
+#include <cassert>
 #include <iostream>
 #include <memory>
 
@@ -33,7 +34,27 @@ void printRange( Range const& range )
   }
 }
 
+template< typename T >
+struct Widget
+{
+    T value;
+};
+
+template< typename T >
+void swap( Widget< T >& lhs, Widget< T >& rhs )
+{
+  using std::swap;
+  swap( lhs.value, rhs.value );
+}
+
 auto doWork() -> int {
+  Widget< std::string > w1{ "Hello" };
+  Widget< std::string > w2{ "World" };
+  swap( w1, w2 );
+
+  assert( w1.value == "World" );
+  assert( w2.value == "Hello" );
+
   std::cout << Singleton::instance()->configuration() << '\n';
   factoryDoWork();
   abstractFactoryDoWork();
