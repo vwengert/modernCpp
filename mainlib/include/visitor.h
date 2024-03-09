@@ -1,6 +1,8 @@
 #pragma once
 
+#include <iostream>
 #include <string>
+#include <variant>
 #include <vector>
 
 class Visitor;
@@ -88,3 +90,33 @@ class VisitorWorker
   private:
     std::vector< Element* > m_elements;
 };
+
+struct Print
+{
+    void operator()( int value ) const
+    {
+      std::cout << "int: " << value << '\n';
+    }
+    void operator()( double value ) const
+    {
+      std::cout << "double: " << value << '\n';
+    }
+    void operator()( std::string const& value ) const
+    {
+      std::cout << "string: " << value << '\n';
+    }
+};
+
+inline void doVariantVisitorWork()
+{
+  std::vector< std::variant< int, double, std::string > > list{};
+  list.push_back( 31 );
+  list.push_back( 51.3 );
+  list.push_back( "31" );
+  list.push_back( "hi there" );
+  list.push_back( 41 );
+  for( auto v : list )
+  {
+    std::visit( Print{}, v );
+  }
+}
