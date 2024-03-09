@@ -1,8 +1,10 @@
 #include <decorator.h>
 #include <modernLibrary.h>
+#include <variant>
 
 #include "appconfigurator.h"
 #include "ianimal.h"
+#include "visitor.h"
 
 std::unique_ptr< AppConfigurator > configure()
 {
@@ -46,4 +48,5 @@ auto main() -> int
 
   doWork();
   doDecoratorWork();
+  doVariantVisitorWork();
 }
