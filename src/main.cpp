@@ -1,8 +1,8 @@
 #include <decorator.h>
 #include <modernLibrary.h>
-#include <variant>
 
 #include "appconfigurator.h"
+#include "bridge.h"
 #include "ianimal.h"
 #include "visitor.h"
 
@@ -49,4 +49,7 @@ auto main() -> int
   doWork();
   doDecoratorWork();
   doVariantVisitorWork();
+
+  const auto car = std::make_unique< ElectricCar >();
+  car->drive();
 }
