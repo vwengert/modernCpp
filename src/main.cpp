@@ -26,14 +26,15 @@ std::unique_ptr< AppConfigurator > configure()
 std::vector< std::unique_ptr< IAnimal > > createData( const std::unique_ptr< AppConfigurator >& config )
 {
   std::vector< std::unique_ptr< IAnimal > > animals;
-  for( auto concreteAnimal : config->animals() )
+  for( const auto concreteAnimal : config->animals() )
   {
     animals.push_back( config->animal( concreteAnimal.first )( config->food( concreteAnimal.second )() ) );
   }
+
   return animals;
 }
 
-void displayData( const std::vector< std::unique_ptr< IAnimal > >& animals )
+[[maybe_unused]] void displayData( const std::vector< std::unique_ptr< IAnimal > >& animals )
 {
   for( const auto& animal : animals )
   {

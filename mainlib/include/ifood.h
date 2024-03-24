@@ -4,29 +4,34 @@
 #include <memory>
 #include <string>
 
-enum class Food {
-    PIZZA,
-    BANANA,
+enum class Food
+{
+  PIZZA,
+  BANANA,
 };
 
-class IFood {
-public:
+class IFood
+{
+  public:
     virtual std::string name() = 0;
-    static std::unique_ptr<IFood> create();
+    virtual ~IFood() = default;
+    static std::unique_ptr< IFood > create();
 };
 
-class Banana : public IFood {
-public:
+class Banana : public IFood
+{
+  public:
     std::string name() override;
-    static std::unique_ptr<IFood> create();
+    static std::unique_ptr< IFood > create();
 };
 
-class Pizza : public IFood {
-public:
+class Pizza : public IFood
+{
+  public:
     std::string name() override;
-    static std::unique_ptr<IFood> create();
+    static std::unique_ptr< IFood > create();
 };
 
-using fCreate = std::unique_ptr<IFood> (*)();
+using fCreate = std::unique_ptr< IFood > ( * )();
 
-#endif// IFOOD_H
+#endif // IFOOD_H
