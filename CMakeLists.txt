@@ -10,7 +10,7 @@ project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId} CXX)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #file(CREATE_LINK
 #  "${CMAKE_BINARY_DIR}/compile_commands.json"
@@ -38,6 +38,8 @@ add_executable(${PROJECT_NAME}
     ${Library_SOURCES}
     ${Library_HEADER}
 )
+
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 SET(LINK_LIBRARY
     modernLibrary

@@ -1,46 +1,33 @@
 #include <decorator.h>
 #include <modernLibrary.h>
 
-#include "appconfigurator.h"
 #include "bridge.h"
-#include "ianimal.h"
+#include "configure.h"
 #include "visitor.h"
 
-std::unique_ptr< AppConfigurator > configure()
+template< typename N, typename D >
+class Ratio
 {
-  auto config = std::make_unique< AppConfigurator >();
-  config->registerAnimal( Animal::HUMAN, &Human::create );
-  config->registerAnimal( Animal::MONKEY, &Monkey::create );
+  public:
+    Ratio()
+      : num_{}
+      , denom_{}
+    {
+    }
+    Ratio( const N& num, const D& denom )
+      : num_{ num }
+      , denom_{ denom }
+    {
+    }
+    explicit operator double() const
+    {
+      return double( num_ ) / double( denom_ );
+    }
 
-  config->registerFood( Food::PIZZA, &Pizza::create );
-  config->registerFood( Food::BANANA, &Banana::create );
-
-  config->registerConcreteAnimals( Animal::HUMAN, Food::BANANA );
-  config->registerConcreteAnimals( Animal::HUMAN, Food::PIZZA );
-  config->registerConcreteAnimals( Animal::MONKEY, Food::PIZZA );
-  config->registerConcreteAnimals( Animal::HUMAN, Food::BANANA );
-  config->registerConcreteAnimals( Animal::MONKEY, Food::BANANA );
-  return config;
-}
-
-std::vector< std::unique_ptr< IAnimal > > createData( const std::unique_ptr< AppConfigurator >& config )
-{
-  std::vector< std::unique_ptr< IAnimal > > animals;
-  for( const auto concreteAnimal : config->animals() )
-  {
-    animals.push_back( config->animal( concreteAnimal.first )( config->food( concreteAnimal.second )() ) );
-  }
-
-  return animals;
-}
-
-[[maybe_unused]] void displayData( const std::vector< std::unique_ptr< IAnimal > >& animals )
-{
-  for( const auto& animal : animals )
-  {
-    animal->eatFavouriteFood( std::cout );
-  }
-}
+  private:
+    N num_;
+    D denom_;
+};
 
 auto main() -> int
 {
@@ -53,4 +40,10 @@ auto main() -> int
 
   const auto car = std::make_unique< ElectricCar >();
   car->drive();
+
+  Ratio r{ 5, 0.1 };
+
+  std::cout << "Ratio is: " << double( r ) << '\n';
+
+  return 0;
 }
