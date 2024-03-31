@@ -34,6 +34,7 @@ auto main() -> int
   const auto config = configure();
   const auto animals = createData( config );
 
+  displayData( animals );
   doWork();
   doDecoratorWork();
   doVariantVisitorWork();
