@@ -2,7 +2,6 @@
 #include <modernLibrary.h>
 
 #include "configure.h"
-#include "visitor.h"
 
 auto main() -> int
 {
@@ -11,8 +10,6 @@ auto main() -> int
 
   displayData( animals );
   doWork();
-  doDecoratorWork();
-  doVariantVisitorWork();
 
   return 0;
 }
