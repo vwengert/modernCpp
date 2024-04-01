@@ -4,6 +4,7 @@
 
 #include "abstractfabric.h"
 #include "bridge.h"
+#include "configure.h"
 #include "decorator.h"
 #include "factory.h"
 #include "mathematics.h"
@@ -60,6 +61,14 @@ void doVisitorAndElectricCarWork()
   car->drive();
 }
 
+void doConfigrationStuff()
+{
+  const auto config = configure();
+  const auto animals = createData( config );
+
+  displayData( animals );
+}
+
 auto doWork() -> int
 {
   factoryDoWork();
@@ -69,6 +78,7 @@ auto doWork() -> int
   doVisitorAndElectricCarWork();
   doSecretFactory();
   doMultiply();
+  doConfigrationStuff();
   doSomeVectorWork();
   doSomeTemplateWork();
   doLambdaOverload();
