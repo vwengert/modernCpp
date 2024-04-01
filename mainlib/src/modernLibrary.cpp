@@ -12,6 +12,25 @@
 #include "templates.h"
 #include "visitor.h"
 
+auto doWork() -> int
+{
+  factoryDoWork();
+  abstractFactoryDoWork();
+  doDecoratorWork();
+  doVariantVisitorWork();
+  doVisitorAndElectricCarWork();
+  doSecretFactory();
+  doMultiply();
+  doConfigrationStuff();
+  doSomeVectorWork();
+  doSomeTemplateWork();
+  doLambdaOverload();
+
+  std::cout << '\n';
+
+  return 0;
+}
+
 void doLambdaOverload()
 {
   int i = 5;
@@ -67,23 +86,4 @@ void doConfigrationStuff()
   const auto animals = createData( config );
 
   displayData( animals );
-}
-
-auto doWork() -> int
-{
-  factoryDoWork();
-  abstractFactoryDoWork();
-  doDecoratorWork();
-  doVariantVisitorWork();
-  doVisitorAndElectricCarWork();
-  doSecretFactory();
-  doMultiply();
-  doConfigrationStuff();
-  doSomeVectorWork();
-  doSomeTemplateWork();
-  doLambdaOverload();
-
-  std::cout << '\n';
-
-  return 0;
 }

@@ -1,5 +1,9 @@
 #pragma once
 
-auto doWork() -> int;
-
-
+int doWork();
+void doLambdaOverload();
+void doVisitorAndElectricCarWork();
+void doSecretFactory();
+void doConfigrationStuff();
+void doSomeVectorWork();
+void doSomeTemplateWork();
