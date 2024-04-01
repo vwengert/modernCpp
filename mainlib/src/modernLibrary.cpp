@@ -53,5 +53,15 @@ auto doWork() -> int
   std::cout << "double: " << double( g ) << '\n';
   std::cout << "string: " << std::string( g ) << '\n';
 
+  int i = 5;
+  double d = 7.3;
+  auto l = overload(
+    []( int* i ) { std::cout << "i= " << *i << '\n'; }, []( double* d ) { std::cout << "d= " << *d << '\n'; } );
+
+  l( &i );
+  l( &d );
+
+  std::cout << '\n';
+
   return 0;
 }
