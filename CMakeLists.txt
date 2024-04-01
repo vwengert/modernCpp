@@ -10,17 +10,13 @@ project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId} CXX)
-# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-#file(CREATE_LINK
-#  "${CMAKE_BINARY_DIR}/compile_commands.json"
-#  "${CMAKE_SOURCE_DIR}/compile_commands.json"
-#  SYMBOLIC
-#)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXTENSIONS OFF)
+
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # setting Debug Build Type if no type is set.
 if(NOT CMAKE_BUILD_TYPE)
