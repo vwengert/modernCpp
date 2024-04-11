@@ -26,11 +26,5 @@ FetchContent_Declare(GoogleTest
         GIT_TAG v1.14.0
 )
 
-FetchContent_Declare(GoogleBenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG v1.8.3
-)
-
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(GoogleTest)
-FetchContent_MakeAvailable(GoogleBenchmark)
