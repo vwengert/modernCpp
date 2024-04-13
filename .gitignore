@@ -8,3 +8,4 @@ build/
 Debug
 compile_commands.json
 /cmake-build-debug/
+/cmake-build-release/
