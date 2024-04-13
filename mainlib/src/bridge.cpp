@@ -1,28 +1,38 @@
 #include "bridge.h"
-#include <iostream>
 
 class ElectricEngine : public Engine
 {
   public:
+    ElectricEngine( std::ostream& stream )
+      : Engine{ stream }
+    {
+      getStream() << "Using stream";
+    }
+
     void start()
     {
-      std::cout << "Engine start\n";
+      getStream() << "Engine start\n";
     }
 
     void stop()
     {
-      std::cout << "Engine stop\n";
+      getStream() << "Engine stop\n";
     }
 };
 
-ElectricCar::ElectricCar()
-  : Car{ std::make_unique< ElectricEngine >() }
+ElectricCar::ElectricCar( std::ostream& stream )
+  : Car{ std::make_unique< ElectricEngine >( stream ), stream }
 {
 }
 
 void ElectricCar::drive()
 {
   getEngine()->start();
-  std::cout << "Driving\n";
+  getStream() << "Driving\n";
   getEngine()->stop();
+}
+
+std::ostream& Car::getStream()
+{
+  return stream_;
 }

@@ -5,16 +5,28 @@
 class Engine
 {
   public:
+    Engine( std::ostream& stream )
+      : stream_( stream )
+    {
+    }
     virtual ~Engine() = default;
     virtual void start() = 0;
     virtual void stop() = 0;
+    std::ostream& getStream()
+    {
+      return stream_;
+    }
+
+  private:
+    std::ostream& stream_;
 };
 
 class Car
 {
   protected:
-    explicit Car( std::unique_ptr< Engine > engine )
+    explicit Car( std::unique_ptr< Engine > engine, std::ostream& stream )
       : engine_( std::move( engine ) )
+      , stream_( stream )
     {
     }
 
@@ -31,14 +43,16 @@ class Car
     {
       return engine_.get();
     }
+    std::ostream& getStream();
 
   private:
     std::unique_ptr< Engine > engine_;
+    std::ostream& stream_;
 };
 
 class ElectricCar : public Car
 {
   public:
-    ElectricCar();
+    ElectricCar( std::ostream& stream );
     void drive() override;
 };

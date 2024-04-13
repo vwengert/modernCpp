@@ -76,7 +76,7 @@ void doVisitorAndElectricCarWork()
   VisitorWorker worker;
   worker.showPrices();
 
-  const auto car = std::make_unique< ElectricCar >();
+  const auto car = std::make_unique< ElectricCar >( std::cout );
   car->drive();
 }
 
