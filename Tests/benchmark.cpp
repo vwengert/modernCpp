@@ -1,7 +1,7 @@
-#include <benchmark/benchmark.h>
+#include "benchmark/benchmark.h"
+#include "raiitemplates.h"
 #include <iostream>
 #include <memory>
-#include <raiitemplates.h>
 
 void BM_rawptr_dereference( benchmark::State& state )
 {

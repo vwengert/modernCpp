@@ -44,7 +44,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 enable_testing()
 add_subdirectory(Tests)
-add_subdirectory(benchmark)
 
 # first we can indicate the documentation build as an option and set it to OFF by default
 option(BUILD_DOC "Build documentation" OFF)
