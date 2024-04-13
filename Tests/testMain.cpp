@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include "mutex.h"
 #include "raiitemplates.h"
 #include "singleton.h"
 
@@ -49,7 +50,7 @@ TEST( ScopedPtrTest, EarlyReturnNoLeak )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( ScopedPtrTest, ThroNoLeak )
+TEST( ScopedPtrTest, ThrowNoLeak )
 {
   object_counter::all_count = object_counter::count = 0;
   try
@@ -74,4 +75,20 @@ TEST( RAII, AcquireRelease )
   }
   EXPECT_EQ( 0, object_counter::count );
   EXPECT_EQ( 1, object_counter::all_count );
+}
+
+TEST( RAII, ThrowNoLeak )
+{
+  std::mutex m;
+  try
+  {
+    MutexGuard lg( m );
+    EXPECT_FALSE( m.try_lock() );
+    throw 1;
+  }
+  catch( ... )
+  {
+  }
+  EXPECT_TRUE( m.try_lock() );
+  m.unlock();
 }
