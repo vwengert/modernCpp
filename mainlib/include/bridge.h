@@ -5,54 +5,64 @@
 class Engine
 {
   public:
-    Engine( std::ostream& stream )
-      : stream_( stream )
+    Engine() = delete;
+    explicit Engine( std::ostream& stream )
+      : m_stream( stream )
     {
     }
     virtual ~Engine() = default;
+    Engine( const Engine& ) = default;
+    Engine& operator=( const Engine& ) = delete;
+    Engine( Engine&& ) = default;
+    Engine& operator=( Engine&& ) = delete;
     virtual void start() = 0;
     virtual void stop() = 0;
     std::ostream& getStream()
     {
-      return stream_;
+      return m_stream;
     }
 
   private:
-    std::ostream& stream_;
+    std::ostream& m_stream;
 };
 
 class Car
 {
   protected:
     explicit Car( std::unique_ptr< Engine > engine, std::ostream& stream )
-      : engine_( std::move( engine ) )
-      , stream_( stream )
+      : m_engine( std::move( engine ) )
+      , m_stream( stream )
     {
     }
 
   public:
+    Car() = delete;
     virtual ~Car() = default;
+    Car( const Car& ) = delete;
+    Car& operator=( const Car& ) = delete;
+    Car( Car&& ) = default;
+    Car& operator=( Car&& ) = delete;
     virtual void drive() = 0;
 
   protected:
     Engine* getEngine()
     {
-      return engine_.get();
+      return m_engine.get();
     }
     Engine const* getEngine() const
     {
-      return engine_.get();
+      return m_engine.get();
     }
     std::ostream& getStream();
 
   private:
-    std::unique_ptr< Engine > engine_;
-    std::ostream& stream_;
+    std::unique_ptr< Engine > m_engine;
+    std::ostream& m_stream;
 };
 
 class ElectricCar : public Car
 {
   public:
-    ElectricCar( std::ostream& stream );
+    explicit ElectricCar( std::ostream& stream );
     void drive() override;
 };

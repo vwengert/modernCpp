@@ -3,18 +3,18 @@
 class ElectricEngine : public Engine
 {
   public:
-    ElectricEngine( std::ostream& stream )
+    explicit ElectricEngine( std::ostream& stream )
       : Engine{ stream }
     {
       getStream() << "Using stream";
     }
 
-    void start()
+    void start() override
     {
       getStream() << "Engine start\n";
     }
 
-    void stop()
+    void stop() override
     {
       getStream() << "Engine stop\n";
     }
@@ -34,5 +34,5 @@ void ElectricCar::drive()
 
 std::ostream& Car::getStream()
 {
-  return stream_;
+  return m_stream;
 }
