@@ -5,19 +5,24 @@
 class MutexGuard
 {
   public:
-    explicit MutexGuard( std::mutex& m )
-      : m_( m )
+    explicit MutexGuard( std::mutex& mutex )
+      : m_mutex( mutex )
     {
-      if( !m_.try_lock() )
+      if( !m_mutex.try_lock() )
       {
         throw 1;
       }
     }
     ~MutexGuard()
     {
-      m_.unlock();
+      m_mutex.unlock();
     }
+    MutexGuard() = delete;
+    MutexGuard( const MutexGuard& ) = delete;
+    MutexGuard( MutexGuard&& ) = default;
+    MutexGuard& operator=( const MutexGuard& ) = delete;
+    MutexGuard& operator=( MutexGuard&& ) = delete;
 
   private:
-    std::mutex& m_;
+    std::mutex& m_mutex; // NOLINT(*avoid-const-or-ref-data-members)
 };
