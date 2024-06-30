@@ -15,6 +15,11 @@ class IFood
   public:
     virtual std::string name() = 0;
     virtual ~IFood() = default;
+    IFood() = default;
+    IFood( const IFood& ) = default;
+    IFood( IFood&& ) = default;
+    IFood& operator=( const IFood& ) = default;
+    IFood& operator=( IFood&& ) = default;
     static std::unique_ptr< IFood > create();
 };
 
