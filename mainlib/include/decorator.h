@@ -7,6 +7,11 @@
 class Item
 {
   public:
+    Item() = default;
+    Item( const Item& ) = default;
+    Item( Item&& ) = default;
+    Item& operator=( const Item& ) = default;
+    Item& operator=( Item&& ) = default;
     virtual ~Item() = default;
     virtual double price() const = 0; // please never use double for any kind of money!
 };
@@ -45,7 +50,7 @@ class CppBook : public Item
       , m_price{ price }
     {
     }
-    std::string const& title() const
+    [[maybe_unused]] std::string const& title() const
     {
       return m_title;
     }
@@ -197,14 +202,20 @@ inline void printPrice( const Item* item )
   std::cout << "Price of item " << item->price() << "\n";
 }
 
+constexpr double kTAX_REDUCED = 0.07;
+constexpr double kTAX_NORMAL = 0.19;
+constexpr double kDISCOUNT = 0.2;
+constexpr double kPRICE_BOOK = 19.0;
+constexpr double kPRICE_CPP_CON = 19.0;
+
 inline void doDecoratorWork()
 {
   std::unique_ptr< Item > item1(
-    std::make_unique< Taxed >( 0.07, std::make_unique< CppBook >( "Effective C++", 19.0 ) ) );
-  std::unique_ptr< Item > item2( std::make_unique< Taxed >(
-    0.19, std::make_unique< Discounted >( 0.2, std::make_unique< CppBook >( "CppCon", 999.0 ) ) ) );
-  std::unique_ptr< Item > item3( std::make_unique< Discounted >(
-    0.2, std::make_unique< Taxed >( 0.19, std::make_unique< CppBook >( "CppCon", 999.0 ) ) ) );
+    std::make_unique< Taxed >( kTAX_REDUCED, std::make_unique< CppBook >( "Effective C++", kPRICE_BOOK ) ) );
+  std::unique_ptr< Item > item2( std::make_unique< Taxed >( kTAX_NORMAL,
+    std::make_unique< Discounted >( kDISCOUNT, std::make_unique< CppBook >( "CppCon", kPRICE_CPP_CON ) ) ) );
+  std::unique_ptr< Item > item3( std::make_unique< Discounted >( kDISCOUNT,
+    std::make_unique< Taxed >( kTAX_NORMAL, std::make_unique< ConferenceTicket >( "CppCon", kPRICE_CPP_CON ) ) ) );
 
   printPrice( item1.get() );
   printPrice( item2.get() );
