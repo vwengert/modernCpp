@@ -2,9 +2,16 @@
 #include <iostream>
 #include <memory>
 
+constexpr int kMAXVALUE = 100;
+
 class TemperatureSensor
 {
   public:
+    TemperatureSensor() = default;
+    TemperatureSensor( const TemperatureSensor& ) = default;
+    TemperatureSensor( TemperatureSensor&& ) = default;
+    TemperatureSensor& operator=( const TemperatureSensor& ) = default;
+    TemperatureSensor& operator=( TemperatureSensor&& ) = default;
     virtual ~TemperatureSensor() = default;
     float actualTemperature()
     {
@@ -20,12 +27,17 @@ class TemperatureSensor
     }
 
   private:
-    float m_actualTemperature;
+    float m_actualTemperature{};
 };
 
 class JalousieActor
 {
   public:
+    JalousieActor() = default;
+    JalousieActor( const JalousieActor& ) = default;
+    JalousieActor( JalousieActor&& ) = default;
+    JalousieActor& operator=( const JalousieActor& ) = default;
+    JalousieActor& operator=( JalousieActor&& ) = default;
     virtual ~JalousieActor() = default;
     float getActualPosition() const
     {
@@ -46,9 +58,9 @@ class JalousieActor
       m_actualPosition = readActualPosition();
       m_actualPosition += value;
 
-      if( m_actualPosition > 100 )
+      if( m_actualPosition > kMAXVALUE )
       {
-        m_actualPosition = 100;
+        m_actualPosition = kMAXVALUE;
       }
     }
     virtual float readActualPosition() = 0;
@@ -59,7 +71,7 @@ class JalousieActor
     }
 
   private:
-    float m_actualPosition;
+    float m_actualPosition{};
 };
 
 class HomebusTemperatureSensor : public TemperatureSensor
@@ -101,6 +113,11 @@ class ProbusJalousieActor : public JalousieActor
 class HomeAutomationFabric
 {
   public:
+    HomeAutomationFabric() = default;
+    HomeAutomationFabric( const HomeAutomationFabric& ) = default;
+    HomeAutomationFabric( HomeAutomationFabric&& ) = default;
+    HomeAutomationFabric& operator=( const HomeAutomationFabric& ) = default;
+    HomeAutomationFabric& operator=( HomeAutomationFabric&& ) = default;
     virtual ~HomeAutomationFabric() = default;
     virtual std::unique_ptr< TemperatureSensor > createTemperatureSensor() = 0;
     virtual std::unique_ptr< JalousieActor > createJalousieActor() = 0;
@@ -109,7 +126,6 @@ class HomeAutomationFabric
 class HomebusFabric : public HomeAutomationFabric
 {
   public:
-    ~HomebusFabric() override = default;
     std::unique_ptr< TemperatureSensor > createTemperatureSensor() override
     {
       return std::make_unique< HomebusTemperatureSensor >();
@@ -123,7 +139,6 @@ class HomebusFabric : public HomeAutomationFabric
 class ProbusFabric : public HomeAutomationFabric
 {
   public:
-    ~ProbusFabric() override = default;
     std::unique_ptr< TemperatureSensor > createTemperatureSensor() override
     {
       return std::make_unique< ProbusTemperatureSensor >();
@@ -137,15 +152,10 @@ class ProbusFabric : public HomeAutomationFabric
 class HomeController
 {
   public:
-    explicit HomeController( HomeAutomationFabric* fabric )
-      : m_fabric{ fabric }
+    explicit HomeController( std::unique_ptr< HomeAutomationFabric > fabric )
+      : m_fabric{ std::move( fabric ) }
     {
       createProducts();
-    }
-
-    ~HomeController()
-    {
-      delete m_fabric;
     }
 
     float getActualTemperature() const
@@ -172,15 +182,14 @@ class HomeController
     }
 
   private:
-    HomeAutomationFabric* m_fabric;
-
+    std::unique_ptr< HomeAutomationFabric > m_fabric;
     std::unique_ptr< TemperatureSensor > m_tempSensor;
     std::unique_ptr< JalousieActor > m_jalousieActor;
 };
 
 inline void abstractFactoryDoWork()
 {
-  auto controller = std::make_unique< HomeController >( new ProbusFabric() );
+  auto controller = std::make_unique< HomeController >( std::make_unique< ProbusFabric >() );
 
   std::cout << "Aktuelle Temperatur: " << controller->getActualTemperature() << '\n';
 }
