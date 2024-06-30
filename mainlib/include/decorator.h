@@ -15,9 +15,9 @@ class DecoratedItem : public Item
 {
   public:
     explicit DecoratedItem( std::unique_ptr< Item > item )
-      : item_{ std::move( item ) }
+      : m_item{ std::move( item ) }
     {
-      if( !item_ )
+      if( !m_item )
       {
         throw std::invalid_argument( "Invalid item" );
       }
@@ -26,59 +26,59 @@ class DecoratedItem : public Item
   protected:
     Item& item()
     {
-      return *item_;
+      return *m_item;
     }
     Item const& item() const
     {
-      return *item_;
+      return *m_item;
     }
 
   private:
-    std::unique_ptr< Item > item_;
+    std::unique_ptr< Item > m_item;
 };
 
 class CppBook : public Item
 {
   public:
     CppBook( std::string title, double price )
-      : title_{ std::move( title ) }
-      , price_{ price }
+      : m_title{ std::move( title ) }
+      , m_price{ price }
     {
     }
     std::string const& title() const
     {
-      return title_;
+      return m_title;
     }
     double price() const override
     {
-      return price_;
+      return m_price;
     }
 
   private:
-    std::string title_{};
-    double price_{};
+    std::string m_title{};
+    double m_price{};
 };
 
 class ConferenceTicket : public Item
 {
   public:
     ConferenceTicket( std::string name, double price )
-      : name_{ std::move( name ) }
-      , price_{ price }
+      : m_name{ std::move( name ) }
+      , m_price{ price }
     {
     }
     std::string const& name() const
     {
-      return name_;
+      return m_name;
     }
     double price() const override
     {
-      return price_;
+      return m_price;
     }
 
   private:
-    std::string name_{};
-    double price_{};
+    std::string m_name{};
+    double m_price{};
 };
 
 class Discounted : public DecoratedItem
@@ -86,7 +86,7 @@ class Discounted : public DecoratedItem
   public:
     Discounted( double discount, std::unique_ptr< Item > item )
       : DecoratedItem( std::move( item ) )
-      , factor_( 1.0 - discount )
+      , m_factor( 1.0 - discount )
     {
       if( !std::isfinite( discount ) || discount < 0.0 || discount > 1.0 )
       {
@@ -95,11 +95,11 @@ class Discounted : public DecoratedItem
     }
     double price() const override
     {
-      return item().price() * factor_;
+      return item().price() * m_factor;
     }
 
   private:
-    double factor_;
+    double m_factor;
 };
 
 class Taxed : public DecoratedItem
@@ -107,7 +107,7 @@ class Taxed : public DecoratedItem
   public:
     Taxed( double taxRate, std::unique_ptr< Item > item )
       : DecoratedItem( std::move( item ) )
-      , factor_( 1.0 + taxRate )
+      , m_factor( 1.0 + taxRate )
     {
       if( !std::isfinite( taxRate ) || taxRate < 0.0 )
       {
@@ -117,35 +117,35 @@ class Taxed : public DecoratedItem
 
     double price() const override
     {
-      return item().price() * factor_;
+      return item().price() * m_factor;
     }
 
   private:
-    double factor_;
+    double m_factor;
 };
 
 class Conference
 {
   public:
     Conference( std::string name, double price )
-      : name_{ std::move( name ) }
-      , price_{ price }
+      : m_name{ std::move( name ) }
+      , m_price{ price }
     {
     }
 
     std::string const& name() const
     {
-      return name_;
+      return m_name;
     }
 
     double price() const
     {
-      return price_;
+      return m_price;
     }
 
   private:
-    std::string name_;
-    double price_;
+    std::string m_name;
+    double m_price;
 };
 
 #if 0
