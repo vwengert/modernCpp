@@ -4,7 +4,8 @@ Checks: "-*,
         clang-*,
         cppcoreguidelines-*,
         google-*,
-        readability-*
+        readability-*,
+        misc-unused-parameters
 "
 WarningsAsErrors: ""
 HeaderFilterRegex: ""

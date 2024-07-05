@@ -21,7 +21,7 @@ std::unique_ptr< AppConfigurator > configure()
 std::vector< std::unique_ptr< IAnimal > > createData( const std::unique_ptr< AppConfigurator >& config )
 {
   std::vector< std::unique_ptr< IAnimal > > animals;
-  for( const auto concreteAnimal : config->animals() )
+  for( const auto& concreteAnimal : config->animals() )
   {
     animals.push_back( config->animal( concreteAnimal.first )( config->food( concreteAnimal.second )() ) );
   }
