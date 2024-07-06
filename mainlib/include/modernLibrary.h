@@ -7,3 +7,4 @@ void doSecretFactory();
 void doConfigrationStuff();
 void doSomeVectorWork();
 void doSomeTemplateWork();
+void doSomeStandardLibraryWork();
