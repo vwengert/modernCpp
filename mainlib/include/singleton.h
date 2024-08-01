@@ -4,15 +4,13 @@
 
 class Singleton final
 {
-    public:
-     static std::shared_ptr<Singleton> instance();
+  public:
+    static std::shared_ptr< Singleton > instance();
 
-     std::string configuration() const;
+    static std::string configuration();
 
-     auto configuration() -> std::string;
+  private:
+    Singleton() = default;
 
-    private:
-     Singleton() = default;
-
-     static std::shared_ptr<Singleton> s_instance;
+    static std::shared_ptr< Singleton > m_instance;
 };
