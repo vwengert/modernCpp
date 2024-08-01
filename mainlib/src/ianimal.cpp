@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-std::unique_ptr<IAnimal> IAnimal::create(std::unique_ptr<IFood> food) {
-    return nullptr;
+std::unique_ptr< IAnimal > IAnimal::create( std::unique_ptr< IFood > /*food*/ )
+{
+  return nullptr;
 }
 
 Monkey::Monkey( std::unique_ptr< IFood > food )
@@ -16,7 +17,8 @@ std::unique_ptr< IAnimal > Monkey::create( std::unique_ptr< IFood > food )
   return std::make_unique< Monkey >( std::move( food ) );
 }
 
-void Monkey::eatFavouriteFood(std::ostream &stream) {
+void Monkey::eatFavouriteFood( std::ostream& stream )
+{
   stream << "Monkey eats " << m_food->name() << "\n";
 }
 
@@ -30,6 +32,7 @@ std::unique_ptr< IAnimal > Human::create( std::unique_ptr< IFood > food )
   return std::make_unique< Human >( std::move( food ) );
 }
 
-void Human::eatFavouriteFood(std::ostream &stream) {
+void Human::eatFavouriteFood( std::ostream& stream )
+{
   stream << "Human eats " << m_food->name() << "\n";
 }
