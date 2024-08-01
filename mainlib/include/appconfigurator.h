@@ -12,17 +12,17 @@ class AppConfigurator
 {
   public:
     AppConfigurator();
-    void registerAnimal( Animal animal, aCreate f );
-    void registerFood( Food food, fCreate f );
-    void registerConcreteAnimals( Animal a, Food f );
+    void registerAnimal( Animal animal, aCreate creater );
+    void registerFood( Food food, fCreate creater );
+    void registerConcreteAnimals( Animal animal, Food food );
     [[nodiscard]] Animals animals() const;
-    [[nodiscard]] fCreate food( Food f ) const;
-    [[nodiscard]] aCreate animal( Animal a ) const;
+    [[nodiscard]] fCreate food( Food food ) const;
+    [[nodiscard]] aCreate animal( Animal animal ) const;
 
   private:
-    std::map< Animal, aCreate > animalRegister;
-    std::map< Food, fCreate > foodRegister;
-    Animals concreteAnimals;
+    std::map< Animal, aCreate > m_animalRegister;
+    std::map< Food, fCreate > m_foodRegister;
+    Animals m_concreteAnimals;
 };
 
 #endif // APPCONFIGURATOR_H

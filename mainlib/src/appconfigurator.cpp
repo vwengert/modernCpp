@@ -1,28 +1,35 @@
 #include "appconfigurator.h"
 
-AppConfigurator::AppConfigurator() {
+AppConfigurator::AppConfigurator()
+{
 }
 
-void AppConfigurator::registerAnimal(Animal animal, aCreate f) {
-    animalRegister.insert({animal, f});
+void AppConfigurator::registerAnimal( Animal animal, aCreate creater )
+{
+  m_animalRegister.insert( { animal, creater } );
 }
 
-void AppConfigurator::registerFood(Food food, fCreate f) {
-    foodRegister.insert({food, f});
+void AppConfigurator::registerFood( Food food, fCreate creater )
+{
+  m_foodRegister.insert( { food, creater } );
 }
 
-void AppConfigurator::registerConcreteAnimals(Animal a, Food f) {
-    concreteAnimals.push_back({a, f});
+void AppConfigurator::registerConcreteAnimals( Animal animal, Food food )
+{
+  m_concreteAnimals.push_back( { animal, food } );
 }
 
-Animals AppConfigurator::animals() const {
-    return concreteAnimals;
+Animals AppConfigurator::animals() const
+{
+  return m_concreteAnimals;
 }
 
-fCreate AppConfigurator::food(Food f) const {
-    return foodRegister.at(f);
+fCreate AppConfigurator::food( Food food ) const
+{
+  return m_foodRegister.at( food );
 }
 
-aCreate AppConfigurator::animal(Animal a) const {
-    return animalRegister.at(a);
+aCreate AppConfigurator::animal( Animal animal ) const
+{
+  return m_animalRegister.at( animal );
 }
