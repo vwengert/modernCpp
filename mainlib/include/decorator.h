@@ -60,7 +60,7 @@ class CppBook : public Item
     }
 
   private:
-    std::string m_title{};
+    std::string m_title;
     double m_price{};
 };
 
@@ -82,7 +82,7 @@ class ConferenceTicket : public Item
     }
 
   private:
-    std::string m_name{};
+    std::string m_name;
     double m_price{};
 };
 
