@@ -5,9 +5,11 @@
 #include <iostream>
 #include <memory>
 
+constexpr int kITERATIONMODIFIER = 32;
+
 std::ostream& nullstream()
 {
-  static std::ofstream os;
+  static std::ofstream os; // NOLINT
   if( !os.is_open() )
   {
     os.open( "/dev/null", std::ofstream::out | std::ofstream::app );
@@ -15,41 +17,43 @@ std::ostream& nullstream()
   return os;
 }
 
-void BM_rawptr_dereference( benchmark::State& state )
+void bmRawptrDereference( benchmark::State& state )
 {
-  for( auto _ : state )
+  for( auto _ : state ) // NOLINT
   {
-    ElectricCar* p = new ElectricCar( nullstream() );
-    benchmark::DoNotOptimize( *p );
-    p->drive();
-    delete p;
+    ElectricCar* pCar = new ElectricCar( nullstream() );
+    benchmark::DoNotOptimize( *pCar );
+    pCar->drive();
+    delete pCar;
   }
-  state.SetItemsProcessed( 32 * state.iterations() );
+  state.SetItemsProcessed( kITERATIONMODIFIER * state.iterations() );
 }
 
-void BM_scoped_ptr_dereference( benchmark::State& state )
+void bmScopedPtrDereference( benchmark::State& state )
 {
-  for( auto _ : state )
+  for( auto _ : state ) // NOLINT
   {
-    scoped_ptr< ElectricCar > p( new ElectricCar( nullstream() ) );
-    benchmark::DoNotOptimize( *p );
-    p->drive();
+    scoped_ptr< ElectricCar > pCar( new ElectricCar( nullstream() ) );
+    benchmark::DoNotOptimize( *pCar );
+    pCar->drive();
   }
-  state.SetItemsProcessed( 32 * state.iterations() );
+  state.SetItemsProcessed( kITERATIONMODIFIER * state.iterations() );
 }
 
-void BM_unique_ptr_dereference( benchmark::State& state )
+void bmUniquePtrDereference( benchmark::State& state )
 {
-  for( auto _ : state )
+  for( auto _ : state ) // NOLINT
   {
-    std::unique_ptr< ElectricCar > p( new ElectricCar( nullstream() ) );
-    benchmark::DoNotOptimize( *p );
-    p->drive();
+    std::unique_ptr< ElectricCar > pCar( new ElectricCar( nullstream() ) );
+    benchmark::DoNotOptimize( *pCar );
+    pCar->drive();
   }
-  state.SetItemsProcessed( 32 * state.iterations() );
+  state.SetItemsProcessed( kITERATIONMODIFIER * state.iterations() );
 }
 
-BENCHMARK( BM_rawptr_dereference );
-BENCHMARK( BM_scoped_ptr_dereference );
-BENCHMARK( BM_unique_ptr_dereference );
+// NOLINTBEGIN
+BENCHMARK( bmRawptrDereference );
+BENCHMARK( bmScopedPtrDereference );
+BENCHMARK( bmUniquePtrDereference );
 BENCHMARK_MAIN();
+// NOLINTEND
