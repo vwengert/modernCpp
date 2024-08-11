@@ -18,10 +18,10 @@ TEST( ModernTests, palindromIsFalseWhenNoPalindrom )
 TEST( ScopedPtrTest, Construct )
 {
   object_counter::all_count = object_counter::count = 0;
-  auto p = new object_counter;
+  const auto* pObjCounter = new object_counter;
   EXPECT_EQ( 1, object_counter::count );
   EXPECT_EQ( 1, object_counter::all_count );
-  delete p;
+  delete pObjCounter;
   EXPECT_EQ( 0, object_counter::count );
   EXPECT_EQ( 1, object_counter::all_count );
 }
@@ -30,7 +30,7 @@ TEST( ScopedPtrTest, AcquireRelease )
 {
   object_counter::all_count = object_counter::count = 0;
   {
-    scoped_ptr< object_counter > p( new object_counter );
+    scoped_ptr< object_counter > pObjCounter( new object_counter );
     EXPECT_EQ( 1, object_counter::count );
     EXPECT_EQ( 1, object_counter::all_count );
   }
@@ -41,11 +41,11 @@ TEST( ScopedPtrTest, AcquireRelease )
 TEST( ScopedPtrTest, EarlyReturnNoLeak )
 {
   object_counter::all_count = object_counter::count = 0;
-  do
+  while( true )
   {
-    scoped_ptr< object_counter > p( new object_counter );
+    scoped_ptr< object_counter > pObjCounter( new object_counter );
     break;
-  } while( false );
+  }
   EXPECT_EQ( 0, object_counter::count );
   EXPECT_EQ( 1, object_counter::all_count );
 }
@@ -55,10 +55,10 @@ TEST( ScopedPtrTest, ThrowNoLeak )
   object_counter::all_count = object_counter::count = 0;
   try
   {
-    scoped_ptr< object_counter > p( new object_counter );
+    scoped_ptr< object_counter > pObjCounter( new object_counter );
     throw 1;
   }
-  catch( ... )
+  catch( ... ) // NOLINT
   {
   };
   EXPECT_EQ( 0, object_counter::count );
@@ -69,7 +69,7 @@ TEST( RAII, AcquireRelease )
 {
   object_counter::all_count = object_counter::count = 0;
   {
-    raii< object_counter > p( new object_counter );
+    raii< object_counter > pObjCounter( new object_counter );
     EXPECT_EQ( 1, object_counter::count );
     EXPECT_EQ( 1, object_counter::all_count );
   }
@@ -79,16 +79,16 @@ TEST( RAII, AcquireRelease )
 
 TEST( RAII, ThrowNoLeak )
 {
-  std::mutex m;
+  std::mutex mutex;
   try
   {
-    MutexGuard lg( m );
-    EXPECT_FALSE( m.try_lock() );
+    MutexGuard mutexGuard( mutex );
+    EXPECT_FALSE( mutex.try_lock() );
     throw 1;
   }
-  catch( ... )
+  catch( ... ) // NOLINT
   {
   }
-  EXPECT_TRUE( m.try_lock() );
-  m.unlock();
+  EXPECT_TRUE( mutex.try_lock() );
+  mutex.unlock();
 }
