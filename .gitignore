@@ -6,3 +6,4 @@ build/
 .vs/
 .idea
 .cache/
+cmake-build-debug/
