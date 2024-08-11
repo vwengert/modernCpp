@@ -5,8 +5,8 @@
 
 using std::chrono::time_point;
 
-const int kNUMBER = 1655;
-const int kANOTHER = 843458;
+constexpr int kNUMBER = 1655;
+constexpr int kANOTHER = 843458;
 time_point kSTART = std::chrono::steady_clock::now(); // NOLINT
 time_point kEND = std::chrono::steady_clock::now();   // NOLINT
 
@@ -14,11 +14,11 @@ void doMultiply()
 {
   clockTime( static_cast< func2 >( multiply0 ), "multiply0" );
   clockTime( static_cast< func2 >( multiply1 ), "multiply1" );
-  clockTime3( static_cast< func3 >( mult_acc0 ), "mult_acc0" );
-  clockTime3( static_cast< func3 >( mult_acc1 ), "mult_acc1" );
-  clockTime3( static_cast< func3 >( mult_acc2 ), "mult_acc2" );
-  clockTime3( static_cast< func3 >( mult_acc3 ), "mult_acc3" );
-  clockTime3( static_cast< func3 >( mult_acc4 ), "mult_acc4" );
+  clockTime3( static_cast< func3 >( multAcc0 ), "mult_acc0" );
+  clockTime3( static_cast< func3 >( multAcc1 ), "mult_acc1" );
+  clockTime3( static_cast< func3 >( multAcc2 ), "mult_acc2" );
+  clockTime3( static_cast< func3 >( multAcc3 ), "mult_acc3" );
+  clockTime3( static_cast< func3 >( multAcc4 ), "mult_acc4" );
   clockTime( static_cast< func2 >( multiply2 ), "multiply2" );
   clockTime( static_cast< func2 >( multiply3 ), "multiply3" );
   clockTime( static_cast< func2 >( multiply4 ), "multiply4" );
@@ -36,14 +36,14 @@ void getEnd()
             << std::chrono::duration_cast< std::chrono::nanoseconds >( kEND - kSTART ).count() << " ns" << std::endl;
 }
 
-void clockTime( func2 function, std::string name )
+void clockTime( const func2 function, const std::string& name )
 {
   getStart();
   std::cout << name << " : " << kNUMBER << " x " << kANOTHER << " = " << function( kNUMBER, kANOTHER ) << std::endl;
   getEnd();
 }
 
-void clockTime3( func3 function, std::string name )
+void clockTime3( const func3 function, const std::string& name )
 {
   getStart();
   std::cout << name << " : " << kNUMBER << " x " << kANOTHER << " = " << function( 0, kNUMBER, kANOTHER ) << std::endl;
@@ -60,7 +60,7 @@ bool odd( int n )
   return ( n & 0x1 ) != 0;
 }
 
-int mult_acc0( int r, int n, int a ) // NOLINT
+int multAcc0( int r, int n, int a ) // NOLINT
 {
   if( n == 1 )
   {
@@ -69,12 +69,12 @@ int mult_acc0( int r, int n, int a ) // NOLINT
 
   if( odd( n ) )
   {
-    return mult_acc0( r + a, half( n ), a + a );
+    return multAcc0( r + a, half( n ), a + a );
   }
-  return mult_acc0( r, half( n ), a + a );
+  return multAcc0( r, half( n ), a + a );
 }
 
-int mult_acc1( int r, int n, int a ) // NOLINT
+int multAcc1( int r, int n, int a ) // NOLINT
 {
   if( n == 1 )
   {
@@ -86,10 +86,10 @@ int mult_acc1( int r, int n, int a ) // NOLINT
     r = r + a;
   }
 
-  return mult_acc1( r, half( n ), a + a );
+  return multAcc1( r, half( n ), a + a );
 }
 
-int mult_acc2( int r, int n, int a ) // NOLINT
+int multAcc2( int r, int n, int a ) // NOLINT
 {
   if( odd( n ) )
   {
@@ -101,10 +101,10 @@ int mult_acc2( int r, int n, int a ) // NOLINT
     }
   }
 
-  return mult_acc2( r, half( n ), a + a );
+  return multAcc2( r, half( n ), a + a );
 }
 
-int mult_acc3( int r, int n, int a ) // NOLINT
+int multAcc3( int r, int n, int a ) // NOLINT
 {
   if( odd( n ) )
   {
@@ -118,10 +118,10 @@ int mult_acc3( int r, int n, int a ) // NOLINT
 
   n = half( n );
   a = a + a;
-  return mult_acc3( r, half( n ), a + a );
+  return multAcc3( r, half( n ), a + a );
 }
 
-int mult_acc4( int r, int n, int a ) // NOLINT
+int multAcc4( int r, int n, int a ) // NOLINT
 {
   while( true )
   {
@@ -174,7 +174,7 @@ int multiply2( int n, int a ) // NOLINT
     return a;
   }
 
-  return mult_acc4( a, n - 1, a );
+  return multAcc4( a, n - 1, a );
 }
 
 int multiply3( int n, int a ) // NOLINT
@@ -190,7 +190,7 @@ int multiply3( int n, int a ) // NOLINT
     return a;
   }
 
-  return mult_acc4( a, n - 1, a );
+  return multAcc4( a, n - 1, a );
 }
 
 int multiply4( int n, int a ) // NOLINT
@@ -206,5 +206,5 @@ int multiply4( int n, int a ) // NOLINT
     return a;
   }
 
-  return mult_acc4( a, half( n - 1 ), a + a );
+  return multAcc4( a, half( n - 1 ), a + a );
 }
