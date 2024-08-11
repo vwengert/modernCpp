@@ -36,16 +36,19 @@ auto doWork() -> int
   return 0;
 }
 
+constexpr int kTHREE = 3;
 constexpr int kFIVE = 5;
 constexpr int kSEVEN = 7;
 constexpr int kEIGHT = 8;
 constexpr int kNINE = 9;
 constexpr int kRANDMS = 300; // 0000;
 constexpr double kSEVEN_POINT_THREE = 7.3;
+constexpr double kFIVE_POINT_ZERO = 5.0;
 constexpr double kZERO_POINT_ONE = 0.1;
 
 void doLambdaOverload()
 {
+  /*
   int integer = kFIVE;
   double dobble = kSEVEN_POINT_THREE;
   auto lmbda = overload( []( const int* integer ) { std::cout << "i= " << *integer << '\n'; },
@@ -53,15 +56,16 @@ void doLambdaOverload()
 
   lmbda( &integer );
   lmbda( &dobble );
+*/
 }
 
 void doSomeTemplateWork()
 {
-  Ratio temp{ kFIVE, kZERO_POINT_ONE };
+  const Ratio temp{ kFIVE, kZERO_POINT_ONE };
   std::cout << "Ratio is: " << static_cast< double >( temp ) << '\n';
   std::cout << "Sum of 5, 8, 9, 7: " << sum( kFIVE, kEIGHT, kNINE, kSEVEN ) << '\n';
 
-  auto group = makeGroup( 3, 5.0, std::string( "xyz" ) ); // NOLINT cppcoreguidelines-avoid-magic-numbers
+  const auto group = makeGroup( kTHREE, kFIVE_POINT_ZERO, std::string( "xyz" ) );
   std::cout << "int: " << static_cast< int >( group ) << '\n';
   std::cout << "double: " << static_cast< double >( group ) << '\n';
   std::cout << "string: " << std::string( group ) << '\n';
@@ -88,11 +92,11 @@ struct OutputTypesTemplate
 };
 
 template< typename... T >
-struct OutputTypesImpl : OutputTypesTemplate
+struct OutputTypesImpl final : OutputTypesTemplate
 {
     void handle() override
     {
-      auto notUsed = std::initializer_list< int >{ ( print< T >(), 0 )... };
+      const auto notUsed = std::initializer_list< int >{ ( print< T >(), 0 )... };
       std::cout << notUsed.size() << " not used\n";
     }
 };
@@ -144,17 +148,17 @@ void f()
     const auto& type = value.type();
     if( type == typeid( int ) )
     {
-      auto anyValue = std::any_cast< int >( value );
+      const auto anyValue = std::any_cast< int >( value );
       std::cout << "Integer: " << anyValue << '\n';
     }
     else if( type == typeid( double ) )
     {
-      auto anyValue = std::any_cast< double >( value );
+      const auto anyValue = std::any_cast< double >( value );
       std::cout << "Double: " << anyValue << '\n';
     }
     else if( type == typeid( std::string ) )
     {
-      auto anyValue = std::any_cast< std::string >( value );
+      const auto anyValue = std::any_cast< std::string >( value );
       std::cout << "String: " << anyValue << '\n';
     }
   }
@@ -165,7 +169,7 @@ void f()
   std::cout << random.get().size() << ", " << random1.get().size() << ", " << random2.get().size()
             << " different randoms\n";
   MyClass< double > xds;
-  MyClass< double > xd2{ xds };
+  const MyClass< double > xd2{ xds };
   MyClass< int > xis{ xds };
   xds.assign( xis );
   xis.assign( xd2 );
