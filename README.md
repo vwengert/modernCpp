@@ -4,7 +4,13 @@ this repo is all about testing new c++ concepts and learning the fundamental of 
 
 ## Setup
 
-You need to install doxygen, cmake and the buildtools of your choice
+### Required
+- C++ Toolchain
+- cmake
+- conan
+
+### Optional
+- doxygen
 
 ## Purpose
 
