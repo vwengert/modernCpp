@@ -1,7 +1,8 @@
 set(Test modernTests)
 set(benchmark testBenchmark)
 
-include(FetchContent)
+FIND_PACKAGE(GTest REQUIRED)
+FIND_PACKAGE(benchmark REQUIRED)
 
 set(TEST_PROJECT_SOURCES
         testMain.cpp
@@ -18,8 +19,7 @@ add_executable(${benchmark}
 )
 
 target_link_libraries(${Test} PUBLIC
-        gtest_main
-        gmock_main
+        gtest::gtest
         modernLibrary
 )
 target_link_libraries(${benchmark} PUBLIC
@@ -31,16 +31,3 @@ add_test(
         NAME ${Test}
         COMMAND ${Test}
 )
-
-FetchContent_Declare(GoogleTest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG v1.14.0
-)
-FetchContent_Declare(GoogleBenchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG v1.8.3
-)
-
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(GoogleTest)
-FetchContent_MakeAvailable(GoogleBenchmark)
