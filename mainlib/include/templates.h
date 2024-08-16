@@ -34,6 +34,7 @@ struct Group< T1 >
     }
 };
 
+#ifndef _WIN32
 template< typename T1, typename... T >
 struct Group< T1, T... > : Group< T... >
 {
@@ -64,6 +65,7 @@ auto makeGroup( T&&... t )
 {
   return Group< T... >( std::forward< T >( t )... );
 }
+#endif
 
 template< typename N, typename D >
 class Ratio

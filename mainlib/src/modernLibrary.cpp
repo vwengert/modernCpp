@@ -48,7 +48,6 @@ constexpr double kZERO_POINT_ONE = 0.1;
 
 void doLambdaOverload()
 {
-  /*
   int integer = kFIVE;
   double dobble = kSEVEN_POINT_THREE;
   auto lmbda = overload( []( const int* integer ) { std::cout << "i= " << *integer << '\n'; },
@@ -56,7 +55,6 @@ void doLambdaOverload()
 
   lmbda( &integer );
   lmbda( &dobble );
-*/
 }
 
 void doSomeTemplateWork()
@@ -64,11 +62,12 @@ void doSomeTemplateWork()
   const Ratio temp{ kFIVE, kZERO_POINT_ONE };
   std::cout << "Ratio is: " << static_cast< double >( temp ) << '\n';
   std::cout << "Sum of 5, 8, 9, 7: " << sum( kFIVE, kEIGHT, kNINE, kSEVEN ) << '\n';
-
+#ifndef _WIN32
   const auto group = makeGroup( kTHREE, kFIVE_POINT_ZERO, std::string( "xyz" ) );
   std::cout << "int: " << static_cast< int >( group ) << '\n';
   std::cout << "double: " << static_cast< double >( group ) << '\n';
   std::cout << "string: " << std::string( group ) << '\n';
+#endif
 }
 
 struct OutputTypesTemplate
