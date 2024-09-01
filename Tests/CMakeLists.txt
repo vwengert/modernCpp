@@ -6,6 +6,7 @@ FIND_PACKAGE(benchmark REQUIRED)
 
 set(TEST_PROJECT_SOURCES
         testMain.cpp
+        testMore.cpp
 )
 set(BENCH_PROJECT_SOURCES
         benchmark.cpp
