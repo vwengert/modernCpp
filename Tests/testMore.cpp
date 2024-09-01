@@ -42,8 +42,8 @@ TEST( learningTemplate, usingMaxTemplateWithSpecifiedRT )
   constexpr auto kVALUE_A = 3;
   constexpr auto kFLOAT_VALUE_A = 5.2;
 
-  constexpr auto kMAX_VALUE1 = maxSpecifiedRTTemplate( kVALUE_A, kFLOAT_VALUE_A );
-  constexpr auto kMAX_VALUE2 = maxSpecifiedRTTemplate< int, double, int >( kVALUE_A, kFLOAT_VALUE_A );
+  constexpr auto kMAX_VALUE1 = maxTemplate( kVALUE_A, kFLOAT_VALUE_A );
+  constexpr auto kMAX_VALUE2 = maxTemplate< int, double, int >( kVALUE_A, kFLOAT_VALUE_A );
 
   ASSERT_EQ( kMAX_VALUE1, kFLOAT_VALUE_A );
   ASSERT_EQ( kMAX_VALUE2, static_cast< int >( kFLOAT_VALUE_A ) );
