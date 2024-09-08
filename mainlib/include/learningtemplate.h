@@ -15,9 +15,6 @@ constexpr RT maxTemplate( T1 first, T2 second )
 template< typename T >
 class Stack
 {
-  private:
-    std::vector< T > m_elems;
-
   public:
     void push( T const& elem );
     void pop();
@@ -26,6 +23,9 @@ class Stack
     {
       return m_elems.empty();
     }
+
+  private:
+    std::vector< T > m_elems;
 };
 
 template< typename T >
