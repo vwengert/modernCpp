@@ -62,3 +62,9 @@ T const& Stack< T, Cont >::top() const
   assert( !m_elems.empty() );
   return m_elems.back();
 }
+
+template< int Val, typename T >
+T addValue( T value )
+{
+  return value + Val;
+}

@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include <algorithm>
 #include <learningtemplate.h>
 #include <list>
 
@@ -120,4 +121,17 @@ TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
 {
   // need to ifdef this for windows / linux - this code is for windows
   ASSERT_DEATH( { m_stack.top(); }, "\\s*Assertion failed: !m_elems.empty\\s*" );
+}
+
+TEST( AddValueTest, addSameValueToAllElements )
+{
+  constexpr auto kVAL_ONE = 3;
+  constexpr auto kVAL_TWO = 8;
+  constexpr auto kVAL_THREE = 11;
+  constexpr auto kADD_VAL = 7;
+  std::vector< int > values{ kVAL_ONE, kVAL_TWO, kVAL_THREE };
+  std::ranges::transform( values, values.begin(), addValue< kADD_VAL, int > );
+  ASSERT_EQ( kVAL_ONE + kADD_VAL, values[ 0 ] );
+  ASSERT_EQ( kVAL_TWO + kADD_VAL, values[ 1 ] );
+  ASSERT_EQ( kVAL_THREE + kADD_VAL, values[ 2 ] );
 }
