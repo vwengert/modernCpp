@@ -48,3 +48,65 @@ TEST( learningTemplate, usingMaxTemplateWithSpecifiedRT )
   ASSERT_EQ( kMAX_VALUE1, kFLOAT_VALUE_A );
   ASSERT_EQ( kMAX_VALUE2, static_cast< int >( kFLOAT_VALUE_A ) );
 }
+
+class StackTest : public testing::Test
+{
+  protected:
+    Stack< int > m_stack; // NOLINT(*-non-private-member-variables-in-classes)
+};
+
+TEST_F( StackTest, stackIsEmptyAfterCreation )
+{
+  ASSERT_TRUE( m_stack.empty() );
+}
+
+TEST_F( StackTest, stackIsNoLongerEmptyAfterPush )
+{
+  m_stack.push( 1 );
+  ASSERT_TRUE( !m_stack.empty() );
+}
+
+TEST_F( StackTest, stackCanPopElementWhenNotEmpty )
+{
+  m_stack.push( 1 );
+  m_stack.pop();
+
+  ASSERT_TRUE( m_stack.empty() );
+}
+
+TEST_F( StackTest, stackCanReturnTopWhenNotEmpty )
+{
+  m_stack.push( 1 );
+  m_stack.push( 2 );
+
+  const auto top = m_stack.top();
+  ASSERT_EQ( 2, top );
+}
+
+TEST_F( StackTest, stackCanReturnFirstAfterPopAndTopWhenNotEmpty )
+{
+  m_stack.push( 1 );
+  m_stack.push( 2 );
+
+  m_stack.pop();
+  const auto top = m_stack.top();
+  ASSERT_EQ( 1, top );
+}
+
+class StackDeathTest : public testing::Test
+{
+  protected:
+    Stack< int > m_stack; // NOLINT(*-non-private-member-variables-in-classes)
+};
+
+TEST_F( StackDeathTest, stackCanNotPopOnEmptyStack )
+{
+  // need to ifdef this for windows / linux - this code is for windows
+  ASSERT_DEATH( { m_stack.pop(); }, "\\s*Assertion failed: !elems.empty\\s*" );
+}
+
+TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
+{
+  // need to ifdef this for windows / linux - this code is for windows
+  ASSERT_DEATH( { m_stack.top(); }, "\\s*Assertion failed: !elems.empty\\s*" );
+}
