@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 
 #include <learningtemplate.h>
+#include <list>
 
 struct MinimalClassForMaxTemplate
 {
@@ -91,6 +92,16 @@ TEST_F( StackTest, stackCanReturnFirstAfterPopAndTopWhenNotEmpty )
   m_stack.pop();
   const auto top = m_stack.top();
   ASSERT_EQ( 1, top );
+}
+
+TEST_F( StackTest, stackCanBeCreatedWithListInsteadVector )
+{
+  Stack< int, std::list< int > > stack;
+  stack.push( 1 );
+  stack.push( 2 );
+
+  const auto top = stack.top();
+  ASSERT_EQ( 2, top );
 }
 
 class StackDeathTest : public testing::Test
