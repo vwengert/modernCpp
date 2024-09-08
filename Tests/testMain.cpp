@@ -65,7 +65,7 @@ TEST( ScopedPtrTest, ThrowNoLeak )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( RAII, AcquireRelease )
+TEST( RAIITest, AcquireRelease )
 {
   object_counter::all_count = object_counter::count = 0;
   {
@@ -77,7 +77,7 @@ TEST( RAII, AcquireRelease )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( RAII, ThrowNoLeak )
+TEST( RAIITest, ThrowNoLeak )
 {
   std::mutex mutex;
   try

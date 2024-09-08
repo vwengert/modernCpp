@@ -12,7 +12,7 @@ struct MinimalClassForMaxTemplate
     }
 };
 
-TEST( learningTemplate, maxTemplateReturnMaxValues )
+TEST( learningTemplateTest, maxTemplateReturnMaxValues )
 {
   const std::string textA = "hello";
   const std::string textB = "ahhh, what";
@@ -38,7 +38,7 @@ TEST( learningTemplate, maxTemplateReturnMaxValues )
   ASSERT_EQ( kMIXED_VALUES2, kVALUE_B );
 }
 
-TEST( learningTemplate, usingMaxTemplateWithSpecifiedRT )
+TEST( learningTemplateTest, usingMaxTemplateWithSpecifiedRT )
 {
   constexpr auto kVALUE_A = 3;
   constexpr auto kFLOAT_VALUE_A = 5.2;
