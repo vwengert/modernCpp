@@ -13,6 +13,19 @@ constexpr RT maxTemplate( T1 first, T2 second )
 }
 
 template< typename T >
+class Stack;
+template< typename T >
+std::ostream& operator<<( std::ostream& stream, Stack< T > const& stack )
+{
+  for( auto item : stack.m_elems )
+  {
+    stream << item << ' ';
+  }
+  stream << '\n';
+  return stream;
+}
+
+template< typename T >
 class Stack
 {
   public:
@@ -23,6 +36,8 @@ class Stack
     {
       return m_elems.empty();
     }
+
+    friend std::ostream& operator<< < T >( std::ostream&, Stack< T > const& );
 
   private:
     std::vector< T > m_elems;
