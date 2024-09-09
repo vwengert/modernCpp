@@ -63,7 +63,7 @@ T const& Stack< T, Cont >::top() const
   return m_elems.back();
 }
 
-template< int Val, typename T >
+template< auto Val, typename T = decltype( Val ) >
 T addValue( T value )
 {
   return value + Val;
