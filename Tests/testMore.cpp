@@ -130,7 +130,7 @@ TEST( AddValueTest, addSameValueToAllElements )
   constexpr auto kVAL_THREE = 11;
   constexpr auto kADD_VAL = 7;
   std::vector< int > values{ kVAL_ONE, kVAL_TWO, kVAL_THREE };
-  std::ranges::transform( values, values.begin(), addValue< kADD_VAL, int > );
+  std::ranges::transform( values, values.begin(), addValue< kADD_VAL > );
   ASSERT_EQ( kVAL_ONE + kADD_VAL, values[ 0 ] );
   ASSERT_EQ( kVAL_TWO + kADD_VAL, values[ 1 ] );
   ASSERT_EQ( kVAL_THREE + kADD_VAL, values[ 2 ] );
