@@ -112,12 +112,18 @@ class StackDeathTest : public testing::Test
 
 TEST_F( StackDeathTest, stackCanNotPopOnEmptyStack )
 {
-  // need to ifdef this for windows / linux - this code is for windows
+#ifdef _WIN32
   ASSERT_DEATH( { m_stack.pop(); }, "\\s*Assertion failed: !m_elems.empty\\s*" );
+#else
+  ASSERT_DEATH( { m_stack.pop(); }, "failed" );
+#endif
 }
 
 TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
 {
-  // need to ifdef this for windows / linux - this code is for windows
+#ifdef _WIN32
   ASSERT_DEATH( { m_stack.top(); }, "\\s*Assertion failed: !m_elems.empty\\s*" );
+#else
+  ASSERT_DEATH( { m_stack.pop(); }, "failed" );
+#endif
 }

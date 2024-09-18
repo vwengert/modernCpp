@@ -34,39 +34,6 @@ struct Group< T1 >
     }
 };
 
-#ifndef _WIN32
-template< typename T1, typename... T >
-struct Group< T1, T... > : Group< T... >
-{
-    T1 t1_;
-    Group() = default;
-    explicit Group( const T1& t1, T&&... t )
-      : Group< T... >( std::forward< T >( t )... )
-      , t1_( t1 )
-    {
-    }
-    explicit Group( T1&& t1, T&&... t )
-      : Group< T... >( std::forward< T >( t )... )
-      , t1_( std::move( t1 ) )
-    {
-    }
-    explicit operator const T1&() const
-    {
-      return t1_;
-    }
-    explicit operator T1&()
-    {
-      return t1_;
-    }
-};
-
-template< typename... T >
-auto makeGroup( T&&... t )
-{
-  return Group< T... >( std::forward< T >( t )... );
-}
-#endif
-
 template< typename N, typename D >
 class Ratio
 {
