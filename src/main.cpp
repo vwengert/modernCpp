@@ -1,8 +1,16 @@
 #include <modernLibrary.h>
+#include <thread>
 
-auto main() -> int
-{
-  doWork();
+class BackgroundTask {
+public:
+    void operator()() const {
+        doWork();
+    }
+};
 
-  return 0;
+auto main() -> int {
+    BackgroundTask task;
+    std::thread th1(task);
+    th1.join();
+    return 0;
 }
