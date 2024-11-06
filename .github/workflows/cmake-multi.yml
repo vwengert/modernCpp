@@ -1,0 +1,44 @@
+name: CMake Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        include:
+          - os: ubuntu-latest
+            conan_install: sudo apt-get update && sudo apt-get install -y python3-pip && pip3 install conan
+          - os: windows-latest
+            conan_install: choco install python --version=3.9 && python -m pip install conan
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Conan
+        run: ${{ matrix.conan_install }}
+
+      - name: Install dependencies
+        run: conan install . --output-folder=build
+
+      - name: Configure CMake
+        run: cmake -S . -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run tests
+        run: ctest --test-dir build
+
+      - name: Package build
+        run: |
+          cpack --config CPackConfig.cmake
