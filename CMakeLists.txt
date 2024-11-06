@@ -8,6 +8,9 @@ endif ()
 
 add_compile_options(-Wall)
 
+# Set the top-level includes
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_SOURCE_DIR}/conan_provider.cmake")
+
 project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
@@ -72,3 +75,21 @@ if (BUILD_DOC)
         message("Doxygen need to be installed to generate the doxygen documentation")
     endif (DOXYGEN_FOUND)
 endif (BUILD_DOC)
+
+install(
+        TARGETS ${PROJECT_NAME} ${LINK_LIBRARY}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+# CPack configuration
+set(CPACK_PACKAGE_NAME "modern")
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A modern C++ project")
+# Specify the output directory for the packaged files
+set(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/packages")
+
+include(CPack)
