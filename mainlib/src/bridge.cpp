@@ -1,3 +1,4 @@
+#include <iostream>
 #include "bridge.h"
 
 class ElectricEngine : public Engine
@@ -18,6 +19,7 @@ class ElectricEngine : public Engine
     {
       getStream() << "Engine stop\n";
     }
+    ~ElectricEngine() override{};
 };
 
 ElectricCar::ElectricCar( std::ostream& stream )

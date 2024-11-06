@@ -17,7 +17,7 @@ class Engine
     Engine& operator=( Engine&& ) = delete;
     virtual void start() = 0;
     virtual void stop() = 0;
-    std::ostream& getStream()
+    std::ostream& getStream() const
     {
       return m_stream;
     }

@@ -54,7 +54,6 @@ void doLambdaOverload()
     []( const double* dble ) { std::cout << "d= " << *dble << '\n'; } );
 
   lmbda( &integer );
-  lmbda( &dobble );
 }
 
 void doSomeTemplateWork()
