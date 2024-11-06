@@ -1,3 +1,4 @@
+#include <iostream>
 #include <modernLibrary.h>
 #include <thread>
 
@@ -30,12 +31,17 @@ class BackgroundTask
     {
       doWork();
     }
+    void operator()( const int value, const std::string& text ) const
+    {
+      doWork();
+      std::cout << "Value: " << value << " Text: " << text << std::endl;
+    }
 };
 
 auto main() -> int
 {
   BackgroundTask task;
-  std::thread th1( task );
+  std::thread th1( task, 1, "Hello" );
   ThreadGuard guard( th1 );
 
   return 0;
