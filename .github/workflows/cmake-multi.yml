@@ -83,3 +83,10 @@ jobs:
         run: |
           cd ${{ steps.strings.outputs.build-output-dir }}
           cpack --config CPackConfig.cmake
+
+      - name: Upload build artifacts
+        if: matrix.build_type == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: modern-${{ matrix.os }}
+          path: ${{ steps.strings.outputs.build-output-dir }}/packages
