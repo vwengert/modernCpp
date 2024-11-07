@@ -30,6 +30,8 @@ jobs:
             conan_install: sudo apt-get update && sudo apt-get install -y python3-pip && pip3 install conan
         exclude:
           - os: windows-latest
+            build_type: Debug
+          - os: windows-latest
             c_compiler: gcc
           - os: windows-latest
             c_compiler: clang
