@@ -1,6 +1,8 @@
 #pragma once
 
-int doWork();
+#include "modernLibraryExport.h"
+
+int MODERN_LIBRARY_API doWork();
 void doLambdaOverload();
 void doVisitorAndElectricCarWork();
 void doSecretFactory();

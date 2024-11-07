@@ -15,3 +15,4 @@ file(GLOB Library_HEADER "include/*.h")
 add_library(${PROJECT_NAME} SHARED ${Library_SOURCES} ${Library_HEADER})
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_compile_definitions(${PROJECT_NAME} PRIVATE MODERN_LIBRARY_EXPORTS)
