@@ -1,20 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 
-find_program(CCACHE_PROGRAM ccache)
-if (CCACHE_PROGRAM)
-    # Support Unix Makefiles and Ninja
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif ()
-
-add_compile_options(-Wall)
-
 # Set the top-level includes
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_SOURCE_DIR}/conan_provider.cmake")
 
 project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
-get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
-string(REPLACE " " "_" ProjectId ${ProjectId})
-project(${ProjectId} CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,7 +14,6 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-
 
 file(GLOB Library_SOURCES "src/*.cpp")
 file(GLOB Library_HEADER "include/*.h")
@@ -47,12 +35,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         ${LINK_LIBRARY}
 )
 
-enable_testing()
-add_subdirectory(Tests)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    enable_testing()
+    add_subdirectory(Tests)
+endif ()
 
 # first we can indicate the documentation build as an option and set it to OFF by default
 option(BUILD_DOC "Build documentation" OFF)
-
 if (BUILD_DOC)
     # check if Doxygen is installed
     find_package(Doxygen)
@@ -83,13 +72,10 @@ install(
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-# CPack configuration
 set(CPACK_PACKAGE_NAME "modern")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A modern C++ project")
-# Specify the output directory for the packaged files
 set(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/packages")
-
 include(CPack)
