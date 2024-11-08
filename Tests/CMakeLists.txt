@@ -13,11 +13,13 @@ add_executable(${benchmark}
         benchmark.cpp
 )
 
-target_link_libraries(${Test} PUBLIC
+target_link_libraries(${Test}
+        PUBLIC
         gtest::gtest
         modernLibrary
 )
-target_link_libraries(${benchmark} PUBLIC
+target_link_libraries(${benchmark}
+        PUBLIC
         benchmark::benchmark
         modernLibrary
 )

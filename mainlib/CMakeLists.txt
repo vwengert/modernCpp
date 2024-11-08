@@ -23,8 +23,10 @@ target_compile_features(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC
-        include)
+        include
+)
 
 target_compile_definitions(${PROJECT_NAME}
         PRIVATE
-        MODERN_LIBRARY_EXPORTS)
+        MODERN_LIBRARY_EXPORTS
+)

@@ -22,9 +22,13 @@ target_compile_features(${PROJECT_NAME}
         cxx_std_20
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        include
+)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
         modernLibrary
 )
 
