@@ -6,6 +6,11 @@
 struct MinimalClassForMaxTemplate
 {
     int mValue = 0;
+    constexpr explicit MinimalClassForMaxTemplate( const int value )
+      : mValue( value )
+    {
+    }
+
     bool operator<( const MinimalClassForMaxTemplate& rhs ) const
     {
       return mValue < rhs.mValue;
