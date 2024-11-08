@@ -4,19 +4,13 @@ set(benchmark testBenchmark)
 FIND_PACKAGE(GTest REQUIRED)
 FIND_PACKAGE(benchmark REQUIRED)
 
-set(TEST_PROJECT_SOURCES
+add_executable(${Test}
         testMain.cpp
         testMore.cpp
 )
-set(BENCH_PROJECT_SOURCES
-        benchmark.cpp
-)
 
-add_executable(${Test}
-        ${TEST_PROJECT_SOURCES}
-)
 add_executable(${benchmark}
-        ${BENCH_PROJECT_SOURCES}
+        benchmark.cpp
 )
 
 target_link_libraries(${Test} PUBLIC
@@ -24,8 +18,8 @@ target_link_libraries(${Test} PUBLIC
         modernLibrary
 )
 target_link_libraries(${benchmark} PUBLIC
-        modernLibrary
         benchmark::benchmark
+        modernLibrary
 )
 
 add_test(

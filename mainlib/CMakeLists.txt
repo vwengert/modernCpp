@@ -3,16 +3,28 @@ project(
         VERSION 0.0.1
         LANGUAGES CXX)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_library(${PROJECT_NAME} SHARED
+        src/appconfigurator.cpp
+        src/bridge.cpp
+        src/configure.cpp
+        src/factory.cpp
+        src/ianimal.cpp
+        src/ifood.cpp
+        src/mathematics.cpp
+        src/modernLibrary.cpp
+        src/singleton.cpp
+        src/visitor.cpp
+)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXTENSIONS OFF)
+target_compile_features(${PROJECT_NAME}
+        PRIVATE
+        cxx_std_20
+)
 
-file(GLOB Library_SOURCES "src/*.cpp")
-file(GLOB Library_HEADER "include/*.h")
+target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        include)
 
-add_library(${PROJECT_NAME} SHARED ${Library_SOURCES} ${Library_HEADER})
-
-target_include_directories(${PROJECT_NAME} PUBLIC include)
-target_compile_definitions(${PROJECT_NAME} PRIVATE MODERN_LIBRARY_EXPORTS)
+target_compile_definitions(${PROJECT_NAME}
+        PRIVATE
+        MODERN_LIBRARY_EXPORTS)

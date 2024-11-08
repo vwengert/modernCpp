@@ -5,34 +5,27 @@ set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_SOURCE_DIR}/conan_provider.cmake")
 
 project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXTENSIONS OFF)
-
 # setting Debug Build Type if no type is set.
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-file(GLOB Library_SOURCES "src/*.cpp")
-file(GLOB Library_HEADER "include/*.h")
-
 add_subdirectory(mainlib)
 
 add_executable(${PROJECT_NAME}
-        ${Library_SOURCES}
-        ${Library_HEADER}
+        src/main.cpp
+)
+
+target_compile_features(${PROJECT_NAME}
+        PRIVATE
+        cxx_std_20
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-SET(LINK_LIBRARY
-        modernLibrary
-)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${LINK_LIBRARY}
+        modernLibrary
 )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
