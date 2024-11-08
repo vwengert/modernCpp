@@ -29,7 +29,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        modernLibrary
+        modernLibrary::modernLibrary
 )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

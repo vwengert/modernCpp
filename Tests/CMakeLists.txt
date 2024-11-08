@@ -16,12 +16,12 @@ add_executable(${benchmark}
 target_link_libraries(${Test}
         PUBLIC
         gtest::gtest
-        modernLibrary
+        modernLibrary::modernLibrary
 )
 target_link_libraries(${benchmark}
         PUBLIC
         benchmark::benchmark
-        modernLibrary
+        modernLibrary::modernLibrary
 )
 
 add_test(
