@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.18)
 # Set the top-level includes
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_SOURCE_DIR}/conan_provider.cmake")
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
 
 # setting Debug Build Type if no type is set.
@@ -13,19 +16,18 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 add_subdirectory(mainlib)
 
+#find_package(modernLibrary REQUIRED 0)
+
 add_executable(${PROJECT_NAME}
         src/main.cpp
 )
 
-target_compile_features(${PROJECT_NAME}
-        PRIVATE
-        cxx_std_20
-)
-
+#[[
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         include
 )
+]]
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE

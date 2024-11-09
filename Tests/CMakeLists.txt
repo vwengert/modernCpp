@@ -1,8 +1,9 @@
 set(Test modernTests)
 set(benchmark testBenchmark)
 
-FIND_PACKAGE(GTest REQUIRED)
-FIND_PACKAGE(benchmark REQUIRED)
+find_package(GTest REQUIRED)
+find_package(benchmark REQUIRED)
+#find_package(modernLibrary REQUIRED 0)
 
 add_executable(${Test}
         testMain.cpp
