@@ -7,5 +7,5 @@
 #define MODERN_LIBRARY_API __declspec( dllimport )
 #endif
 #else
-#define MODERN_LIBRARY_API
+#define MODERN_LIBRARY_API __attribute__( ( visibility( "default" ) ) )
 #endif
