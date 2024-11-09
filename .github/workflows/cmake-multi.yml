@@ -20,14 +20,9 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-            conan_install: |
-              Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe -OutFile python-installer.exe
-              Start-Process python-installer.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -NoNewWindow -Wait
-              python -m pip install conan
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-            conan_install: sudo apt-get update && sudo apt-get install -y python3-pip && pip3 install conan
         exclude:
           - os: windows-latest
             build_type: Debug
@@ -50,16 +45,13 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Check for pending reboot (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          $rebootRequired = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired' -ErrorAction SilentlyContinue)
-          if ($rebootRequired) {
-            Write-Output "Reboot required. Continuing with the steps."
-          }          
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
       - name: Set up Conan
-        run: ${{ matrix.conan_install }}
+        run: pip3 install conan
 
       - name: Create Conan profile
         run: conan profile detect
