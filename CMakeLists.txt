@@ -8,7 +8,11 @@ set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(modernCpp VERSION 0.0.1 LANGUAGES CXX)
+project(
+        modernCpp
+        VERSION 0.0.1
+        LANGUAGES CXX
+)
 
 # setting Debug Build Type if no type is set.
 if (NOT CMAKE_BUILD_TYPE)
