@@ -1,8 +1,9 @@
 #pragma once
+#include "modernLibraryExport.h"
 #include <memory>
 #include <string>
 
-class Singleton final
+class MODERN_LIBRARY_API Singleton final
 {
   public:
     static std::shared_ptr< Singleton > instance();

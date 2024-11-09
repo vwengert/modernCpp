@@ -1,5 +1,6 @@
 #pragma once
 
+#include "modernLibraryExport.h"
 #include <memory>
 
 class Engine
@@ -60,7 +61,7 @@ class Car
     std::ostream& m_stream;
 };
 
-class ElectricCar : public Car
+class MODERN_LIBRARY_API ElectricCar : public Car
 {
   public:
     explicit ElectricCar( std::ostream& stream );
