@@ -17,9 +17,16 @@ add_library(${PROJECT_NAME} SHARED
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+
 target_compile_features(${PROJECT_NAME}
         PRIVATE
         cxx_std_20
+)
+
+target_compile_options(${PROJECT_NAME}
+        PRIVATE
+        -fvisibility=hidden
+        -fvisibility-inlines-hidden
 )
 
 target_compile_definitions(${PROJECT_NAME}
