@@ -17,6 +17,12 @@ add_library(${PROJECT_NAME} SHARED
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+set_target_properties(
+        ${PROJECT_NAME}
+        PROPERTIES
+        SOVERSION ${PROJECT_VERSION_MAJOR}
+        VERSION ${PROJECT_VERSION}
+)
 
 target_compile_features(${PROJECT_NAME}
         PRIVATE
