@@ -56,6 +56,12 @@ jobs:
       - name: Create Conan profile
         run: conan profile detect
 
+      - name: Install Doxygen and LaTeX
+        if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'Release'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen texlive-full
+
       - name: Configure CMake
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -71,12 +77,6 @@ jobs:
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
-
-      - name: Install Doxygen and LaTeX
-        if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'Release'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y doxygen texlive-full
 
       - name: Doxygen
         if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'Release'
