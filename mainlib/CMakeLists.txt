@@ -31,13 +31,6 @@ set_target_properties(
         VERSION ${PROJECT_VERSION}
 )
 
-#[[
-target_compile_features(${PROJECT_NAME}
-        PRIVATE
-        cxx_std_20
-)
-]]
-
 target_compile_options(${PROJECT_NAME}
         PRIVATE
         -fvisibility=hidden
@@ -55,29 +48,23 @@ target_include_directories(${PROJECT_NAME}
         $<INSTALL_INTERFACE:include>
 )
 
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+        ${PROJECT_NAME}ConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+)
+
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        COMPONENT modernLibrary_Runtime
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        COMPONENT modernLibrary_Runtime
-        NAMELINK_COMPONENT modernLibrary_Development
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        COMPONENT modernLibrary_Development
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        COMPONENT modernLibrary_Development
 )
 
 install(EXPORT ${PROJECT_NAME}Config
         FILE ${PROJECT_NAME}Config.cmake
         NAMESPACE ${PROJECT_NAME}::
         DESTINATION lib/cmake/${PROJECT_NAME}
-)
-
-include(CMakePackageConfigHelpers)
-
-write_basic_package_version_file(
-        ${PROJECT_NAME}ConfigVersion.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
 )

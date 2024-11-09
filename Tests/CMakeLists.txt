@@ -3,7 +3,6 @@ set(benchmark testBenchmark)
 
 find_package(GTest REQUIRED)
 find_package(benchmark REQUIRED)
-#find_package(modernLibrary REQUIRED 0)
 
 add_executable(${Test}
         testMain.cpp

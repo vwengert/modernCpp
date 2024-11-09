@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Set the top-level includes
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_SOURCE_DIR}/conan_provider.cmake")
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
+        "${CMAKE_SOURCE_DIR}/conan_provider.cmake"
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,18 +18,9 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 add_subdirectory(mainlib)
 
-#find_package(modernLibrary REQUIRED 0)
-
 add_executable(${PROJECT_NAME}
         src/main.cpp
 )
-
-#[[
-target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        include
-)
-]]
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
@@ -65,16 +58,23 @@ if (BUILD_DOC)
 endif (BUILD_DOC)
 
 install(
-        TARGETS ${PROJECT_NAME} ${LINK_LIBRARY}
+        TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-set(CPACK_PACKAGE_NAME "modern")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/mainlib/include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILES_MATCHING PATTERN "*.h"
+)
+
+set(CPACK_PACKAGE_NAME "modernCpp")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A modern C++ project")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A modern C++ project with dynamic library")
 set(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/packages")
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Volker")
 include(CPack)
