@@ -80,13 +80,13 @@ jobs:
         run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
 
       - name: Package build
-        if: matrix.build_type == 'Release'
+        if: matrix.build_type == 'Release' && matrix.os == 'ubuntu-latest'
         run: |
           cd ${{ steps.strings.outputs.build-output-dir }}
           cpack --config CPackConfig.cmake
 
       - name: Upload build artifacts
-        if: matrix.build_type == 'Release'
+        if: matrix.build_type == 'Release' && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: modern-${{ matrix.os }}
