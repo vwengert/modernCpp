@@ -11,7 +11,10 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-include(${CMAKE_SOURCE_DIR}/CreateVersion.cmake)
+
+set(VERSION_SRC moderncpp_version.h.in)
+set(VERSION_DST moderncpp_version.h)
+include(${CMAKE_SOURCE_DIR}/cmake/GenerateVersion.cmake)
 
 project(
         modernCpp

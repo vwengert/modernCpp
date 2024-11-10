@@ -8,13 +8,13 @@ if (GIT_EXECUTABLE)
             OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     if (NOT GIT_DESCRIBE_ERROR_CODE)
-        set(MODERNCPP_VERSION ${GIT_DESCRIBE_VERSION})
+        set(PROJECT_CPP_VERSION ${GIT_DESCRIBE_VERSION})
     endif ()
 endif ()
 
-if (NOT DEFINED MODERNCPP_VERSION)
-    set(MODERNCPP_VERSION v0.0.0-unknown)
-    message(WARNING "Failed to determine VERSION from Git tags. Using default version \"${MODERNCPP_VERSION}\".")
+if (NOT DEFINED PROJECT_CPP_VERSION)
+    set(PROJECT_CPP_VERSION v0.0.0-unknown)
+    message(WARNING "Failed to determine VERSION from Git tags. Using default version \"${PROJECT_CPP_VERSION}\".")
 endif ()
 
 configure_file(${SRC} ${DST} @ONLY)
