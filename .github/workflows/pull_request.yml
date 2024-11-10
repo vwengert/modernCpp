@@ -1,0 +1,14 @@
+name: CMake Build on Pull Request
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        build_type: [ Debug ]
+    uses: ./.github/workflows/steps.yml
+    with:
+      build_type: ${{ matrix.build_type }}

@@ -1,0 +1,15 @@
+name: CMake Build on Push
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        build_type: [ Debug, Release ]
+    uses: ./.github/workflows/steps.yml
+    with:
+      build_type: ${{ matrix.build_type }}
+
