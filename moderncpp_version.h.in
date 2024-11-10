@@ -1,0 +1,2 @@
+#pragma once
+#define MODERNCPP_VERSION "@MODERNCPP_VERSION@"
