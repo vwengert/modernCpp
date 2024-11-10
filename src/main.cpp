@@ -41,7 +41,7 @@ class BackgroundTask
 
 auto main() -> int
 {
-  std::cout << "Version: " << MODERNCPP_VERSION << std::endl;
+  std::cout << "Version: " << PROJECT_CPP_VERSION << std::endl;
   BackgroundTask task;
   std::thread th1( task, 1, "Hello" );
   ThreadGuard guard( th1 );
