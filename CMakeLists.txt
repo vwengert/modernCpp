@@ -7,25 +7,23 @@ set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-project(
-        modernCpp
-        VERSION 0.0.1
-        LANGUAGES CXX
-)
-
-# setting Debug Build Type if no type is set.
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+include(${CMAKE_SOURCE_DIR}/CreateVersion.cmake)
 
-add_subdirectory(mainlib)
+project(
+        modernCpp
+        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+        LANGUAGES CXX
+)
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
 )
 
+add_subdirectory(mainlib)
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         modernLibrary::modernLibrary
@@ -36,21 +34,16 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_subdirectory(Tests)
 endif ()
 
-# first we can indicate the documentation build as an option and set it to OFF by default
 option(BUILD_DOC "Build documentation" OFF)
 if (BUILD_DOC)
-    # check if Doxygen is installed
     find_package(Doxygen)
     if (DOXYGEN_FOUND)
-        # # set input and output files
         set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/modern)
         set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
-        # request to configure the file
         configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
         message("Doxygen build started")
 
-        # note the option ALL which allows to build the docs together with the application
         add_custom_target(doc_doxygen ALL
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
