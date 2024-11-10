@@ -1,26 +1,21 @@
 cmake_minimum_required(VERSION 3.18)
 
-# Set the top-level includes
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(VERSION_SRC moderncpp_version.h.in)
+set(VERSION_DST moderncpp_version.h)
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
         "${CMAKE_SOURCE_DIR}/cmake/conan_provider.cmake"
 )
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(${CMAKE_SOURCE_DIR}/cmake/GenerateVersion.cmake)
+project(modernCpp
+        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+        LANGUAGES CXX
+)
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-
-set(VERSION_SRC moderncpp_version.h.in)
-set(VERSION_DST moderncpp_version.h)
-include(${CMAKE_SOURCE_DIR}/cmake/GenerateVersion.cmake)
-
-project(
-        modernCpp
-        VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
-        LANGUAGES CXX
-)
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
