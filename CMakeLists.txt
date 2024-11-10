@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 # Set the top-level includes
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
-        "${CMAKE_SOURCE_DIR}/conan_provider.cmake"
+        "${CMAKE_SOURCE_DIR}/cmake/conan_provider.cmake"
 )
 
 set(CMAKE_CXX_STANDARD 20)
