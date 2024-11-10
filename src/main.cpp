@@ -1,3 +1,4 @@
+#include "moderncpp_version.h"
 #include <iostream>
 #include <modernLibrary.h>
 #include <thread>
@@ -40,6 +41,7 @@ class BackgroundTask
 
 auto main() -> int
 {
+  std::cout << "Version: " << MODERNCPP_VERSION << std::endl;
   BackgroundTask task;
   std::thread th1( task, 1, "Hello" );
   ThreadGuard guard( th1 );
