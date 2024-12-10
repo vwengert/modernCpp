@@ -26,9 +26,11 @@ add_executable(${PROJECT_NAME}
 )
 
 add_subdirectory(mainlib)
+add_subdirectory(basiclib)
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         modernLibrary::modernLibrary
+        basicLibrary::basicLibrary
 )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
