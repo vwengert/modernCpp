@@ -1,3 +1,4 @@
+#include "basicLibrary.h"
 #include "modernLibrary.h"
 #include "moderncpp_version.h"
 #include <iostream>
@@ -47,10 +48,8 @@ class BackgroundTask
 
 auto main() -> int
 {
+  doWork();
+  doBasicWork();
   std::cout << "Version: " << PROJECT_CPP_VERSION << std::endl;
-  BackgroundTask task;
-  std::thread th1( task, 1, "Hello" );
-  ThreadGuard guard( th1 );
-
   return 0;
 }
