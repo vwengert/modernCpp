@@ -1,7 +1,9 @@
+#include "modernLibrary.h"
 #include "moderncpp_version.h"
 #include <iostream>
-#include <modernLibrary.h>
 #include <thread>
+
+std::mutex mutex;
 
 class ThreadGuard
 {
@@ -30,10 +32,14 @@ class BackgroundTask
   public:
     void operator()() const
     {
+      sleep( 1 );
+      std::lock_guard< std::mutex > guard( mutex );
       doWork();
     }
     void operator()( const int value, const std::string& text ) const
     {
+      sleep( 1 );
+      std::lock_guard< std::mutex > guard( mutex );
       doWork();
       std::cout << "Value: " << value << " Text: " << text << std::endl;
     }
