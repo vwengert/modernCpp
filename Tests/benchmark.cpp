@@ -21,7 +21,7 @@ void bmRawptrDereference( benchmark::State& state )
 {
   for( auto _ : state ) // NOLINT
   {
-    ElectricCar* pCar = new ElectricCar( nullstream() );
+    auto* pCar = new ElectricCar( nullstream() );
     benchmark::DoNotOptimize( *pCar );
     pCar->drive();
     delete pCar;
