@@ -17,11 +17,14 @@ target_link_libraries(${Test}
         PUBLIC
         gtest::gtest
         modernLibrary::modernLibrary
+        basicLibrary::basicLibrary
 )
+
 target_link_libraries(${benchmark}
         PUBLIC
         benchmark::benchmark
         modernLibrary::modernLibrary
+        basicLibrary::basicLibrary
 )
 
 add_test(

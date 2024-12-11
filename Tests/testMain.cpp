@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include "functiontemplates.h"
 #include "mutex.h"
 #include "raiitemplates.h"
 #include "singleton.h"
