@@ -35,7 +35,7 @@ target_compile_options(${PROJECT_NAME}
 
 target_compile_definitions(${PROJECT_NAME}
         PRIVATE
-        MODERN_LIBRARY_EXPORTS
+        BASIC_LIBRARY_EXPORTS
 )
 
 target_include_directories(${PROJECT_NAME}
