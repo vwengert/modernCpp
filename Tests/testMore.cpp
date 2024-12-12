@@ -3,19 +3,21 @@
 #include <functiontemplates.h>
 #include <list>
 #include <stack.h>
+#include <node.h>
 
 struct MinimalClassForMaxTemplate
 {
-    int mValue = 0;
-    constexpr explicit MinimalClassForMaxTemplate( const int value )
-      : mValue( value )
-    {
-    }
+  int mValue = 0;
 
-    bool operator<( const MinimalClassForMaxTemplate& rhs ) const
-    {
-      return mValue < rhs.mValue;
-    }
+  constexpr explicit MinimalClassForMaxTemplate( const int value )
+    : mValue( value )
+  {
+  }
+
+  bool operator<( const MinimalClassForMaxTemplate& rhs ) const
+  {
+    return mValue < rhs.mValue;
+  }
 };
 
 TEST( learningTemplate, maxTemplateReturnMaxValues )
@@ -138,20 +140,32 @@ TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
 TEST( VariadicTemplate, printListWithFiveIntegers )
 {
   std::stringstream stream;
-  print(stream, 1, 2, 3, 4, 5);
-  ASSERT_EQ(stream.str(), "1, 2, 3, 4, 5\n");
+  print( stream, 1, 2, 3, 4, 5 );
+  ASSERT_EQ( stream.str(), "1, 2, 3, 4, 5\n" );
 }
 
 TEST( VariadicTemplate, printListWithFiveDifferentTypes )
 {
   std::stringstream stream;
-  print(stream, 1, 2.01, '3', "4", 5);
-  ASSERT_EQ(stream.str(), "1, 2.01, 3, 4, 5\n");
+  print( stream, 1, 2.01, '3', "4", 5 );
+  ASSERT_EQ( stream.str(), "1, 2.01, 3, 4, 5\n" );
 }
 
 TEST( VariadicTemplate, printListWithFiveDifferentTypesAndCustomSeparators )
 {
   std::stringstream stream;
-  print(stream, " - ", ";", 1, 2.01, '3', "4", 5);
-  ASSERT_EQ(stream.str(), "1 - 2.01 - 3 - 4 - 5;");
+  print( stream, " - ", ";", 1, 2.01, '3', "4", 5 );
+  ASSERT_EQ( stream.str(), "1 - 2.01 - 3 - 4 - 5;" );
+}
+
+TEST( VariadicTemplate, foldSumWithFiveIntegers )
+{
+  constexpr auto kSUM = foldSum( 1, 2, 3, 4, 5 );
+  ASSERT_EQ( kSUM, 15 );
+}
+
+TEST( VariadicTemplate, foldSumWithFiveDifferentTypes )
+{
+  constexpr auto kSUM = foldSum( 1, 2.01, 3.0, 4, 5U );
+  ASSERT_EQ( kSUM, 15.01 );
 }
