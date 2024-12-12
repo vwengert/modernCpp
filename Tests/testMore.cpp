@@ -4,6 +4,8 @@
 #include <list>
 #include <stack.h>
 #include <node.h>
+#include <customeroverloader.h>
+#include <unordered_set>
 
 struct MinimalClassForMaxTemplate
 {
@@ -199,4 +201,44 @@ TEST( VariadicTemplate, printIdxFromVector )
   std::stringstream stream;
   printIdx< 2, 0, 3 >( stream, vec );
   ASSERT_EQ( stream.str(), "say good bye \n" );
+}
+
+class CustomerOverloader : public testing::Test
+{
+  public:
+    using CustomerOP = Overloader< CustomerEq, CustomerHash >;
+    std::unordered_set< Customer, CustomerHash, CustomerEq > customers;
+    std::unordered_set< Customer, CustomerOP, CustomerOP > customersOP;
+};
+
+TEST_F( CustomerOverloader, customerEqInsertsOnlyOneCustomer )
+{
+  customers.insert( Customer( "John" ) );
+  customers.insert( Customer( "John" ) );
+
+  ASSERT_EQ( customers.size(), 1 );
+}
+
+TEST_F( CustomerOverloader, customerEqInsertsTwoCustomers )
+{
+  customers.insert( Customer( "John" ) );
+  customers.insert( Customer( "Jane" ) );
+
+  ASSERT_EQ( customers.size(), 2 );
+}
+
+TEST_F( CustomerOverloader, customerOpInsertsOneCustomer )
+{
+  customersOP.insert( Customer( "John" ) );
+  customersOP.insert( Customer( "John" ) );
+
+  ASSERT_EQ( customersOP.size(), 1 );
+}
+
+TEST_F( CustomerOverloader, customerOpInsertsTwoCustomer )
+{
+  customersOP.insert( Customer( "John" ) );
+  customersOP.insert( Customer( "Jane" ) );
+
+  ASSERT_EQ( customersOP.size(), 2 );
 }
