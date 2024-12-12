@@ -22,7 +22,7 @@ struct MinimalClassForMaxTemplate
   }
 };
 
-TEST( learningTemplate, maxTemplateReturnMaxValues )
+TEST( learningTemplate, maxTemplateReturnMaxValues ) // NOLINT(*-err58-cpp)
 {
   const std::string textA = "hello";
   const std::string textB = "ahhh, what";
@@ -48,7 +48,7 @@ TEST( learningTemplate, maxTemplateReturnMaxValues )
   ASSERT_EQ( kMIXED_VALUES2, kVALUE_B );
 }
 
-TEST( learningTemplate, usingMaxTemplateWithSpecifiedRT )
+TEST( learningTemplate, usingMaxTemplateWithSpecifiedRT ) // NOLINT(*-err58-cpp)
 {
   constexpr auto kVALUE_A = 3;
   constexpr auto kFLOAT_VALUE_A = 5.2;
@@ -66,18 +66,18 @@ class StackTest : public testing::Test
     Stack< int > m_stack; // NOLINT(*-non-private-member-variables-in-classes)
 };
 
-TEST_F( StackTest, stackIsEmptyAfterCreation )
+TEST_F( StackTest, stackIsEmptyAfterCreation ) // NOLINT(*-err58-cpp)
 {
   ASSERT_TRUE( m_stack.empty() );
 }
 
-TEST_F( StackTest, stackIsNoLongerEmptyAfterPush )
+TEST_F( StackTest, stackIsNoLongerEmptyAfterPush ) // NOLINT(*-err58-cpp)
 {
   m_stack.push( 1 );
   ASSERT_TRUE( !m_stack.empty() );
 }
 
-TEST_F( StackTest, stackCanPopElementWhenNotEmpty )
+TEST_F( StackTest, stackCanPopElementWhenNotEmpty ) // NOLINT(*-err58-cpp)
 {
   m_stack.push( 1 );
   m_stack.pop();
@@ -85,7 +85,7 @@ TEST_F( StackTest, stackCanPopElementWhenNotEmpty )
   ASSERT_TRUE( m_stack.empty() );
 }
 
-TEST_F( StackTest, stackCanReturnTopWhenNotEmpty )
+TEST_F( StackTest, stackCanReturnTopWhenNotEmpty ) // NOLINT(*-err58-cpp)
 {
   m_stack.push( 1 );
   m_stack.push( 2 );
@@ -94,7 +94,7 @@ TEST_F( StackTest, stackCanReturnTopWhenNotEmpty )
   ASSERT_EQ( 2, top );
 }
 
-TEST_F( StackTest, stackCanReturnFirstAfterPopAndTopWhenNotEmpty )
+TEST_F( StackTest, stackCanReturnFirstAfterPopAndTopWhenNotEmpty ) // NOLINT(*-err58-cpp)
 {
   m_stack.push( 1 );
   m_stack.push( 2 );
@@ -104,7 +104,7 @@ TEST_F( StackTest, stackCanReturnFirstAfterPopAndTopWhenNotEmpty )
   ASSERT_EQ( 1, top );
 }
 
-TEST_F( StackTest, stackCanBeCreatedWithListInsteadVector )
+TEST_F( StackTest, stackCanBeCreatedWithListInsteadVector ) // NOLINT(*-err58-cpp)
 {
   Stack< int, std::list< int > > stack;
   stack.push( 1 );
@@ -120,59 +120,63 @@ class StackDeathTest : public testing::Test
     Stack< int > m_stack; // NOLINT(*-non-private-member-variables-in-classes)
 };
 
-TEST_F( StackDeathTest, stackCanNotPopOnEmptyStack )
+TEST_F( StackDeathTest, stackCanNotPopOnEmptyStack ) // NOLINT(*-err58-cpp, *-function-cognitive-complexity)
 {
 #ifdef _WIN32
+  // NOLINTNEXTLINE(*-avoid-goto, *-pro-type-vararg, *-err33-c)
   ASSERT_DEATH( { m_stack.pop(); }, "\\s*Assertion failed: !m_elems.empty\\s*" );
 #else
   ASSERT_DEATH( { m_stack.pop(); }, "failed" );
 #endif
 }
 
-TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
+TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack ) // NOLINT(*-err58-cpp, *-function-cognitive-complexity)
 {
 #ifdef _WIN32
+  // NOLINTNEXTLINE(*-avoid-goto, *-pro-type-vararg, *-err33-c)
   ASSERT_DEATH( { m_stack.top(); }, "\\s*Assertion failed: !m_elems.empty\\s*" );
 #else
   ASSERT_DEATH( { m_stack.pop(); }, "failed" );
 #endif
 }
 
+constexpr auto kFIVE = 5;
+constexpr auto kTWO_POINT_ZERO_ONE = 2.01;
 
-TEST( VariadicTemplate, printListWithFiveIntegers )
+TEST( VariadicTemplate, printListWithFiveIntegers ) // NOLINT(*-err58-cpp)
 {
   std::stringstream stream;
-  print( stream, 1, 2, 3, 4, 5 );
+  print( stream, 1, 2, 3, 4, kFIVE );
   ASSERT_EQ( stream.str(), "1, 2, 3, 4, 5\n" );
 }
 
-TEST( VariadicTemplate, printListWithFiveDifferentTypes )
+TEST( VariadicTemplate, printListWithFiveDifferentTypes ) // NOLINT(*-err58-cpp)
 {
   std::stringstream stream;
-  print( stream, 1, 2.01, '3', "4", 5 );
+  print( stream, 1, kTWO_POINT_ZERO_ONE, '3', "4", kFIVE );
   ASSERT_EQ( stream.str(), "1, 2.01, 3, 4, 5\n" );
 }
 
-TEST( VariadicTemplate, printListWithFiveDifferentTypesAndCustomSeparators )
+TEST( VariadicTemplate, printListWithFiveDifferentTypesAndCustomSeparators ) // NOLINT(*-err58-cpp)
 {
   std::stringstream stream;
-  print( stream, " - ", ";", 1, 2.01, '3', "4", 5 );
+  print( stream, " - ", ";", 1, kTWO_POINT_ZERO_ONE, '3', "4", kFIVE );
   ASSERT_EQ( stream.str(), "1 - 2.01 - 3 - 4 - 5;" );
 }
 
-TEST( VariadicTemplate, foldSumWithFiveIntegers )
+TEST( VariadicTemplate, foldSumWithFiveIntegers ) // NOLINT(*-err58-cpp)
 {
   constexpr auto kSUM = foldSum( 1, 2, 3, 4, 5 );
   ASSERT_EQ( kSUM, 15 );
 }
 
-TEST( VariadicTemplate, foldSumWithFiveDifferentTypes )
+TEST( VariadicTemplate, foldSumWithFiveDifferentTypes ) // NOLINT(*-err58-cpp)
 {
   constexpr auto kSUM = foldSum( 1, 2.01, 3.0, 4, 5U );
   ASSERT_EQ( kSUM, 15.01 );
 }
 
-TEST( VariadicTemplate, traversNode )
+TEST( VariadicTemplate, traversNode ) // NOLINT(*-err58-cpp)
 {
   const auto left = &Node::left;
   const auto right = &Node::right;
@@ -183,19 +187,19 @@ TEST( VariadicTemplate, traversNode )
   ASSERT_EQ( node->mValue, 2 );
 }
 
-TEST( VariadicTemplate, isHomogeneousWithSameTypes )
+TEST( VariadicTemplate, isHomogeneousWithSameTypes ) // NOLINT(*-err58-cpp)
 {
   constexpr auto kRESULT = isHomogeneous( 1, 2, 3, 4, 5 );
   ASSERT_TRUE( kRESULT );
 }
 
-TEST( VariadicTemplate, isNotHomogeneousWithDifferentTypes )
+TEST( VariadicTemplate, isNotHomogeneousWithDifferentTypes ) // NOLINT(*-err58-cpp)
 {
   constexpr auto kRESULT = isHomogeneous( 1, 2.01, 3, 4, 5 );
   ASSERT_FALSE( kRESULT );
 }
 
-TEST( VariadicTemplate, printIdxFromVector )
+TEST( VariadicTemplate, printIdxFromVector ) // NOLINT(*-err58-cpp)
 {
   const std::vector< std::string > vec = { "good", "times", "say", "bye" };
   std::stringstream stream;
@@ -210,7 +214,7 @@ class CustomerOverloader : public testing::Test
     std::unordered_set< Customer, CustomerOP, CustomerOP > customersOP;
 };
 
-TEST_F( CustomerOverloader, customerEqInsertsOnlyOneCustomer )
+TEST_F( CustomerOverloader, customerEqInsertsOnlyOneCustomer ) // NOLINT(*-err58-cpp)
 {
   customers.insert( Customer( "John" ) );
   customers.insert( Customer( "John" ) );
@@ -218,7 +222,7 @@ TEST_F( CustomerOverloader, customerEqInsertsOnlyOneCustomer )
   ASSERT_EQ( customers.size(), 1 );
 }
 
-TEST_F( CustomerOverloader, customerEqInsertsTwoCustomers )
+TEST_F( CustomerOverloader, customerEqInsertsTwoCustomers ) // NOLINT(*-err58-cpp)
 {
   customers.insert( Customer( "John" ) );
   customers.insert( Customer( "Jane" ) );
@@ -226,7 +230,7 @@ TEST_F( CustomerOverloader, customerEqInsertsTwoCustomers )
   ASSERT_EQ( customers.size(), 2 );
 }
 
-TEST_F( CustomerOverloader, customerOpInsertsOneCustomer )
+TEST_F( CustomerOverloader, customerOpInsertsOneCustomer ) // NOLINT(*-err58-cpp)
 {
   customersOP.insert( Customer( "John" ) );
   customersOP.insert( Customer( "John" ) );
@@ -234,7 +238,7 @@ TEST_F( CustomerOverloader, customerOpInsertsOneCustomer )
   ASSERT_EQ( customersOP.size(), 1 );
 }
 
-TEST_F( CustomerOverloader, customerOpInsertsTwoCustomer )
+TEST_F( CustomerOverloader, customerOpInsertsTwoCustomer ) // NOLINT(*-err58-cpp)
 {
   customersOP.insert( Customer( "John" ) );
   customersOP.insert( Customer( "Jane" ) );
@@ -242,27 +246,27 @@ TEST_F( CustomerOverloader, customerOpInsertsTwoCustomer )
   ASSERT_EQ( customersOP.size(), 2 );
 }
 
-TEST( ContainerCompare, lessWithTwoArraysTrue )
+TEST( ContainerCompare, lessWithTwoArraysTrue ) // NOLINT(*-err58-cpp)
 {
-  int a[ ] = { 1, 2, 3 };
-  int b[ ] = { 1, 2, 3, 4 };
+  int first[ ] = { 1, 2, 3 };     // NOLINT(*-avoid-c-arrays)
+  int second[ ] = { 1, 2, 3, 4 }; // NOLINT(*-avoid-c-arrays)
 
-  ASSERT_TRUE( less( a, b ) );
+  ASSERT_TRUE( less( first, second ) );
 }
 
-TEST( ContainerCompare, lessWithTwoArraysFalse )
+TEST( ContainerCompare, lessWithTwoArraysFalse ) // NOLINT(*-err58-cpp)
 {
-  int a[ ] = { 1, 2, 3, 4 };
-  int b[ ] = { 1, 2, 3 };
+  int first[ ] = { 1, 2, 3, 4 }; // NOLINT(*-avoid-c-arrays)
+  int second[ ] = { 1, 2, 3 };   // NOLINT(*-avoid-c-arrays)
 
-  ASSERT_FALSE( less( a, b ) );
+  ASSERT_FALSE( less( first, second ) );
 }
 
-TEST( ContainerCompare, lessWithTwoEqualArrays )
+TEST( ContainerCompare, lessWithTwoEqualArrays ) // NOLINT(*-err58-cpp)
 {
-  int a[ ] = { 1, 2, 3 };
-  int b[ ] = { 1, 2, 3 };
+  int first[ ] = { 1, 2, 3 };  // NOLINT(*-avoid-c-arrays)
+  int second[ ] = { 1, 2, 3 }; // NOLINT(*-avoid-c-arrays)
 
-  ASSERT_FALSE( less( a, b ) );
-  ASSERT_FALSE( less( b, a) );
+  ASSERT_FALSE( less( first, second ) );
+  ASSERT_FALSE( less( second, first) ); // NOLINT(*-suspicious-call-argument)
 }
