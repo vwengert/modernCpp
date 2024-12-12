@@ -180,3 +180,15 @@ TEST( VariadicTemplate, traversNode )
   const auto* node = traverse( root, left, right );
   ASSERT_EQ( node->mValue, 2 );
 }
+
+TEST( VariadicTemplate, isHomogeneousWithSameTypes )
+{
+  constexpr auto kRESULT = isHomogeneous( 1, 2, 3, 4, 5 );
+  ASSERT_TRUE( kRESULT );
+}
+
+TEST( VariadicTemplate, isNotHomogeneousWithDifferentTypes )
+{
+  constexpr auto kRESULT = isHomogeneous( 1, 2.01, 3, 4, 5 );
+  ASSERT_FALSE( kRESULT );
+}
