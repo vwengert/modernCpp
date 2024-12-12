@@ -5,18 +5,18 @@
 #include "raiitemplates.h"
 #include "singleton.h"
 
-TEST( ModernTests, singletonReturnsConfiguration )
+TEST( ModernTests, singletonReturnsConfiguration ) // NOLINT(*-err58-cpp)
 {
   ASSERT_TRUE( Singleton::instance()->configuration() == "Configuration" );
 }
 
-TEST( ModernTests, palindromIsFalseWhenNoPalindrom )
+TEST( ModernTests, palindromIsFalseWhenNoPalindrom ) // NOLINT(*-err58-cpp)
 {
   ASSERT_FALSE( false );
   ASSERT_FALSE( false );
 }
 
-TEST( ScopedPtrTest, Construct )
+TEST( ScopedPtrTest, Construct ) // NOLINT(*-err58-cpp)
 {
   object_counter::all_count = object_counter::count = 0;
   const auto* pObjCounter = new object_counter;
@@ -27,7 +27,7 @@ TEST( ScopedPtrTest, Construct )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( ScopedPtrTest, AcquireRelease )
+TEST( ScopedPtrTest, AcquireRelease ) // NOLINT(*-err58-cpp)
 {
   object_counter::all_count = object_counter::count = 0;
   {
@@ -39,7 +39,7 @@ TEST( ScopedPtrTest, AcquireRelease )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( ScopedPtrTest, EarlyReturnNoLeak )
+TEST( ScopedPtrTest, EarlyReturnNoLeak ) // NOLINT(*-err58-cpp)
 {
   object_counter::all_count = object_counter::count = 0;
   while( true )
@@ -51,7 +51,7 @@ TEST( ScopedPtrTest, EarlyReturnNoLeak )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( ScopedPtrTest, ThrowNoLeak )
+TEST( ScopedPtrTest, ThrowNoLeak ) // NOLINT(*-err58-cpp)
 {
   object_counter::all_count = object_counter::count = 0;
   try
@@ -66,7 +66,7 @@ TEST( ScopedPtrTest, ThrowNoLeak )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( RAII, AcquireRelease )
+TEST( RAII, AcquireRelease ) // NOLINT(*-err58-cpp)
 {
   object_counter::all_count = object_counter::count = 0;
   {
@@ -78,7 +78,7 @@ TEST( RAII, AcquireRelease )
   EXPECT_EQ( 1, object_counter::all_count );
 }
 
-TEST( RAII, ThrowNoLeak )
+TEST( RAII, ThrowNoLeak ) // NOLINT(*-err58-cpp)
 {
   std::mutex mutex;
   try
