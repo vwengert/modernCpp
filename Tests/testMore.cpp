@@ -134,14 +134,24 @@ TEST_F( StackDeathTest, stackCanNotTopOnEmptyStack )
 #endif
 }
 
-template< typename T >
-class Constructible
-{
-    static_assert( std::is_default_constructible_v< T >, "Class Constructible requires default constructible type" );
-};
 
-TEST( TemplateConcepts, check_default_constructible )
+TEST( VariadicTemplate, printListWithFiveIntegers )
 {
-  constexpr auto kCONSTRUCTIBLE = Constructible< int >();
-  ASSERT_NE( &kCONSTRUCTIBLE, nullptr );
+  std::stringstream stream;
+  print(stream, 1, 2, 3, 4, 5);
+  ASSERT_EQ(stream.str(), "1, 2, 3, 4, 5\n");
+}
+
+TEST( VariadicTemplate, printListWithFiveDifferentTypes )
+{
+  std::stringstream stream;
+  print(stream, 1, 2.01, '3', "4", 5);
+  ASSERT_EQ(stream.str(), "1, 2.01, 3, 4, 5\n");
+}
+
+TEST( VariadicTemplate, printListWithFiveDifferentTypesAndCustomSeparators )
+{
+  std::stringstream stream;
+  print(stream, " - ", ";", 1, 2.01, '3', "4", 5);
+  ASSERT_EQ(stream.str(), "1 - 2.01 - 3 - 4 - 5;");
 }
