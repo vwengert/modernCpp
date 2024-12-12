@@ -44,3 +44,9 @@ void print(std::ostream& stream, T firstArg, Types... args)
 {
   print(stream, ", ", "\n", firstArg, args...);
 }
+
+template<typename... T>
+constexpr auto foldSum(T... args)
+{
+  return (... + args);
+}
