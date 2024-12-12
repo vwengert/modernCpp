@@ -50,3 +50,9 @@ constexpr auto foldSum(T... args)
 {
   return (... + args);
 }
+
+template<typename T1, typename... TN>
+constexpr bool isHomogeneous(T1, TN...)
+{
+  return (std::is_same_v<T1, TN> && ...);
+}
