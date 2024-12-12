@@ -56,3 +56,9 @@ constexpr bool isHomogeneous(T1, TN...)
 {
   return (std::is_same_v<T1, TN> && ...);
 }
+
+template<std::size_t... Idx, typename C>
+void printIdx(std::ostream& stream, C const& container)
+{
+  ((stream << container[Idx] << ' '), ...) << '\n';
+}
