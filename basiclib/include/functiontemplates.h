@@ -52,3 +52,17 @@ template<std::size_t... Idx, typename C>
 void printIdx(std::ostream &stream, C const &container) {
   ((stream << container[Idx] << ' '), ...) << '\n';
 }
+
+template<typename T, int N, int M>
+bool less(T (&first)[N], T (&second)[M]) // NOLINT(*-avoid-c-arrays)
+{
+  for (int i = 0; i < N && i < M; ++i) {
+    if (first[i] < second[i]) {
+      return true;
+    }
+    if (second[i] < first[i]) {
+      return false;
+    }
+  }
+  return N < M;
+}
