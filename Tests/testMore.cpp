@@ -241,3 +241,28 @@ TEST_F( CustomerOverloader, customerOpInsertsTwoCustomer )
 
   ASSERT_EQ( customersOP.size(), 2 );
 }
+
+TEST( ContainerCompare, lessWithTwoArraysTrue )
+{
+  int a[ ] = { 1, 2, 3 };
+  int b[ ] = { 1, 2, 3, 4 };
+
+  ASSERT_TRUE( less( a, b ) );
+}
+
+TEST( ContainerCompare, lessWithTwoArraysFalse )
+{
+  int a[ ] = { 1, 2, 3, 4 };
+  int b[ ] = { 1, 2, 3 };
+
+  ASSERT_FALSE( less( a, b ) );
+}
+
+TEST( ContainerCompare, lessWithTwoEqualArrays )
+{
+  int a[ ] = { 1, 2, 3 };
+  int b[ ] = { 1, 2, 3 };
+
+  ASSERT_FALSE( less( a, b ) );
+  ASSERT_FALSE( less( b, a) );
+}
