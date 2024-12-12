@@ -1,6 +1,7 @@
 #pragma once
 #include <cstring>
 #include <type_traits>
+#include <iostream>
 
 inline char const* max( char const* first, char const* second )
 {
@@ -23,4 +24,23 @@ template< typename T >
 T* max( T* first, T* second )
 {
   return *second < *first ? first : second;
+}
+
+template<typename T>
+void print(std::ostream& stream, const char* /*sep*/,  const char* end, T arg)
+{
+  stream << arg << end;
+}
+
+template<typename T, typename... Types>
+void print(std::ostream& stream, const char* sep, const char* end, T firstArg, Types... args)
+{
+  stream << firstArg << sep;
+  print(stream, sep, end, args...);
+}
+
+template<typename T, typename... Types>
+void print(std::ostream& stream, T firstArg, Types... args)
+{
+  print(stream, ", ", "\n", firstArg, args...);
 }
