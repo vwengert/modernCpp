@@ -206,7 +206,6 @@ TEST( VariadicTemplate, printIdxFromVector )
 class CustomerOverloader : public testing::Test
 {
   public:
-    using CustomerOP = Overloader< CustomerEq, CustomerHash >;
     std::unordered_set< Customer, CustomerHash, CustomerEq > customers;
     std::unordered_set< Customer, CustomerOP, CustomerOP > customersOP;
 };
