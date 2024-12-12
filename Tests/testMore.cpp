@@ -192,3 +192,11 @@ TEST( VariadicTemplate, isNotHomogeneousWithDifferentTypes )
   constexpr auto kRESULT = isHomogeneous( 1, 2.01, 3, 4, 5 );
   ASSERT_FALSE( kRESULT );
 }
+
+TEST( VariadicTemplate, printIdxFromVector )
+{
+  const std::vector< std::string > vec = { "good", "times", "say", "bye" };
+  std::stringstream stream;
+  printIdx< 2, 0, 3 >( stream, vec );
+  ASSERT_EQ( stream.str(), "say good bye \n" );
+}
