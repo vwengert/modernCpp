@@ -36,3 +36,5 @@ struct Overloader : Bases...
 {
   using Bases::operator()...;
 };
+
+using CustomerOP = Overloader< CustomerEq, CustomerHash >;
