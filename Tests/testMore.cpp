@@ -169,3 +169,14 @@ TEST( VariadicTemplate, foldSumWithFiveDifferentTypes )
   constexpr auto kSUM = foldSum( 1, 2.01, 3.0, 4, 5U );
   ASSERT_EQ( kSUM, 15.01 );
 }
+
+TEST( VariadicTemplate, traversNode )
+{
+  const auto left = &Node::left;
+  const auto right = &Node::right;
+  auto* root = new Node( 0 );
+  root->left = new Node( 1 );
+  root->left->right = new Node( 2 );
+  const auto* node = traverse( root, left, right );
+  ASSERT_EQ( node->mValue, 2 );
+}
