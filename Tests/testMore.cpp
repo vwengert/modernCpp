@@ -284,3 +284,13 @@ TEST( StackTemplate, stackIsEmptyAfterCreation ) // NOLINT(*-err58-cpp)
   const StackContainer< int, std::vector > stack;
   ASSERT_TRUE( stack.empty() );
 }
+
+TEST( IsPrimeTest, isPrime ) // NOLINT(*-err58-cpp)
+{
+  constexpr auto kPRIME = isPrime( 7 );
+  constexpr auto kNOT_PRIME = isPrime( 8 );
+
+  ASSERT_TRUE( kPRIME );
+  ASSERT_FALSE( kNOT_PRIME );
+  ASSERT_FALSE( isPrime(798522) );
+}
