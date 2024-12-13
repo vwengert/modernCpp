@@ -1,7 +1,7 @@
 #pragma once
 #include <cstring>
 #include <type_traits>
-#include <iostream>
+#include <bitset>
 
 inline char const *max(char const *first, char const *second) {
   return std::strcmp(second, first) < 0 ? first : second;
@@ -65,4 +65,9 @@ bool less(T (&first)[N], T (&second)[M]) // NOLINT(*-avoid-c-arrays)
     }
   }
   return N < M;
+}
+
+template<unsigned long N> // NOLINT(*-runtime-int)
+void printBitset(std::ostream &stream, std::bitset<N> const &bitset) {
+  stream << bitset.template to_string<char, std::char_traits<char>, std::allocator<char> >();
 }

@@ -270,3 +270,11 @@ TEST( ContainerCompare, lessWithTwoEqualArrays ) // NOLINT(*-err58-cpp)
   ASSERT_FALSE( less( first, second ) );
   ASSERT_FALSE( less( second, first) ); // NOLINT(*-suspicious-call-argument)
 }
+
+TEST( Bitset, printBitsetWithFiveBits ) // NOLINT(*-err58-cpp)
+{
+  constexpr auto kBITSET_VALUE = 0b10101;
+  std::stringstream stream;
+  printBitset( stream, std::bitset< kFIVE >( kBITSET_VALUE ) );
+  ASSERT_EQ( stream.str(), "10101" );
+}
