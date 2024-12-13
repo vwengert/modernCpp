@@ -44,7 +44,7 @@ constexpr auto foldSum(T... args) {
 }
 
 template<typename T1, typename... TN>
-constexpr bool isHomogeneous(T1, TN...) {
+constexpr bool isHomogeneous(T1 /*unused*/, TN... /*unused*/) {
   return (std::is_same_v<T1, TN> && ...);
 }
 
@@ -70,4 +70,13 @@ bool less(T (&first)[N], T (&second)[M]) // NOLINT(*-avoid-c-arrays)
 template<unsigned long N> // NOLINT(*-runtime-int)
 void printBitset(std::ostream &stream, std::bitset<N> const &bitset) {
   stream << bitset.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+}
+
+constexpr bool isPrime(unsigned int p) {
+  for (unsigned int d = 2; d <= p / 2; ++d) {
+    if (p % d == 0) {
+      return false;
+    }
+  }
+  return p > 1;
 }
