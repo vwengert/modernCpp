@@ -278,3 +278,9 @@ TEST( Bitset, printBitsetWithFiveBits ) // NOLINT(*-err58-cpp)
   printBitset( stream, std::bitset< kFIVE >( kBITSET_VALUE ) );
   ASSERT_EQ( stream.str(), "10101" );
 }
+
+TEST( StackTemplate, stackIsEmptyAfterCreation ) // NOLINT(*-err58-cpp)
+{
+  const StackContainer< int, std::vector > stack;
+  ASSERT_TRUE( stack.empty() );
+}
