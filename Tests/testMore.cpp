@@ -294,3 +294,21 @@ TEST( IsPrimeTest, isPrime ) // NOLINT(*-err58-cpp)
   ASSERT_FALSE( kNOT_PRIME );
   ASSERT_FALSE( isPrime(798522) );
 }
+
+TEST( FindFirstNegativeDistance, findFirstNegativeDistance ) // NOLINT(*-err58-cpp)
+{
+  std::vector< int > vec = { 1, -2, 3, 4, -5, 6 }; // NOLINT(*-magic-numbers)
+  const auto kDistance = findFirstNegativeDistance( vec.begin(), vec.end() );
+  const auto kDistanceTwo = findLastNegativeDistance( vec.begin(), vec.end() );
+
+  constexpr auto kRESERVE = 900;
+  vec.reserve( kRESERVE );
+  std::stringstream stream;
+  for_each( vec.begin() + kDistance, vec.end() - kDistanceTwo, [&stream]( const auto& value ) {
+    stream << value << ", ";
+  } );
+
+  ASSERT_EQ( kDistance, 1 );
+  ASSERT_EQ( kDistanceTwo, 1 );
+  ASSERT_EQ( stream.str(), "-2, 3, 4, -5, " );
+}

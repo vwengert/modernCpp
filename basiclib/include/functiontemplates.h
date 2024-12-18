@@ -72,11 +72,30 @@ void printBitset(std::ostream &stream, std::bitset<N> const &bitset) {
   stream << bitset.template to_string<char, std::char_traits<char>, std::allocator<char> >();
 }
 
-constexpr bool isPrime(unsigned int p) {
+constexpr bool isPrime(const unsigned int p) {
+  // NOLINT(*-identifier-length)
   for (unsigned int d = 2; d <= p / 2; ++d) {
+    // NOLINT(*-identifier-length)
     if (p % d == 0) {
       return false;
     }
   }
   return p > 1;
+}
+
+template<typename Iterator>
+auto findFirstNegativeDistance(Iterator first, Iterator last) {
+  auto iter = find_if(first, last, [](const auto &value) {
+    return value < 0;
+  });
+  return (iter != last) ? std::distance(first, iter) : -1;
+}
+
+template<typename Iterator>
+auto findLastNegativeDistance(Iterator first, Iterator last) {
+  auto iter = find_if(std::make_reverse_iterator(last), std::make_reverse_iterator(first),
+                      [](const auto &value) {
+                        return value < 0;
+                      });
+  return (iter != std::make_reverse_iterator(first)) ? std::distance(std::make_reverse_iterator(last), iter) : -1;
 }
