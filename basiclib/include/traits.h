@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 
 template<typename T>
 struct AccumTraits;
@@ -46,4 +47,40 @@ auto accum(T const *beg, T const *end, T initValue = Traits::kZERO) {
     ++beg; // NOLINT(*-pro-bounds-pointer-arithmetic)
   }
   return total;
+}
+
+template<typename T>
+struct TypeSize {
+  static std::size_t const kVALUE = sizeof(T);
+};
+
+template<typename T>
+struct ElementT;
+
+template<typename T>
+struct ElementT<std::vector<T> > {
+  using Type = T;
+};
+
+template<typename T>
+struct ElementT<std::list<T> > {
+  using Type = T;
+};
+
+template<typename T, std::size_t N>
+struct ElementT<T[N]> // NOLINT(*-avoid-c-arrays)
+{
+  using Type = T;
+};
+
+template<typename T>
+struct ElementT<T[]> // NOLINT(*-avoid-c-arrays)
+{
+  using Type = T;
+};
+
+template<typename T>
+void printElementType(std::ostream &stream, T const & /*cont*/) {
+  using ElemT = typename ElementT<T>::Type;
+  stream << "Container of: " << typeid(ElemT).name() << " elements.\n";
 }
