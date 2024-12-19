@@ -9,6 +9,10 @@ class Cirle
     {
       stream << "Circle" << '\n';
     }
+
+    static void centerOfGravity()
+    {
+    }
 };
 
 class Line
@@ -17,6 +21,10 @@ class Line
     static void draw( std::ostream& stream )
     {
       stream << "Line" << '\n';
+    }
+
+    static void centerOfGravity()
+    {
     }
 };
 
