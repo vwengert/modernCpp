@@ -76,3 +76,14 @@ TEST( Accumulate, withOwnPolicy )
   const auto sum = accum< int, MultPolicy >( num, num + 5, 1 );
   ASSERT_EQ( sum, 120 );
 }
+
+TEST( ElementType, printElementTypeVectorAndArray )
+{
+  constexpr std::vector< bool > kVEC;
+  int arr[ 5 ]; // NOLINT(*-avoid-c-arrays, *-magic-numbers)
+  std::stringstream stream;
+  printElementType( stream, kVEC );
+  printElementType( stream, arr );
+
+  ASSERT_EQ( stream.str(), "Container of: b elements.\nContainer of: i elements.\n" );
+}
