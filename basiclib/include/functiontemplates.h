@@ -72,10 +72,10 @@ void printBitset(std::ostream &stream, std::bitset<N> const &bitset) {
   stream << bitset.template to_string<char, std::char_traits<char>, std::allocator<char> >();
 }
 
-constexpr bool isPrime(const unsigned int p) {
-  // NOLINT(*-identifier-length)
-  for (unsigned int d = 2; d <= p / 2; ++d) {
-    // NOLINT(*-identifier-length)
+constexpr bool isPrime(const unsigned int p) // NOLINT(*-identifier-length)
+{
+  for (unsigned int d = 2; d <= p / 2; ++d) // NOLINT(*-identifier-length)
+  {
     if (p % d == 0) {
       return false;
     }
@@ -98,4 +98,28 @@ auto findLastNegativeDistance(Iterator first, Iterator last) {
                         return value < 0;
                       });
   return (iter != std::make_reverse_iterator(first)) ? std::distance(std::make_reverse_iterator(last), iter) : -1;
+}
+
+template<typename T>
+T maxElement(T first, T last) {
+  if (first == last) {
+    return last;
+  }
+  T largest = first;
+  while (++first != last) {
+    if (*largest < *first) {
+      largest = first;
+    }
+  }
+  return largest;
+}
+
+template<typename T>
+void printMax(std::ostream &stream, T const &container) {
+  auto pos = maxElement(container.begin(), container.end());
+  if (pos != container.end()) {
+    stream << *pos;
+  } else {
+    stream << std::string("empty");
+  }
 }

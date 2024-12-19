@@ -312,3 +312,19 @@ TEST( FindFirstNegativeDistance, findFirstNegativeDistance ) // NOLINT(*-err58-c
   ASSERT_EQ( kDistanceTwo, 1 );
   ASSERT_EQ( stream.str(), "-2, 3, 4, -5, " );
 }
+
+TEST( ContainerPrintMax, printMax ) // NOLINT(*-err58-cpp)
+{
+  const std::vector< int > vec = { 1, 2, 5, 4, 2, 3 }; // NOLINT(*-magic-numbers)
+  std::stringstream stream;
+  printMax( stream, vec );
+  ASSERT_EQ( stream.str(), "5" );
+}
+
+TEST( ContainerPrintMax, printMaxEmpty ) // NOLINT(*-err58-cpp)
+{
+  constexpr std::vector< int > kVEC;
+  std::stringstream stream;
+  printMax( stream, kVEC );
+  ASSERT_EQ( stream.str(), "empty" );
+}
