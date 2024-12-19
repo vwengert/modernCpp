@@ -58,3 +58,21 @@ TEST( Accumulate, text )
   const auto avgChar = static_cast< char >( accum( kNAME, kNAME + kLENGTH ) / kLENGTH );
   ASSERT_EQ( avgChar, 'j' );
 }
+
+class MultPolicy
+{
+  public:
+    template<typename T1, typename T2>
+    static void accumulate( T1& total, T2 const& value )
+    {
+      total *= value;
+    }
+};
+
+TEST( Accumulate, withOwnPolicy )
+{
+  const int num[ ] = { 1, 2, 3, 4, 5 }; // NOLINT(*-avoid-c-arrays)
+  // NOLINTNEXTLINE(*-pro-bounds-array-to-pointer-decay, *-pro-bounds-pointer-arithmetic)
+  const auto sum = accum< int, MultPolicy >( num, num + 5, 1 );
+  ASSERT_EQ( sum, 120 );
+}
