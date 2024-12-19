@@ -17,8 +17,6 @@ endif ()
 
 add_library(${PROJECT_NAME} SHARED
         src/basicLibrary.cpp
-        include/node.h
-        include/customeroverloader.h
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 

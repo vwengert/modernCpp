@@ -7,6 +7,7 @@ find_package(benchmark REQUIRED)
 add_executable(${Test}
         testMain.cpp
         testMore.cpp
+        testTemplateArchitecture.cpp
 )
 
 add_executable(${benchmark}
