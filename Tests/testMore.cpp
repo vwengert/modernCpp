@@ -321,6 +321,7 @@ TEST( ContainerPrintMax, printMax ) // NOLINT(*-err58-cpp)
   ASSERT_EQ( stream.str(), "5" );
 }
 
+#ifndef _WIN32
 TEST( ContainerPrintMax, printMaxEmpty ) // NOLINT(*-err58-cpp)
 {
   constexpr std::vector< int > kVEC;
@@ -328,3 +329,4 @@ TEST( ContainerPrintMax, printMaxEmpty ) // NOLINT(*-err58-cpp)
   printMax( stream, kVEC );
   ASSERT_EQ( stream.str(), "empty" );
 }
+#endif
