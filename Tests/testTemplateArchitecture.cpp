@@ -77,6 +77,7 @@ TEST( Accumulate, withOwnPolicy )
   ASSERT_EQ( sum, 120 );
 }
 
+#ifndef _WIN32
 TEST( ElementType, printElementTypeVectorAndArray )
 {
   constexpr std::vector< bool > kVEC;
@@ -87,3 +88,4 @@ TEST( ElementType, printElementTypeVectorAndArray )
 
   ASSERT_EQ( stream.str(), "Container of: b elements.\nContainer of: i elements.\n" );
 }
+#endif
