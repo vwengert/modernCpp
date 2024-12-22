@@ -6,7 +6,8 @@ Checks: "-*,
         -cppcoreguidelines-owning-memory,
         google-*,
         readability-*,
-        -*-err58-cpp
+        -*-err58-cpp,
+        -*-easily-swappable-parameters
 "
 WarningsAsErrors: ""
 HeaderFilterRegex: ""
