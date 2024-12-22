@@ -15,8 +15,9 @@ if (NOT APPLE)
     set(CMAKE_INSTALL_RPATH $ORIGIN)
 endif ()
 
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
         src/testdrivenLibrary.cpp
+        src/soundex.cpp
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
