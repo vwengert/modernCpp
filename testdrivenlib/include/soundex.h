@@ -21,7 +21,7 @@ public:
       {'m', "5"}, {'n', "5"},
       {'r', "6"}
     };
-    const auto it = encodings.find(letter);
+    const auto it = encodings.find(lower(letter));
     return it == encodings.end() ? kNOT_A_DIGIT : it->second;
   }
 
@@ -63,5 +63,9 @@ private:
 
   static std::string tail(const std::string &word) {
     return word.substr(1);
+  }
+
+  static char lower(const char letter) {
+    return static_cast<char>(std::tolower(static_cast<unsigned char>(letter)));
   }
 };
