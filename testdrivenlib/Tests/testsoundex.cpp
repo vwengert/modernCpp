@@ -20,17 +20,15 @@ using namespace testing; // NOLINT(*-build-using-namespace)
 class SoundexEncoding : public Test
 {
   public:
-    Soundex soundx;
+    Soundex soundex;
 };
 
 TEST_F( SoundexEncoding, RetainsSoleLetterOfOneLetterWord )
 {
-  const auto encoded = soundx.encode( "A" );
-  ASSERT_THAT( encoded, Eq("A000") );
+  ASSERT_THAT( soundex.encode("A"), Eq("A000") );
 }
 
 TEST_F( SoundexEncoding, PadsWithZerosToEnsureThreeDigits )
 {
-  const auto encoded = soundx.encode( "I" );
-  ASSERT_THAT( encoded, Eq("I000") );
+  ASSERT_THAT( soundex.encode("I"), Eq("I000") );
 }
