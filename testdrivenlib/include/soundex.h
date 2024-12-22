@@ -8,19 +8,24 @@ constexpr size_t kMAX_CODE_LENGTH{4};
 class Soundex {
 public:
   static std::string encode(const std::string &word) {
-    return zeroPad(head(word) + encodedDigits(word));
+    return zeroPad(head(word) + encodedDigits(tail(word)));
   }
 
 private:
+  static std::string tail(const std::string &word) {
+    return word.substr(1);
+  }
+
   static std::string head(const std::string &word) {
     return word.substr(0, 1);
   }
 
   static std::string encodedDigits(const std::string &word) {
-    if (word.length() > 1) {
-      return encodedDigit(word[1]);
+    std::string encoding;
+    for (auto letter: word) {
+      encoding += encodedDigit(letter);
     }
-    return "";
+    return encoding;
   }
 
   static std::string encodedDigit(const char letter) {
