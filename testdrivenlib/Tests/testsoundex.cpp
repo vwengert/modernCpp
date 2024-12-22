@@ -15,9 +15,9 @@ class Soundex
     }
 };
 
-using testing::Eq;
+using namespace testing; // NOLINT(*-build-using-namespace)
 
-class SoundexEncoding : public testing::Test
+class SoundexEncoding : public Test
 {
   public:
     Soundex soundx;
