@@ -12,8 +12,9 @@ public:
   }
 
 private:
-  static std::string tail(const std::string &word) {
-    return word.substr(1);
+  static std::string zeroPad(const std::string &word) {
+    const auto zerosNeeded = kMAX_CODE_LENGTH - word.length();
+    return word + std::string(zerosNeeded, '0');
   }
 
   static std::string head(const std::string &word) {
@@ -22,10 +23,17 @@ private:
 
   static std::string encodedDigits(const std::string &word) {
     std::string encoding;
-    for (auto letter: word) {
+    for (const auto letter: word) {
+      if (isComplete(encoding)) {
+        break;
+      }
       encoding += encodedDigit(letter);
     }
     return encoding;
+  }
+
+  static bool isComplete(const std::string &encoding) {
+    return encoding.length() == kMAX_CODE_LENGTH - 1;
   }
 
   static std::string encodedDigit(const char letter) {
@@ -41,8 +49,7 @@ private:
     return it == encodings.end() ? "" : it->second;
   }
 
-  static std::string zeroPad(const std::string &word) {
-    auto zerosNeeded = kMAX_CODE_LENGTH - word.length();
-    return word + std::string(zerosNeeded, '0');
+  static std::string tail(const std::string &word) {
+    return word.substr(1);
   }
 };
