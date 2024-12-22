@@ -44,17 +44,18 @@ private:
   }
 
   static void encodeTail(std::string &encoding, const std::string &word) {
-    for (const auto letter: word) {
+    for (auto idx = 1U; idx < word.length(); ++idx) {
       if (isComplete(encoding)) {
         break;
       }
-      encodeLetter(encoding, letter);
+      encodeLetter(encoding, word[idx], word[idx - 1]);
     }
   }
 
-  static void encodeLetter(std::string &encoding, const char letter) {
+  static void encodeLetter(std::string &encoding, const char letter, const char lastLetter) {
     if (const auto digit = encodedDigit(letter);
-      digit != kNOT_A_DIGIT && digit != lastDigit(encoding)) {
+      digit != kNOT_A_DIGIT &&
+      (digit != lastDigit(encoding) || isVowel(lastLetter))) {
       encoding += digit;
     }
   }
@@ -62,7 +63,7 @@ private:
   static std::string encodedDigits(const std::string &word) {
     std::string encoding;
     encodeHead(encoding, word);
-    encodeTail(encoding, tail(word));
+    encodeTail(encoding, word);
     return encoding;
   }
 
@@ -72,6 +73,10 @@ private:
 
   static std::string lastDigit(const std::string &encoding) {
     return encoding.empty() ? kNOT_A_DIGIT : &encoding.back();
+  }
+
+  static bool isVowel(const char last_letter) {
+    return std::string("aeiouy").find(lower(last_letter)) != std::string::npos;
   }
 
   static std::string tail(const std::string &word) {
