@@ -11,6 +11,19 @@ public:
     return zeroPad(head(word) + encodedDigits(tail(word)));
   }
 
+  static std::string encodedDigit(const char letter) {
+    const std::unordered_map<char, std::string> encodings{
+      {'b', "1"}, {'f', "1"}, {'p', "1"}, {'v', "1"},
+      {'c', "2"}, {'g', "2"}, {'j', "2"}, {'k', "2"}, {'q', "2"}, {'s', "2"}, {'x', "2"}, {'z', "2"},
+      {'d', "3"}, {'t', "3"},
+      {'l', "4"},
+      {'m', "5"}, {'n', "5"},
+      {'r', "6"}
+    };
+    const auto it = encodings.find(letter);
+    return it == encodings.end() ? "" : it->second;
+  }
+
 private:
   static std::string zeroPad(const std::string &word) {
     const auto zerosNeeded = kMAX_CODE_LENGTH - word.length();
@@ -27,7 +40,9 @@ private:
       if (isComplete(encoding)) {
         break;
       }
-      encoding += encodedDigit(letter);
+      if (encodedDigit(letter) != lastDigit(encoding)) {
+        encoding += encodedDigit(letter);
+      }
     }
     return encoding;
   }
@@ -36,17 +51,8 @@ private:
     return encoding.length() == kMAX_CODE_LENGTH - 1;
   }
 
-  static std::string encodedDigit(const char letter) {
-    const std::unordered_map<char, std::string> encodings{
-      {'b', "1"}, {'f', "1"}, {'p', "1"}, {'v', "1"},
-      {'c', "2"}, {'g', "2"}, {'j', "2"}, {'k', "2"}, {'q', "2"}, {'s', "2"}, {'x', "2"}, {'z', "2"},
-      {'d', "3"}, {'t', "3"},
-      {'l', "4"},
-      {'m', "5"}, {'n', "5"},
-      {'r', "6"}
-    };
-    const auto it = encodings.find(letter);
-    return it == encodings.end() ? "" : it->second;
+  static std::string::const_pointer lastDigit(const std::string &encoding) {
+    return encoding.empty() ? "" : &encoding.back();
   }
 
   static std::string tail(const std::string &word) {
