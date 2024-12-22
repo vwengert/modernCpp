@@ -9,6 +9,7 @@ add_executable(${Test}
 target_link_libraries(${Test}
         PUBLIC
         gtest::gtest
+        testdrivenLibrary::testdrivenLibrary
 )
 
 add_test(
