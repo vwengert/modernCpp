@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 constexpr size_t kMAX_CODE_LENGTH{4};
+const std::string kNOT_A_DIGIT{"*"};
 
 class Soundex {
 public:
@@ -21,7 +22,7 @@ public:
       {'r', "6"}
     };
     const auto it = encodings.find(letter);
-    return it == encodings.end() ? "" : it->second;
+    return it == encodings.end() ? kNOT_A_DIGIT : it->second;
   }
 
 private:
@@ -44,8 +45,9 @@ private:
       if (isComplete(encoding)) {
         break;
       }
-      if (encodedDigit(letter) != lastDigit(encoding)) {
-        encoding += encodedDigit(letter);
+      if (auto digit = encodedDigit(letter);
+        digit != kNOT_A_DIGIT && digit != lastDigit(encoding)) {
+        encoding += digit;
       }
     }
     return encoding;
@@ -55,8 +57,8 @@ private:
     return encoding.length() == kMAX_CODE_LENGTH - 1;
   }
 
-  static std::string::const_pointer lastDigit(const std::string &encoding) {
-    return encoding.empty() ? "" : &encoding.back();
+  static std::string lastDigit(const std::string &encoding) {
+    return encoding.empty() ? kNOT_A_DIGIT : &encoding.back();
   }
 
   static std::string tail(const std::string &word) {
