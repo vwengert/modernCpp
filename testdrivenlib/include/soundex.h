@@ -8,7 +8,7 @@ constexpr size_t kMAX_CODE_LENGTH{4};
 class Soundex {
 public:
   static std::string encode(const std::string &word) {
-    return zeroPad(head(word) + encodedDigits(tail(word)));
+    return zeroPad(upperFront(head(word)) + encodedDigits(tail(word)));
   }
 
   static std::string encodedDigit(const char letter) {
@@ -28,6 +28,10 @@ private:
   static std::string zeroPad(const std::string &word) {
     const auto zerosNeeded = kMAX_CODE_LENGTH - word.length();
     return word + std::string(zerosNeeded, '0');
+  }
+
+  static std::string upperFront(const std::string &string) {
+    return std::string(1, static_cast<char>(std::toupper(string.front())));
   }
 
   static std::string head(const std::string &word) {
