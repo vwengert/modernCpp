@@ -4,40 +4,38 @@
 #include "raiitemplates.h"
 #include "singleton.h"
 
-TEST( ModernTests, singletonReturnsConfiguration ) // NOLINT(*-err58-cpp)
+using namespace testing;
+
+TEST( ModernTests, singletonReturnsConfiguration )
 {
-  ASSERT_TRUE( Singleton::instance()->configuration() == "Configuration" );
+  ASSERT_THAT( Singleton::instance()->configuration(), Eq("Configuration") );
 }
 
-TEST( ModernTests, palindromIsFalseWhenNoPalindrom ) // NOLINT(*-err58-cpp)
-{
-  ASSERT_FALSE( false );
-  ASSERT_FALSE( false );
-}
-
-TEST( ScopedPtrTest, Construct ) // NOLINT(*-err58-cpp)
+TEST( ScopedPtrTest, DeleteObjectReducesCountToZero )
 {
   object_counter::all_count = object_counter::count = 0;
   const auto* pObjCounter = new object_counter;
-  EXPECT_EQ( 1, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+  EXPECT_THAT( object_counter::count, Eq(1) );
   delete pObjCounter;
-  EXPECT_EQ( 0, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+
+  ASSERT_THAT( object_counter::count, Eq(0) );
 }
 
-TEST( ScopedPtrTest, AcquireRelease ) // NOLINT(*-err58-cpp)
+TEST( ScopedPtrTest, ObjectCountReducesToZeroLeavingBlockContext )
 {
   object_counter::all_count = object_counter::count = 0; {
     scoped_ptr< object_counter > pObjCounter( new object_counter );
-    EXPECT_EQ( 1, object_counter::count );
-    EXPECT_EQ( 1, object_counter::all_count );
+    EXPECT_THAT( object_counter::all_count, Eq(1) );
+    EXPECT_THAT( object_counter::count, Eq(1) );
   }
-  EXPECT_EQ( 0, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+
+  ASSERT_THAT( object_counter::count, Eq(0) );
 }
 
-TEST( ScopedPtrTest, EarlyReturnNoLeak ) // NOLINT(*-err58-cpp)
+TEST( ScopedPtrTest, EarlyReturnNoLeak )
 {
   object_counter::all_count = object_counter::count = 0;
   while(true)
@@ -45,11 +43,12 @@ TEST( ScopedPtrTest, EarlyReturnNoLeak ) // NOLINT(*-err58-cpp)
     scoped_ptr< object_counter > pObjCounter( new object_counter );
     break;
   }
-  EXPECT_EQ( 0, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+
+  ASSERT_THAT( object_counter::count, Eq(0) );
 }
 
-TEST( ScopedPtrTest, ThrowNoLeak ) // NOLINT(*-err58-cpp)
+TEST( ScopedPtrTest, ThrowNoLeak )
 {
   object_counter::all_count = object_counter::count = 0;
   try
@@ -57,36 +56,38 @@ TEST( ScopedPtrTest, ThrowNoLeak ) // NOLINT(*-err58-cpp)
     scoped_ptr< object_counter > pObjCounter( new object_counter );
     throw 1;
   }
-  catch(...) // NOLINT
+  catch(...)
   {
   };
-  EXPECT_EQ( 0, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+
+  ASSERT_THAT( object_counter::count, Eq(0) );
 }
 
-TEST( RAII, AcquireRelease ) // NOLINT(*-err58-cpp)
+TEST( RAII, AcquireRelease )
 {
   object_counter::all_count = object_counter::count = 0; {
     raii< object_counter > pObjCounter( new object_counter );
-    EXPECT_EQ( 1, object_counter::count );
-    EXPECT_EQ( 1, object_counter::all_count );
+    EXPECT_THAT( object_counter::all_count, Eq(1) );
+    EXPECT_THAT( object_counter::count, Eq(1) );
   }
-  EXPECT_EQ( 0, object_counter::count );
-  EXPECT_EQ( 1, object_counter::all_count );
+  EXPECT_THAT( object_counter::all_count, Eq(1) );
+
+  ASSERT_THAT( object_counter::count, Eq(0) );
 }
 
-TEST( RAII, ThrowNoLeak ) // NOLINT(*-err58-cpp)
+TEST( RAII, ThrowNoLeakMutexCanBeLocked )
 {
   std::mutex mutex;
   try
   {
     MutexGuard mutexGuard( mutex );
-    EXPECT_FALSE( mutex.try_lock() );
+    EXPECT_THAT( mutex.try_lock(), Eq(false) );
     throw 1;
   }
-  catch(...) // NOLINT
+  catch(...)
   {
   }
-  EXPECT_TRUE( mutex.try_lock() );
+  ASSERT_THAT( mutex.try_lock(), Eq(true) );
   mutex.unlock();
 }
