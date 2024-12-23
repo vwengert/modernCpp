@@ -327,9 +327,9 @@ TEST( ContainerPrintMax, printMax )
 #ifndef _WIN32
 TEST( ContainerPrintMax, printMaxEmpty )
 {
-  constexpr std::vector< int > kVEC;
+  const std::vector< int > vec;
   std::stringstream stream;
-  printMax( stream, kVEC );
+  printMax( stream, vec );
   ASSERT_THAT( stream.str(), Eq("empty") );
 }
 #endif
