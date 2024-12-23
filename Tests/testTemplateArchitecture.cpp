@@ -82,10 +82,10 @@ TEST( Accumulate, withOwnPolicy )
 #ifndef _WIN32
 TEST( ElementType, printElementTypeVectorAndArray )
 {
-  constexpr std::vector< bool > kVEC;
+  const std::vector< bool > vec;
   int arr[ 5 ]; // NOLINT(*-avoid-c-arrays, *-magic-numbers)
   std::stringstream stream;
-  printElementType( stream, kVEC );
+  printElementType( stream, vec );
   printElementType( stream, arr );
 
   ASSERT_THAT( stream.str(), Eq("Container of: b elements.\nContainer of: i elements.\n") );
