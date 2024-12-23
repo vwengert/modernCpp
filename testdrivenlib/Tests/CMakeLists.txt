@@ -7,6 +7,7 @@ find_package(GTest REQUIRED)
 
 add_executable(${Test}
         testsoundex.cpp
+        testretweetcollection.cpp
 )
 
 target_link_libraries(${Test}
