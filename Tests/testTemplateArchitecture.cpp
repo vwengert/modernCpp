@@ -3,6 +3,8 @@
 #include "geometry.h"
 #include "traits.h"
 
+using namespace testing;
+
 TEST( staticPolymorphism, myDraw )
 {
   class Cirle
@@ -39,7 +41,7 @@ TEST( staticPolymorphism, myDraw )
     std::visit( [&stream]( const auto& object ) { myDraw( stream, object ); }, obj );
   }
 
-  ASSERT_EQ( stream.str(), "Circle\nLine\n" );
+  ASSERT_THAT( stream.str(), Eq("Circle\nLine\n") );
 }
 
 TEST( Accumulate, numbers )
@@ -47,7 +49,7 @@ TEST( Accumulate, numbers )
   const int num[ ] = { 1, 2, 3, 4, 5 }; // NOLINT(*-avoid-c-arrays)
   // NOLINTNEXTLINE(*-pro-bounds-array-to-pointer-decay, *-pro-bounds-pointer-arithmetic)
   const auto sum = accum( num, num + 5 );
-  ASSERT_EQ( sum, 15 );
+  ASSERT_THAT( sum, Eq(15) );
 }
 
 TEST( Accumulate, text )
@@ -56,7 +58,7 @@ TEST( Accumulate, text )
   constexpr int kLENGTH = sizeof( kNAME ) - 1;
   // NOLINTNEXTLINE(*-signed-char-misuse, *-str34-c, *-pro-bounds-array-to-pointer-decay, *-pro-bounds-pointer-arithmetic)
   const auto avgChar = static_cast< char >( accum( kNAME, kNAME + kLENGTH ) / kLENGTH );
-  ASSERT_EQ( avgChar, 'j' );
+  ASSERT_THAT( avgChar, Eq('j') );
 }
 
 class MultPolicy
@@ -74,7 +76,7 @@ TEST( Accumulate, withOwnPolicy )
   const int num[ ] = { 1, 2, 3, 4, 5 }; // NOLINT(*-avoid-c-arrays)
   // NOLINTNEXTLINE(*-pro-bounds-array-to-pointer-decay, *-pro-bounds-pointer-arithmetic)
   const auto sum = accum< int, MultPolicy >( num, num + 5, 1 );
-  ASSERT_EQ( sum, 120 );
+  ASSERT_THAT( sum, Eq(120) );
 }
 
 #ifndef _WIN32
@@ -86,6 +88,6 @@ TEST( ElementType, printElementTypeVectorAndArray )
   printElementType( stream, kVEC );
   printElementType( stream, arr );
 
-  ASSERT_EQ( stream.str(), "Container of: b elements.\nContainer of: i elements.\n" );
+  ASSERT_THAT( stream.str(), Eq("Container of: b elements.\nContainer of: i elements.\n") );
 }
 #endif
