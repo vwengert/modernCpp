@@ -9,12 +9,16 @@ class RetweetCollection
   public:
     void add( const Tweet& tweet )
     {
-      mSize = 1;
+      mSize++;
     }
 
     void remove( const Tweet& tweet )
     {
-      mSize = 0;
+      if(mSize == 0)
+      {
+        return;
+      }
+      mSize--;
     }
 
     bool isEmpty() const
@@ -36,7 +40,13 @@ using namespace testing;
 class ARetweetCollection : public Test
 {
   public:
-    RetweetCollection retweets;
+    RetweetCollection collection;
+
+    void SetUp() override
+    {
+      const Tweet tweet;
+      collection.add( tweet );
+    }
 };
 
 MATCHER_P( HasSize, expected, "" )
@@ -46,18 +56,17 @@ MATCHER_P( HasSize, expected, "" )
 
 TEST_F( ARetweetCollection, HasSizeZeroAndIsEmptyWhenCreated )
 {
+  RetweetCollection retweets;
   ASSERT_THAT( retweets, HasSize(0U) );
 }
 
 TEST_F( ARetweetCollection, SizeIsOneAfterTweetAddedAndIsNoLongerEmpty )
 {
-  retweets.add( Tweet() );
-  ASSERT_THAT( retweets, HasSize(1U) );
+  ASSERT_THAT( collection, HasSize(1U) );
 }
 
 TEST_F( ARetweetCollection, DecreaseSizeAfterRemovingTweet )
 {
-  retweets.add( Tweet() );
-  retweets.remove( Tweet() );
-  ASSERT_THAT( retweets, HasSize(0U) );
+  collection.remove( Tweet() );
+  ASSERT_THAT( collection, HasSize(0U) );
 }
