@@ -4,16 +4,25 @@ class Tweet
 {
   public:
     Tweet( const std::string& msg, const std::string& user )
+      : m_msg( msg )
+        , m_user( user )
     {
-      mMsg = msg;
-      mUser = user;
     }
 
-    bool operator==( const Tweet& ) const { return true; }
+    Tweet( const Tweet& other )
+      : m_msg( other.m_msg )
+        , m_user( other.m_user )
+    {
+    }
+
+    bool operator==( const Tweet& tweet ) const
+    {
+      return m_msg == tweet.m_msg && m_user == tweet.m_user;
+    }
 
   private:
-    std::string mMsg;
-    std::string mUser;
+    std::string m_msg;
+    std::string m_user;
 };
 
 class RetweetCollection
@@ -21,35 +30,37 @@ class RetweetCollection
   public:
     void add( const Tweet& tweet )
     {
-      mSize++;
+      if(const auto it = std::ranges::find( m_tweets, tweet ); it == m_tweets.end())
+      {
+        m_tweets.emplace_back( tweet );
+      }
     }
 
     void remove( const Tweet& tweet )
     {
-      if(mSize == 0)
+      if(!isEmpty())
       {
-        return;
+        m_tweets.pop_back();
       }
-      mSize--;
     }
 
     bool isEmpty() const
     {
-      return 0 == size();
+      return m_tweets.empty();
     }
 
     size_t size() const
     {
-      return mSize;
+      return m_tweets.size();
     }
 
   private:
-    size_t mSize{ 0 };
+    std::vector< Tweet > m_tweets;
 };
 
-using namespace testing;
+using namespace testing; // NOLINT(*-build-using-namespace)
 
-MATCHER_P( HasSize, expected, "" )
+MATCHER_P( HasSize, expected, "" ) // NOLINT(*-avoid-const-or-ref-data-members)
 {
   return arg.size() == expected && arg.isEmpty() == ( 0 == expected );
 }
@@ -57,6 +68,7 @@ MATCHER_P( HasSize, expected, "" )
 TEST( ARetweetCollection, HasSizeZeroAndIsEmptyWhenCreated )
 {
   const RetweetCollection retweets;
+
   ASSERT_THAT( retweets, HasSize(0U) );
 }
 
@@ -75,11 +87,24 @@ class ARetweetCollectionWithOneTweet : public Test
 
 TEST_F( ARetweetCollectionWithOneTweet, SizeIsOneAfterTweetAddedAndIsNoLongerEmpty )
 {
-  ASSERT_THAT( collection, HasSize(1U) );
+  ASSERT_THAT( collection, HasSize( static_cast< size_t >( 1 )) );
 }
 
 TEST_F( ARetweetCollectionWithOneTweet, DecreaseSizeAfterRemovingTweet )
 {
   collection.remove( Tweet( "msg", "user" ) );
-  ASSERT_THAT( collection, HasSize(0U) );
+
+  ASSERT_THAT( collection, HasSize(static_cast<size_t>(0)) );
+}
+
+TEST_F( ARetweetCollectionWithOneTweet, IgnoresDuplicateTweetAdded )
+{
+  const Tweet newTweet( "msg", "@user" );
+  collection.add( newTweet );
+  EXPECT_THAT( collection, HasSize(static_cast<size_t>(2)) );
+  const Tweet duplicate( newTweet );
+
+  collection.add( duplicate );
+
+  ASSERT_THAT( collection, HasSize(static_cast<size_t>(2)) );
 }
