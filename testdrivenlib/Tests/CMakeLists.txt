@@ -8,6 +8,7 @@ find_package(GTest REQUIRED)
 add_executable(${Test}
         testsoundex.cpp
         testretweetcollection.cpp
+        testwithparameters.cpp
 )
 
 target_link_libraries(${Test}
