@@ -2,6 +2,18 @@
 
 class Tweet
 {
+  public:
+    Tweet( const std::string& msg, const std::string& user )
+    {
+      mMsg = msg;
+      mUser = user;
+    }
+
+    bool operator==( const Tweet& ) const { return true; }
+
+  private:
+    std::string mMsg;
+    std::string mUser;
 };
 
 class RetweetCollection
@@ -52,11 +64,12 @@ class ARetweetCollectionWithOneTweet : public Test
 {
   public:
     RetweetCollection collection;
+    std::shared_ptr< Tweet > tweet{ nullptr };
 
     void SetUp() override
     {
-      Tweet tweet;
-      collection.add( tweet );
+      tweet = std::make_shared< Tweet >( "msg", "user" );
+      collection.add( *tweet );
     }
 };
 
@@ -67,6 +80,6 @@ TEST_F( ARetweetCollectionWithOneTweet, SizeIsOneAfterTweetAddedAndIsNoLongerEmp
 
 TEST_F( ARetweetCollectionWithOneTweet, DecreaseSizeAfterRemovingTweet )
 {
-  collection.remove( Tweet() );
+  collection.remove( Tweet( "msg", "user" ) );
   ASSERT_THAT( collection, HasSize(0U) );
 }
