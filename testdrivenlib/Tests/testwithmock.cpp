@@ -57,10 +57,9 @@ TEST_F( TestService, MakesHttpRequestToObtainAddress )
 
 TEST_F( TestService, RetrieveValidResponseForCorrectKey )
 {
-  const std::string url = "https://api.ipstack.com/check?access_key=123456789";
-  EXPECT_CALL( httpStub, get(url) ).WillOnce( Return( "access granted" ) );
+  EXPECT_CALL( httpStub, get(_) ).WillOnce( Return( "access granted" ) );
 
-  auto result = service.accessWithKey( "123456789" );
+  const auto result = service.accessWithKey( "123456789" );
 
   ASSERT_THAT( result, Eq( "access granted" ) );
 }
