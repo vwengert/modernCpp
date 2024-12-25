@@ -35,6 +35,11 @@ class Service
       return m_http.get( url );
     }
 
+    void calculate( int* result ) const
+    {
+      m_http.calculate( result );
+    }
+
   private:
     Http& m_http;
 };
@@ -87,4 +92,15 @@ TEST_F( TestService, MoreOrderingAndRules )
   EXPECT_CALL( httpStub, get(_) ).Times( 1 );
 
   const auto result = service.accessWithKey( "" );
+}
+
+TEST_F( TestService, CalculateCheckValueChanged )
+{
+  EXPECT_CALL( httpStub, calculate(_) )
+    .WillOnce( DoAll( SetArgPointee< 0 >( 5 ), Return( true ) ) );
+
+  int value = 0;
+  service.calculate( &value );
+
+  ASSERT_THAT( value, Eq( 5 ) );
 }
