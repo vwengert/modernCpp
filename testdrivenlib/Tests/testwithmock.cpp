@@ -45,5 +45,8 @@ TEST( TestService, MakesHttpRequestToObtainAddress )
   const auto expectedUrl = urlStart + "check?access_key=123456789";
   EXPECT_CALL( httpStub, get( expectedUrl ) );
   const Service service( httpStub );
+
   service.accessWithKey( "123456789" );
+
+  Mock::VerifyAndClearExpectations( &httpStub );
 }
