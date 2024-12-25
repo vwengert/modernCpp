@@ -9,6 +9,7 @@ add_executable(${Test}
         testsoundex.cpp
         testretweetcollection.cpp
         testwithparameters.cpp
+        testwithmock.cpp
 )
 
 target_link_libraries(${Test}
