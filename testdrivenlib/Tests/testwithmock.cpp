@@ -25,11 +25,10 @@ class Service
     {
     }
 
-    void accessWithKey( const std::string& key ) const
+    std::string accessWithKey( const std::string& key ) const
     {
-      m_http.initialize();
       const std::string url = "https://api.ipstack.com/check?access_key=" + key;
-      auto result = m_http.get( url );
+      return m_http.get( url );
     }
 
   private:
@@ -38,15 +37,30 @@ class Service
 
 using namespace testing;
 
-TEST( TestService, MakesHttpRequestToObtainAddress )
+class TestService : public Test
 {
-  HttpStub httpStub;
+  public:
+    HttpStub httpStub;
+    Service service{ httpStub };
+};
+
+TEST_F( TestService, MakesHttpRequestToObtainAddress )
+{
   const std::string urlStart = "https://api.ipstack.com/";
   const auto expectedUrl = urlStart + "check?access_key=123456789";
   EXPECT_CALL( httpStub, get( expectedUrl ) );
-  const Service service( httpStub );
 
-  service.accessWithKey( "123456789" );
+  auto result = service.accessWithKey( "123456789" );
 
   Mock::VerifyAndClearExpectations( &httpStub );
+}
+
+TEST_F( TestService, RetrieveValidResponseForCorrectKey )
+{
+  const std::string url = "https://api.ipstack.com/check?access_key=123456789";
+  EXPECT_CALL( httpStub, get(url) ).WillOnce( Return( "access granted" ) );
+
+  auto result = service.accessWithKey( "123456789" );
+
+  ASSERT_THAT( result, Eq( "access granted" ) );
 }
