@@ -41,13 +41,12 @@ using namespace testing;
 class TestService : public Test
 {
   public:
-    HttpStub httpStub;
+    NiceMock< HttpStub > httpStub;
     Service service{ httpStub };
 };
 
 TEST_F( TestService, MakesHttpRequestToObtainAddress )
 {
-  EXPECT_CALL( httpStub, initialize() );
   const std::string urlStart = "https://api.ipstack.com/";
   const auto expectedUrl = urlStart + "check?access_key=123456789";
   EXPECT_CALL( httpStub, get( expectedUrl ) );
@@ -59,7 +58,6 @@ TEST_F( TestService, MakesHttpRequestToObtainAddress )
 
 TEST_F( TestService, RetrieveValidResponseForCorrectKey )
 {
-  EXPECT_CALL( httpStub, initialize() );
   EXPECT_CALL( httpStub, get(_) ).WillOnce( Return( "access granted" ) );
 
   const auto result = service.accessWithKey( "123456789" );
