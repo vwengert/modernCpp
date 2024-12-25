@@ -7,6 +7,8 @@ class Http
 
     virtual void initialize() = 0;
 
+    virtual bool calculate( int* result ) = 0;
+
     virtual std::string get( const std::string& url ) const = 0;
 };
 
@@ -15,6 +17,7 @@ class HttpStub : public Http
   public:
     MOCK_METHOD0( initialize, void() );
     MOCK_CONST_METHOD1( get, std::string( const std::string& url ) );
+    MOCK_METHOD1( calculate, bool(int* result) );
 };
 
 class Service
@@ -41,12 +44,14 @@ using namespace testing;
 class TestService : public Test
 {
   public:
-    NiceMock< HttpStub > httpStub;
+    HttpStub httpStub;
     Service service{ httpStub };
 };
 
 TEST_F( TestService, MakesHttpRequestToObtainAddress )
 {
+  NiceMock< HttpStub > httpStub;
+  const Service service{ httpStub };
   const std::string urlStart = "https://api.ipstack.com/";
   const auto expectedUrl = urlStart + "check?access_key=123456789";
   EXPECT_CALL( httpStub, get( expectedUrl ) );
@@ -58,6 +63,8 @@ TEST_F( TestService, MakesHttpRequestToObtainAddress )
 
 TEST_F( TestService, RetrieveValidResponseForCorrectKey )
 {
+  NiceMock< HttpStub > httpStub;
+  const Service service{ httpStub };
   EXPECT_CALL( httpStub, get(_) ).WillOnce( Return( "access granted" ) );
 
   const auto result = service.accessWithKey( "123456789" );
