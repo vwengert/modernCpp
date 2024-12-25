@@ -64,3 +64,12 @@ TEST_F( TestService, RetrieveValidResponseForCorrectKey )
 
   ASSERT_THAT( result, Eq( "access granted" ) );
 }
+
+TEST_F( TestService, FirstCallInitialiceBeforeGet )
+{
+  InSequence forceExpectationOrder;
+  EXPECT_CALL( httpStub, initialize() );
+  EXPECT_CALL( httpStub, get(_) );
+
+  const auto result = service.accessWithKey( "123456789" );
+}
