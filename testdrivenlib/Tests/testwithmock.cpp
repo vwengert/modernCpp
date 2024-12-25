@@ -71,5 +71,13 @@ TEST_F( TestService, FirstCallInitialiceBeforeGet )
   EXPECT_CALL( httpStub, initialize() );
   EXPECT_CALL( httpStub, get(_) );
 
-  const auto result = service.accessWithKey( "123456789" );
+  const auto result = service.accessWithKey( "" );
+}
+
+TEST_F( TestService, MoreOrderingAndRules )
+{
+  EXPECT_CALL( httpStub, initialize() ).Times( AtLeast( 1 ) );
+  EXPECT_CALL( httpStub, get(_) ).Times( 1 );
+
+  const auto result = service.accessWithKey( "" );
 }
