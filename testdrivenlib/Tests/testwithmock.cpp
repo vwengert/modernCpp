@@ -5,6 +5,16 @@ class Http
   public:
     virtual ~Http() = default;
 
+    Http() = default;
+
+    Http( const Http& ) = delete;
+
+    Http( Http&& ) = delete;
+
+    Http& operator=( const Http& ) = delete;
+
+    Http& operator=( Http&& ) = delete;
+
     virtual void initialize() = 0;
 
     virtual bool calculate( int* result ) = 0;
@@ -23,7 +33,7 @@ class HttpStub : public Http
 class Service
 {
   public:
-    Service( Http& http )
+    explicit Service( Http& http )
       : m_http( http )
     {
     }
@@ -41,10 +51,10 @@ class Service
     }
 
   private:
-    Http& m_http;
+    Http& m_http; // NOLINT(*-avoid-const-or-ref-data-members)
 };
 
-using namespace testing;
+using namespace testing; // NOLINT(*-build-using-namespace)
 
 class TestService : public Test
 {
@@ -61,7 +71,7 @@ TEST_F( TestService, MakesHttpRequestToObtainAddress )
   const auto expectedUrl = urlStart + "check?access_key=123456789";
   EXPECT_CALL( httpStub, get( expectedUrl ) );
 
-  auto result = service.accessWithKey( "123456789" );
+  std::ignore = service.accessWithKey( "123456789" );
 
   Mock::VerifyAndClearExpectations( &httpStub );
 }
@@ -83,7 +93,7 @@ TEST_F( TestService, FirstCallInitialiceBeforeGet )
   EXPECT_CALL( httpStub, initialize() );
   EXPECT_CALL( httpStub, get(_) );
 
-  const auto result = service.accessWithKey( "" );
+  std::ignore = service.accessWithKey( "" );
 }
 
 TEST_F( TestService, MoreOrderingAndRules )
@@ -91,16 +101,16 @@ TEST_F( TestService, MoreOrderingAndRules )
   EXPECT_CALL( httpStub, initialize() ).Times( AtLeast( 1 ) );
   EXPECT_CALL( httpStub, get(_) ).Times( 1 );
 
-  const auto result = service.accessWithKey( "" );
+  std::ignore = service.accessWithKey( "" );
 }
 
 TEST_F( TestService, CalculateCheckValueChanged )
 {
   EXPECT_CALL( httpStub, calculate(_) )
-    .WillOnce( DoAll( SetArgPointee< 0 >( 5 ), Return( true ) ) );
+    .WillOnce( DoAll( SetArgPointee< 0 >( 3 ), Return( true ) ) );
 
   int value = 0;
   service.calculate( &value );
 
-  ASSERT_THAT( value, Eq( 5 ) );
+  ASSERT_THAT( value, Eq( 3 ) );
 }
