@@ -33,17 +33,6 @@ set_target_properties(
         VERSION ${PROJECT_VERSION}
 )
 
-target_compile_options(${PROJECT_NAME}
-        PRIVATE
-        -fvisibility=hidden
-        -fvisibility-inlines-hidden
-)
-
-target_compile_definitions(${PROJECT_NAME}
-        PRIVATE
-        TESTDRIVEN_LIBRARY_EXPORTS
-)
-
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
