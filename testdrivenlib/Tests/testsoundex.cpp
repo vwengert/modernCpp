@@ -1,22 +1,13 @@
 #include <gmock/gmock.h>
 #include "soundex.h"
-#include "utility/privateaccess.h"
-#include "utility/overload.h"
 
 using namespace testing; // NOLINT(*-build-using-namespace)
-
-template struct access_private::access< &Soundex::m_test >;
 
 class SoundexEncoding : public Test
 {
   public:
     Soundex soundex;
 };
-
-TEST_F( SoundexEncoding, CheckThePrivateMember )
-{
-  ASSERT_THAT( access_private::accessor<"m_test">( soundex ), Eq(1) );
-}
 
 TEST_F( SoundexEncoding, RetainsSoleLetterOfOneLetterWord )
 {
