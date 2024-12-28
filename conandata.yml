@@ -4,4 +4,4 @@
 requirements:
   - "gtest/1.15.0"
   - "benchmark/1.8.4"
-  - "access_private/cci.20210621"
+  - "cpputest/4.0"
