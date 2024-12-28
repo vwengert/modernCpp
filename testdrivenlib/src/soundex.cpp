@@ -1,7 +1,6 @@
 #include "soundex.h"
 #include <unordered_map>
 
-
 namespace
 {
   constexpr size_t kMAX_CODE_LENGTH{ 4 };
@@ -14,20 +13,29 @@ namespace
     { 'm', "5" }, { 'n', "5" },
     { 'r', "6" }
   };
+} // namespace
 
+char lower( const char letter )
+{
+  return static_cast< char >( std::tolower( static_cast< unsigned char >( letter ) ) );
+}
+
+std::string encodeDigit( const char letter )
+{
+  const auto it = kENCODINGS.find( lower( letter ) );
+  return it == kENCODINGS.end() ? kNOT_A_DIGIT : it->second;
+}
+
+namespace
+{
   void encodeHead( std::string& encoding, const std::string& word )
   {
-    encoding += Soundex::encodedDigit( word.front() );
+    encoding += encodeDigit( word.front() );
   }
 
   std::string lastDigit( const std::string& encoding )
   {
     return encoding.empty() ? kNOT_A_DIGIT : &encoding.back();
-  }
-
-  char lower( const char letter )
-  {
-    return static_cast< char >( std::tolower( static_cast< unsigned char >( letter ) ) );
   }
 
   bool isVowel( const char last_letter )
@@ -37,7 +45,7 @@ namespace
 
   void encodeLetter( std::string& encoding, const char letter, const char lastLetter )
   {
-    if(const auto digit = Soundex::encodedDigit( letter );
+    if(const auto digit = encodeDigit( letter );
       digit != kNOT_A_DIGIT &&
       ( digit != lastDigit( encoding ) || isVowel( lastLetter ) ))
     {
@@ -62,7 +70,7 @@ namespace
     }
   }
 
-  std::string encodedDigits( const std::string& word )
+  std::string encodeDigits( const std::string& word )
   {
     std::string encoding;
     encodeHead( encoding, word );
@@ -90,15 +98,10 @@ namespace
     const auto zerosNeeded = kMAX_CODE_LENGTH - word.length();
     return word + std::string( zerosNeeded, '0' );
   }
-}
+} // namespace
 
+// Implementation of the Soundex class
 std::string Soundex::encode( const std::string& word )
 {
-  return zeroPad( upperFront( head( word ) ) + tail( encodedDigits( word ) ) );
-}
-
-std::string Soundex::encodedDigit( const char letter )
-{
-  const auto it = kENCODINGS.find( lower( letter ) );
-  return it == kENCODINGS.end() ? kNOT_A_DIGIT : it->second;
+  return zeroPad( upperFront( head( word ) ) + tail( encodeDigits( word ) ) );
 }

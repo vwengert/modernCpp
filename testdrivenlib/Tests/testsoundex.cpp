@@ -48,11 +48,14 @@ TEST_F( SoundexEncoding, IgnoresVowelLikeLetters )
   ASSERT_THAT( soundex.encode("BaAeEiIoOuUhHyYcdl"), Eq("B234") );
 }
 
+
 TEST_F( SoundexEncoding, CombinesDuplicateEncodings )
 {
-  EXPECT_THAT( soundex.encodedDigit('b'), Eq(soundex.encodedDigit('f')) );
-  EXPECT_THAT( soundex.encodedDigit('c'), Eq(soundex.encodedDigit('g')) );
-  EXPECT_THAT( soundex.encodedDigit('d'), Eq(soundex.encodedDigit('t')) );
+  std::string encodeDigit( char letter );
+  EXPECT_THAT( encodeDigit('b'), Eq(encodeDigit('f')) );
+  EXPECT_THAT( encodeDigit('c'), Eq(encodeDigit('g')) );
+  EXPECT_THAT( encodeDigit('d'), Eq(encodeDigit('t')) );
+
   ASSERT_THAT( soundex.encode("Abfcgdt"), Eq("A123") );
 }
 
