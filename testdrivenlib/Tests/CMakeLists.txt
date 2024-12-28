@@ -10,6 +10,7 @@ add_executable(${Test}
         testretweetcollection.cpp
         testwithparameters.cpp
         testwithmock.cpp
+        testgeoserver.cpp
 )
 
 target_link_libraries(${Test}
