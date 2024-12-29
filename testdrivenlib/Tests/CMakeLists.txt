@@ -11,6 +11,7 @@ add_executable(${Test}
         testwithparameters.cpp
         testwithmock.cpp
         testgeoserver.cpp
+        testsupermarketpricing.cpp
 )
 
 target_link_libraries(${Test}
