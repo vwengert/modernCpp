@@ -3,16 +3,26 @@
 class SupermarketPricing
 {
   public:
-    double getPrice( const char* article )
+    double getPrice( const char* article, int quantity = 1 )
     {
-      return 50;
+      return 50 * quantity;
     }
 };
 
 using namespace testing;
 
-TEST( SupermarketPricing, GetPriceOfOneItem )
+class SupermarketPricingTest : public Test
 {
-  SupermarketPricing pricing;
+  public:
+    SupermarketPricing pricing;
+};
+
+TEST_F( SupermarketPricingTest, GetPriceOfOneItem )
+{
   ASSERT_THAT( pricing.getPrice( "A" ), DoubleEq(50) );
+}
+
+TEST_F( SupermarketPricingTest, GetPriceOfTwoItems )
+{
+  ASSERT_THAT( pricing.getPrice( "A", 2 ), DoubleEq(100) );
 }
