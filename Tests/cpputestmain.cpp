@@ -1,8 +1,8 @@
 #include "CppUTest/CommandLineTestRunner.h"
 
-TEST_GROUP( FirstTestGroup )
-{
-};
+// NOLINTBEGIN
+
+TEST_GROUP( FirstTestGroup ){};
 
 TEST( FirstTestGroup, FirstTest )
 {
@@ -14,7 +14,16 @@ TEST( FirstTestGroup, SecondTest )
   LONGS_EQUAL( 1, 1 );
 }
 
+TEST_GROUP( SecondTestGroup ){};
+
+TEST( SecondTestGroup, FirstTest )
+{
+  STRCMP_EQUAL( "Hello", "Hello" );
+}
+
 int main( int ac, char** av )
 {
   return CommandLineTestRunner::RunAllTests( ac, av );
 }
+
+// NOLINTEND

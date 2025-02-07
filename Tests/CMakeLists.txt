@@ -2,12 +2,20 @@ set(Test modernTests)
 set(Benchmark testBenchmark)
 set(UTest uTest)
 
+include(FetchContent)
+FetchContent_Declare(
+        cpputest
+        GIT_REPOSITORY https://github.com/cpputest/cpputest.git
+        GIT_TAG master
+)
+
+FetchContent_MakeAvailable(CppUTest)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GTest REQUIRED)
 find_package(benchmark REQUIRED)
-find_package(CppUTest REQUIRED)
 
 add_executable(${Test}
         testMain.cpp
@@ -32,7 +40,7 @@ target_link_libraries(${Test}
 
 target_link_libraries(${UTest}
         PUBLIC
-        cpputest::cpputest
+        CppUTest::CppUTest
         modernLibrary::modernLibrary
         basicLibrary::basicLibrary
 )
@@ -49,7 +57,5 @@ add_test(
         COMMAND ${Test}
 )
 
-add_test(
-        NAME ${UTest}
-        COMMAND ${UTest}
-)
+include(CppUTest)
+cpputest_discover_tests(${UTest})

@@ -4,4 +4,3 @@
 requirements:
   - "gtest/1.15.0"
   - "benchmark/1.8.4"
-  - "cpputest/4.0"
