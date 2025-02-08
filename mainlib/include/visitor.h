@@ -107,16 +107,30 @@ struct Print
     }
 };
 
-inline void doVariantVisitorWork()
+using varTypes = std::variant< int, double, std::string >;
+using varList = std::vector< varTypes >;
+
+inline varList createList()
 {
-  std::vector< std::variant< int, double, std::string > > list{};
+  varList list{};
   list.push_back( 31 );
   list.push_back( 51.3 );
   list.push_back( "31" );
   list.push_back( "hi there" );
   list.push_back( 41 );
-  for( auto v : list )
+  return list;
+}
+
+inline void printList( varList const& list )
+{
+  for( auto const& v : list )
   {
     std::visit( Print{}, v );
   }
+}
+
+inline void doVariantVisitorWork()
+{
+  auto list = createList();
+  printList( list );
 }
