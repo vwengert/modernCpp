@@ -11,50 +11,41 @@ enum class ShapeType
   CIRCLE
 };
 
-ShapeFactory::CallBackMap ShapeFactory::s_objects;
+ShapeFactory::CallBackMap ShapeFactory::m_objects;
 
-ShapeFactory::ShapeFactory () = default;
-
-void
-ShapeFactory::RegisterObject (const ShapeType &type, CreateObjectCallback &&cb)
+void ShapeFactory::registerObject( const ShapeType& type, CreateObjectCallback&& callback )
 {
-  s_objects[type] = std::move<> (cb);
+  m_objects[ type ] = std::move<>( callback );
 }
 
-void
-ShapeFactory::UnregisterObject (const ShapeType &type)
+void ShapeFactory::unregisterObject( const ShapeType& type )
 {
-  s_objects.erase (type);
+  m_objects.erase( type );
 }
 
-std::unique_ptr<Shape>
-ShapeFactory::CreateSingleObject (const ShapeType &type)
+std::unique_ptr< Shape > ShapeFactory::createSingleObject( const ShapeType& type )
 {
-  if (auto it = s_objects.find (type); it != s_objects.end ())
-    {
-      return (it->second) ();
-    }
+  if( auto it = m_objects.find( type ); it != m_objects.end() )
+  {
+    return ( it->second )();
+  }
 
   return nullptr;
 }
 
-void
-factoryDoWork ()
+void factoryDoWork()
 {
-  registerObject<Triangle> (ShapeType::TRIANGLE);
-  registerObject<Square> (ShapeType::SQUARE);
-  registerObject<Circle> (ShapeType::CIRCLE);
+  registerObject< Triangle >( ShapeType::TRIANGLE );
+  registerObject< Square >( ShapeType::SQUARE );
+  registerObject< Circle >( ShapeType::CIRCLE );
 
-  std::vector<std::unique_ptr<Shape> > shapes;
-  shapes.push_back (std::unique_ptr<Shape> (
-      ShapeFactory::CreateSingleObject (ShapeType::TRIANGLE)));
-  shapes.push_back (std::unique_ptr<Shape> (
-      ShapeFactory::CreateSingleObject (ShapeType::SQUARE)));
-  shapes.push_back (std::unique_ptr<Shape> (
-      ShapeFactory::CreateSingleObject (ShapeType::CIRCLE)));
+  std::vector< std::unique_ptr< Shape > > shapes;
+  shapes.push_back( std::unique_ptr< Shape >( ShapeFactory::createSingleObject( ShapeType::TRIANGLE ) ) );
+  shapes.push_back( std::unique_ptr< Shape >( ShapeFactory::createSingleObject( ShapeType::SQUARE ) ) );
+  shapes.push_back( std::unique_ptr< Shape >( ShapeFactory::createSingleObject( ShapeType::CIRCLE ) ) );
 
-  for (const auto &shape : shapes)
-    {
-      std::cout << "Shape: " << shape->getName () << '\n';
-    }
+  for( const auto& shape : shapes )
+  {
+    std::cout << "Shape: " << shape->getName() << '\n';
+  }
 }
