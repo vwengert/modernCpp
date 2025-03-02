@@ -24,7 +24,7 @@ class Engine
     }
 
   private:
-    std::ostream& m_stream;
+    std::ostream& m_stream; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
 };
 
 class Car
@@ -58,7 +58,7 @@ class Car
 
   private:
     std::unique_ptr< Engine > m_engine;
-    std::ostream& m_stream;
+    std::ostream& m_stream; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
 };
 
 class MODERN_LIBRARY_API ElectricCar : public Car

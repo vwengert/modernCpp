@@ -10,17 +10,24 @@ class Visitor;
 class Element
 {
   public:
-    explicit Element( int amount, float price, std::string&& title );
+    Element() = default;
+    Element( const Element& ) = delete;
+    Element( Element&& ) = delete;
+    Element& operator=( const Element& ) = delete;
+    Element& operator=( Element&& ) = delete;
     virtual ~Element() = default;
+
+    explicit Element( int amount, float price, std::string&& title );
+
     void changeAmount( int amount );
-    int getAmount();
-    float getPrice();
+    int getAmount() const;
+    float getPrice() const;
     std::string getTitle();
     virtual void acceptVisitor( Visitor& visitor ) = 0;
 
   private:
-    int m_amount;
-    float m_price;
+    int m_amount{};
+    float m_price{};
     std::string m_title;
 };
 
@@ -28,6 +35,7 @@ class Book : public Element
 {
   public:
     explicit Book( int amount, float price, std::string&& title );
+
     std::string isbn() const;
     void setIsbn( const std::string& isbn );
 
@@ -40,7 +48,7 @@ class Book : public Element
   private:
     std::string m_isbn;
     std::string m_author;
-    std::string publisher;
+    std::string m_publisher;
 
     void acceptVisitor( Visitor& visitor ) override;
 };
@@ -50,7 +58,6 @@ class Movie : public Element
   public:
     explicit Movie( int amount, float price, std::string&& title );
 
-  public:
     void acceptVisitor( Visitor& visitor ) override;
 };
 
@@ -59,13 +66,19 @@ class Game : public Element
   public:
     explicit Game( int amount, float price, std::string&& title );
 
-  public:
     void acceptVisitor( Visitor& visitor ) override;
 };
 
 class Visitor
 {
   public:
+    Visitor() = default;
+    Visitor( const Visitor& ) = default;
+    Visitor( Visitor&& ) = delete;
+    Visitor& operator=( const Visitor& ) = default;
+    Visitor& operator=( Visitor&& ) = delete;
+    virtual ~Visitor() = default;
+
     virtual void visitBook( Book& book ) = 0;
     virtual void visitMovie( Movie& movie ) = 0;
     virtual void visitGame( Game& game ) = 0;
@@ -83,6 +96,15 @@ class VisitorWorker
 {
   public:
     VisitorWorker();
+    VisitorWorker( const VisitorWorker& ) = default;
+    VisitorWorker( VisitorWorker&& ) = delete;
+    VisitorWorker& operator=( const VisitorWorker& ) = default;
+    VisitorWorker& operator=( VisitorWorker&& ) = delete;
+
+    explicit VisitorWorker( std::vector< Element* > m_elements )
+      : m_elements( std::move( m_elements ) )
+    {
+    }
     ~VisitorWorker();
     std::vector< Element* > getElements();
     void showPrices();
@@ -113,19 +135,21 @@ using varList = std::vector< varTypes >;
 inline varList createList()
 {
   varList list{};
+  // NOLINTBEGIN(*magic-numbers)
   list.push_back( 31 );
   list.push_back( 51.3 );
   list.push_back( "31" );
   list.push_back( "hi there" );
   list.push_back( 41 );
+  // NOLINTEND(*magic-numbers)
   return list;
 }
 
 inline void printList( varList const& list )
 {
-  for( auto const& v : list )
+  for( auto const& val : list )
   {
-    std::visit( Print{}, v );
+    std::visit( Print{}, val );
   }
 }
 

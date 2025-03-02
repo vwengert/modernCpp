@@ -19,12 +19,12 @@ void Element::changeAmount( int amount )
   m_amount = amount;
 }
 
-int Element::getAmount()
+int Element::getAmount() const
 {
   return m_amount;
 }
 
-float Element::getPrice()
+float Element::getPrice() const
 {
   return m_price;
 }
@@ -67,12 +67,12 @@ void Book::setAuthor( const std::string& author )
 
 std::string Book::getPublisher() const
 {
-  return publisher;
+  return m_publisher;
 }
 
 void Book::setPublisher( const std::string& value )
 {
-  publisher = value;
+  m_publisher = value;
 }
 
 void Book::acceptVisitor( Visitor& visitor )
@@ -136,16 +136,18 @@ void CalculatePriceVisitor::visitGame( Game& game )
 ///
 VisitorWorker::VisitorWorker()
 {
+  // NOLINTBEGIN(*magic-numbers)
   m_elements.push_back( new Book{ 13, 2.4, std::string( "Herr der Ringe" ) } );
   m_elements.push_back( new Movie{ 3, 4.1, std::string( "Spiderman" ) } );
   m_elements.push_back( new Game{ 1, 12.3, std::string( "DCS" ) } );
   m_elements.push_back( new Movie{ 1, 1.24, std::string( "The Rock" ) } );
   m_elements.push_back( new Book{ 12, 3.1, std::string( "Goetz von Berlichingen" ) } );
+  // NOLINTEND(*magic-numbers)
 }
 
 VisitorWorker::~VisitorWorker()
 {
-  for( auto elem : m_elements )
+  for( auto* elem : m_elements )
   {
     delete elem;
   }
@@ -161,7 +163,7 @@ void VisitorWorker::showPrices()
 {
   CalculatePriceVisitor calculator;
 
-  for( auto element : m_elements )
+  for( auto* element : m_elements )
   {
     element->acceptVisitor( calculator );
   }
