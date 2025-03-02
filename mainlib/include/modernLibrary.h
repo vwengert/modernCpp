@@ -10,3 +10,4 @@ void doConfigrationStuff();
 void doSomeVectorWork();
 void doSomeTemplateWork();
 void doSomeStandardLibraryWork();
+void doCalculateWork();

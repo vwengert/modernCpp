@@ -8,6 +8,7 @@
 
 #include "abstractfabric.h"
 #include "bridge.h"
+#include "command.h"
 #include "configure.h"
 #include "decorator.h"
 #include "factory.h"
@@ -30,8 +31,7 @@ auto doWork() -> int
   doSomeTemplateWork();
   doLambdaOverload();
   doSomeStandardLibraryWork();
-
-  std::cout << '\n';
+  doCalculateWork();
 
   return 0;
 }
@@ -46,14 +46,33 @@ constexpr double kSEVEN_POINT_THREE = 7.3;
 constexpr double kFIVE_POINT_ZERO = 5.0;
 constexpr double kZERO_POINT_ONE = 0.1;
 
+void doCalculateWork()
+{
+  Calculator calculator{};
+
+  auto op1 = std::make_unique< Add >( 3 );
+  auto op2 = std::make_unique< Add >( kSEVEN );
+  auto op3 = std::make_unique< Substract >( 4 );
+  auto op4 = std::make_unique< Substract >( 2 );
+  calculator.compute( std::move( op1 ) );
+  calculator.compute( std::move( op2 ) );
+  calculator.compute( std::move( op3 ) );
+  calculator.compute( std::move( op4 ) );
+  calculator.undoLast();
+
+  std::cout << "Calculator result from add 3, add 7, substract 4, substract 2, and undoLast: " << calculator.result()
+            << '\n';
+
+  std::cout << '\n';
+}
+
 void doLambdaOverload()
 {
-  int integer = kFIVE;
-  double dobble = kSEVEN_POINT_THREE;
-  auto lmbda = overload( []( const int* integer ) { std::cout << "i= " << *integer << '\n'; },
+  constexpr int kINTEGER = kFIVE;
+  const auto lmbda = overload( []( const int* integer ) { std::cout << "i= " << *integer << '\n'; },
     []( const double* dble ) { std::cout << "d= " << *dble << '\n'; } );
 
-  lmbda( &integer );
+  lmbda( &kINTEGER );
 }
 
 void doSomeTemplateWork()
