@@ -18,6 +18,7 @@ endif ()
 add_library(${PROJECT_NAME} SHARED
         src/appconfigurator.cpp
         src/bridge.cpp
+        src/commands.cpp
         src/configure.cpp
         src/factory.cpp
         src/ianimal.cpp
