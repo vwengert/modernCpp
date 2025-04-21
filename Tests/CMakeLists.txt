@@ -52,10 +52,7 @@ target_link_libraries(${Benchmark}
         basicLibrary::basicLibrary
 )
 
-add_test(
-        NAME ${Test}
-        COMMAND ${Test}
-)
-
 include(CppUTest)
 cpputest_discover_tests(${UTest})
+include(GoogleTest)
+gtest_discover_tests(${Test})

@@ -20,7 +20,5 @@ target_link_libraries(${Test}
         testdrivenLibrary::testdrivenLibrary
 )
 
-add_test(
-        NAME ${Test}
-        COMMAND ${Test}
-)
+include(GoogleTest)
+gtest_discover_tests(${Test})
