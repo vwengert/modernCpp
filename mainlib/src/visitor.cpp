@@ -10,7 +10,7 @@
 Element::Element( int amount, float price, std::string&& title )
   : m_amount{ amount }
   , m_price{ price }
-  , m_title{ title }
+  , m_title{ std::move( title ) }
 {
 }
 
