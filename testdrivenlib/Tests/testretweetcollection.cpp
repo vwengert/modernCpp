@@ -3,15 +3,20 @@
 class Tweet
 {
   public:
+    Tweet( Tweet&& ) = delete;
+    Tweet& operator=( const Tweet& ) = default;
+    Tweet& operator=( Tweet&& ) = delete;
+    ~Tweet() = default;
+
     Tweet( const std::string& msg, const std::string& user )
       : m_msg( msg )
-        , m_user( user )
+      , m_user( user )
     {
     }
 
     Tweet( const Tweet& other )
       : m_msg( other.m_msg )
-        , m_user( other.m_user )
+      , m_user( other.m_user )
     {
     }
 
@@ -30,7 +35,7 @@ class RetweetCollection
   public:
     void add( const Tweet& tweet )
     {
-      if(const auto it = std::ranges::find( m_tweets, tweet ); it == m_tweets.end())
+      if( const auto it = std::ranges::find( m_tweets, tweet ); it == m_tweets.end() )
       {
         m_tweets.emplace_back( tweet );
       }
@@ -38,7 +43,7 @@ class RetweetCollection
 
     void remove( const Tweet& tweet )
     {
-      if(!isEmpty())
+      if( !isEmpty() )
       {
         m_tweets.pop_back();
       }
@@ -69,7 +74,7 @@ TEST( ARetweetCollection, HasSizeZeroAndIsEmptyWhenCreated )
 {
   const RetweetCollection retweets;
 
-  ASSERT_THAT( retweets, HasSize(0U) );
+  ASSERT_THAT( retweets, HasSize( 0U ) );
 }
 
 class ARetweetCollectionWithOneTweet : public Test
@@ -87,24 +92,24 @@ class ARetweetCollectionWithOneTweet : public Test
 
 TEST_F( ARetweetCollectionWithOneTweet, SizeIsOneAfterTweetAddedAndIsNoLongerEmpty )
 {
-  ASSERT_THAT( collection, HasSize( static_cast< size_t >( 1 )) );
+  ASSERT_THAT( collection, HasSize( static_cast< size_t >( 1 ) ) );
 }
 
 TEST_F( ARetweetCollectionWithOneTweet, DecreaseSizeAfterRemovingTweet )
 {
   collection.remove( Tweet( "msg", "user" ) );
 
-  ASSERT_THAT( collection, HasSize(static_cast<size_t>(0)) );
+  ASSERT_THAT( collection, HasSize( static_cast< size_t >( 0 ) ) );
 }
 
 TEST_F( ARetweetCollectionWithOneTweet, IgnoresDuplicateTweetAdded )
 {
   const Tweet newTweet( "msg", "@user" );
   collection.add( newTweet );
-  EXPECT_THAT( collection, HasSize(static_cast<size_t>(2)) );
+  EXPECT_THAT( collection, HasSize( static_cast< size_t >( 2 ) ) );
   const Tweet duplicate( newTweet );
 
   collection.add( duplicate );
 
-  ASSERT_THAT( collection, HasSize(static_cast<size_t>(2)) );
+  ASSERT_THAT( collection, HasSize( static_cast< size_t >( 2 ) ) );
 }

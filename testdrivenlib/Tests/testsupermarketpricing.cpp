@@ -17,7 +17,10 @@ class SupermarketPricing
     std::unordered_map< std::string, double > m_price;
 };
 
-using namespace testing;
+using namespace testing; // NOLINT(google-build-using-namespace)
+
+constexpr auto kBASE_PRICE = 50;
+constexpr auto kLOW_PRICE = 30;
 
 class SupermarketPricingTest : public Test
 {
@@ -26,30 +29,30 @@ class SupermarketPricingTest : public Test
 
     void SetUp() override
     {
-      pricing.setPrice( "A", 50 );
+      pricing.setPrice( "A", kBASE_PRICE );
     }
 };
 
 TEST_F( SupermarketPricingTest, GetPriceOfOneItem )
 {
-  ASSERT_THAT( pricing.getPrice( "A" ), DoubleEq(50) );
+  ASSERT_THAT( pricing.getPrice( "A" ), DoubleEq( 50 ) );
 }
 
 TEST_F( SupermarketPricingTest, GetPriceOfTwoItems )
 {
-  ASSERT_THAT( pricing.getPrice( "A", 2 ), DoubleEq(100) );
+  ASSERT_THAT( pricing.getPrice( "A", 2 ), DoubleEq( 100 ) );
 }
 
 TEST_F( SupermarketPricingTest, SetPriceOfItemAndGetThePriveOfThreeItems )
 {
-  pricing.setPrice( "A", 30 );
-  ASSERT_THAT( pricing.getPrice( "A", 3 ), DoubleEq(90) );
+  pricing.setPrice( "A", kLOW_PRICE );
+  ASSERT_THAT( pricing.getPrice( "A", 3 ), DoubleEq( 90 ) );
 }
 
 TEST_F( SupermarketPricingTest, CompareTwoPricesToBeNotEqual )
 {
-  pricing.setPrice( "B", 50 );
-  EXPECT_THAT( pricing.getPrice("A"), DoubleEq( pricing.getPrice( "B" )) );
-  pricing.setPrice( "B", 30 );
-  ASSERT_THAT( pricing.getPrice( "A" ), Ne(pricing.getPrice( "B" )) );
+  pricing.setPrice( "B", kBASE_PRICE );
+  EXPECT_THAT( pricing.getPrice( "A" ), DoubleEq( pricing.getPrice( "B" ) ) );
+  pricing.setPrice( "B", kLOW_PRICE );
+  ASSERT_THAT( pricing.getPrice( "A" ), Ne( pricing.getPrice( "B" ) ) );
 }

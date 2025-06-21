@@ -153,50 +153,6 @@ class Conference
     double m_price;
 };
 
-#if 0
-template< typename T >
-concept PricedItem = requires( T item ) {
-  {
-    item.price()
-  } -> std::same_as< double >;
-};
-
-template< double discount, PricedItem Item >
-class DiscountedTemplate
-{
-  public:
-    template< typename... Args >
-    explicit DiscountedTemplate( Args&&... args )
-      : item_{ std::forward< Args >( args )... }
-    {
-    }
-
-    double price() const
-    {
-      return item_.price() * ( 1.0 - discount );
-    }
-
-  private:
-    Item item_;
-};
-
-template< double taxRate, PricedItem Item >
-class TaxedTemplate : private Item
-{
-  public:
-    template< typename... Args >
-    explicit TaxedTemplate( Args&&... args )
-      : Item{ std::forward< Args >( args )... }
-    {
-    }
-
-    double price() const
-    {
-      return Item::price() * ( 1.0 + taxRate );
-    }
-};
-#endif
-
 inline void printPrice( const Item* item )
 {
   std::cout << "Price of item " << item->price() << "\n";
@@ -220,9 +176,4 @@ inline void doDecoratorWork()
   printPrice( item1.get() );
   printPrice( item2.get() );
   printPrice( item3.get() );
-
-#if 0
-  TaxedTemplate< 0.15, DiscountedTemplate< 0.19, Conference > > itemT{ "Core C++", 499.0 };
-  std::cout << "Templated Price is " << itemT.price() << '\n';
-#endif
 }

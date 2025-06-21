@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <iostream>
 #include <memory>
 
@@ -48,20 +49,14 @@ class JalousieActor
       m_actualPosition = readActualPosition();
       m_actualPosition -= value;
 
-      if( m_actualPosition < 0 )
-      {
-        m_actualPosition = 0;
-      }
+      m_actualPosition = std::max< float >( m_actualPosition, 0 );
     }
     void down( float value )
     {
       m_actualPosition = readActualPosition();
       m_actualPosition += value;
 
-      if( m_actualPosition > kMAXVALUE )
-      {
-        m_actualPosition = kMAXVALUE;
-      }
+      m_actualPosition = std::min< float >( m_actualPosition, kMAXVALUE );
     }
     virtual float readActualPosition() = 0;
     virtual float setActualPosition( float value )

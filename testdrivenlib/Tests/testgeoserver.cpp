@@ -1,11 +1,11 @@
 #include "gmock/gmock.h"
 
-using namespace testing;
+using namespace testing; // NOLINT(google-build-using-namespace)
 
 class GeoServer
 {
-  std::vector< std::string > m_users;
-  std::unordered_map< std::string, std::pair< double, double > > m_locations;
+    std::vector< std::string > m_users;
+    std::unordered_map< std::string, std::pair< double, double > > m_locations;
 
   public:
     bool isTracking( const std::string& user ) const
@@ -26,7 +26,7 @@ class GeoServer
 
     void stopTracking( const std::string& user )
     {
-      if(const auto it = std::ranges::find( m_users, user ); it != m_users.end())
+      if( const auto it = std::ranges::find( m_users, user ); it != m_users.end() )
       {
         m_locations.erase( user );
         m_users.erase( it );
@@ -44,7 +44,7 @@ class GeoServer
     }
 };
 
-constexpr double kLocation_Tolerance{ 0.005 };
+constexpr double kLOCATION_TOLERANCE{ 0.005 };
 
 class TestGeoServer : public Test
 {
@@ -64,31 +64,31 @@ class TestGeoServer : public Test
 
 TEST_F( TestGeoServer, TracksAUser )
 {
-  ASSERT_THAT( server.numberOfUsers(), Eq(1) );
+  ASSERT_THAT( server.numberOfUsers(), Eq( 1 ) );
 }
 
 TEST_F( TestGeoServer, TracksTwoUsers )
 {
   server.track( anotherUser );
 
-  ASSERT_THAT( server.numberOfUsers(), Eq(2) );
+  ASSERT_THAT( server.numberOfUsers(), Eq( 2 ) );
 }
 
 TEST_F( TestGeoServer, IsTrackingIsFalseWhenUserIsNotAdded )
 {
-  ASSERT_FALSE( server.isTracking(anotherUser) );
+  ASSERT_FALSE( server.isTracking( anotherUser ) );
 }
 
 TEST_F( TestGeoServer, IsTrackingIsTrueWhenUserIsBeingTracked )
 {
-  ASSERT_TRUE( server.isTracking(aUser) );
+  ASSERT_TRUE( server.isTracking( aUser ) );
 }
 
 TEST_F( TestGeoServer, IsTrackingIsFalseWhenUserIsRemovedFromBeingTracked )
 {
   server.stopTracking( aUser );
 
-  ASSERT_FALSE( server.isTracking(aUser) );
+  ASSERT_FALSE( server.isTracking( aUser ) );
 }
 
 TEST_F( TestGeoServer, RemoveUserOnNotTrackedUserDoesNotChangeUserCount )
@@ -96,15 +96,15 @@ TEST_F( TestGeoServer, RemoveUserOnNotTrackedUserDoesNotChangeUserCount )
   EXPECT_FALSE( server.isTracking( anotherUser ) );
   server.stopTracking( anotherUser );
 
-  ASSERT_THAT( server.numberOfUsers(), Eq(1) );
+  ASSERT_THAT( server.numberOfUsers(), Eq( 1 ) );
 }
 
 TEST_F( TestGeoServer, UpdatesLocationOfUser )
 {
   const auto [ locLat, locLong ] = server.locationOf( aUser );
 
-  ASSERT_THAT( locLat, DoubleNear( latitude, kLocation_Tolerance ) );
-  ASSERT_THAT( locLong, DoubleNear( longitude, kLocation_Tolerance ) );
+  ASSERT_THAT( locLat, DoubleNear( latitude, kLOCATION_TOLERANCE ) );
+  ASSERT_THAT( locLong, DoubleNear( longitude, kLOCATION_TOLERANCE ) );
 }
 
 TEST_F( TestGeoServer, ThrowsWhenLocationOfUserIsRequestedAndUserIsNotTracked )
