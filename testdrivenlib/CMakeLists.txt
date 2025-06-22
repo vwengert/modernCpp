@@ -11,9 +11,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-if (NOT APPLE)
+if(NOT APPLE)
     set(CMAKE_INSTALL_RPATH $ORIGIN)
-endif ()
+endif()
 
 add_library(${PROJECT_NAME} STATIC
         src/testdrivenLibrary.cpp
@@ -21,10 +21,10 @@ add_library(${PROJECT_NAME} STATIC
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     enable_testing()
     add_subdirectory(Tests)
-endif ()
+endif()
 
 set_target_properties(
         ${PROJECT_NAME}
