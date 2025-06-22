@@ -4,21 +4,35 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(VERSION_SRC moderncpp_version.h.in)
 set(VERSION_DST moderncpp_version.h)
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
-        "${CMAKE_SOURCE_DIR}/cmake/conan_provider.cmake"
-)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.15.0
+)
+
+FetchContent_Declare(
+        benchmark
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG v1.8.4
+)
+FetchContent_MakeAvailable(
+  googletest
+  benchmark
+)
 
 include(${CMAKE_SOURCE_DIR}/cmake/GenerateVersion.cmake)
 project(modernCpp
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
         LANGUAGES CXX C
 )
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
-endif ()
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 add_executable(${PROJECT_NAME}
@@ -35,30 +49,30 @@ target_link_libraries(${PROJECT_NAME}
         testdrivenLibrary::testdrivenLibrary
 )
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    enable_testing()
-    add_subdirectory(Tests)
-endif ()
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  enable_testing()
+  add_subdirectory(Tests)
+endif()
 
 option(BUILD_DOC "Build documentation" OFF)
-if (BUILD_DOC)
-    find_package(Doxygen)
-    if (DOXYGEN_FOUND)
-        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/modern)
-        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+if(BUILD_DOC)
+  find_package(Doxygen)
+  if(DOXYGEN_FOUND)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/modern)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
-        configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-        message("Doxygen build started")
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
 
-        add_custom_target(doc_doxygen ALL
+    add_custom_target(doc_doxygen ALL
                 COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                 COMMENT "Generating API documentation with Doxygen"
                 VERBATIM)
-    else (DOXYGEN_FOUND)
-        message("Doxygen need to be installed to generate the doxygen documentation")
-    endif (DOXYGEN_FOUND)
-endif (BUILD_DOC)
+  else()
+    message("Doxygen need to be installed to generate the doxygen documentation")
+  endif()
+endif()
 
 install(
         TARGETS ${PROJECT_NAME}

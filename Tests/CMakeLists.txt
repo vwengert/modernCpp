@@ -14,9 +14,6 @@ FetchContent_MakeAvailable(CppUTest)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(GTest REQUIRED)
-find_package(benchmark REQUIRED)
-
 add_executable(${Test}
         testMain.cpp
         testMore.cpp
@@ -33,7 +30,7 @@ add_executable(${Benchmark}
 
 target_link_libraries(${Test}
         PUBLIC
-        gtest::gtest
+        gmock_main
         modernLibrary::modernLibrary
         basicLibrary::basicLibrary
 )
@@ -47,7 +44,7 @@ target_link_libraries(${UTest}
 
 target_link_libraries(${Benchmark}
         PUBLIC
-        benchmark::benchmark
+        benchmark
         modernLibrary::modernLibrary
         basicLibrary::basicLibrary
 )

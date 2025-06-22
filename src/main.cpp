@@ -9,7 +9,7 @@ std::mutex mutex; // NOLINT(*-avoid-non-const-global-variables)
 
 class ThreadGuard
 {
-  std::thread& m_thread;
+    std::thread& m_thread;
 
   public:
     explicit ThreadGuard( std::thread& thread )
@@ -19,7 +19,7 @@ class ThreadGuard
 
     ~ThreadGuard()
     {
-      if(m_thread.joinable())
+      if( m_thread.joinable() )
       {
         m_thread.join();
       }

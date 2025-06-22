@@ -1,5 +1,6 @@
 #include "modernLibrary.h"
 
+#include <algorithm>
 #include <any>
 #include <future>
 #include <iostream>
