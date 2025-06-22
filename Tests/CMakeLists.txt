@@ -30,8 +30,7 @@ add_executable(${Benchmark}
 
 target_link_libraries(${Test}
         PUBLIC
-        gtest
-        gtest_main
+        gmock_main
         modernLibrary::modernLibrary
         basicLibrary::basicLibrary
 )
