@@ -21,10 +21,9 @@ add_library(${PROJECT_NAME} STATIC
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    enable_testing()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_subdirectory(Tests)
-endif()
+endif ()
 
 set_target_properties(
         ${PROJECT_NAME}

@@ -5,11 +5,14 @@ this repo is all about testing new c++ concepts and learning the fundamental of 
 ## Setup
 
 ### Required
+
 - C++ Toolchain
 - cmake
-- conan
+- Install google test framework
+- Install google benchmark framework
 
 ### Optional
+
 - doxygen
 
 ## Purpose

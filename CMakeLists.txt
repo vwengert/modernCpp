@@ -8,23 +8,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG v1.15.0
-)
-
-FetchContent_Declare(
-        benchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG v1.8.4
-)
-FetchContent_MakeAvailable(
-  googletest
-  benchmark
-)
-
 include(${CMAKE_SOURCE_DIR}/cmake/GenerateVersion.cmake)
 project(modernCpp
         VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
@@ -39,6 +22,15 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
 )
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    find_package(GTest REQUIRED)
+    find_package(benchmark REQUIRED)
+    include(GoogleTest)
+
+    enable_testing()
+    add_subdirectory(Tests)
+endif ()
+
 add_subdirectory(mainlib)
 add_subdirectory(basiclib)
 add_subdirectory(testdrivenlib)
@@ -48,11 +40,6 @@ target_link_libraries(${PROJECT_NAME}
         basicLibrary::basicLibrary
         testdrivenLibrary::testdrivenLibrary
 )
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  enable_testing()
-  add_subdirectory(Tests)
-endif()
 
 option(BUILD_DOC "Build documentation" OFF)
 if(BUILD_DOC)

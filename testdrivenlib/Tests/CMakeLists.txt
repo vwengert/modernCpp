@@ -13,11 +13,11 @@ add_executable(${Test}
 )
 
 target_link_libraries(${Test}
-        PUBLIC
-        gmock
-        gmock_main
+        PRIVATE
+        GTest::gtest
+        GTest::gmock
+        GTest::gmock_main
         testdrivenLibrary::testdrivenLibrary
 )
 
-include(GoogleTest)
 gtest_discover_tests(${Test})

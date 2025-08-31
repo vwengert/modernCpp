@@ -29,8 +29,10 @@ add_executable(${Benchmark}
 )
 
 target_link_libraries(${Test}
-        PUBLIC
-        gmock_main
+        PRIVATE
+        GTest::gtest
+        GTest::gmock
+        GTest::gmock_main
         modernLibrary::modernLibrary
         basicLibrary::basicLibrary
 )
@@ -51,5 +53,4 @@ target_link_libraries(${Benchmark}
 
 include(CppUTest)
 cpputest_discover_tests(${UTest})
-include(GoogleTest)
 gtest_discover_tests(${Test})
