@@ -13,24 +13,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
-        c_compiler: [ gcc, clang, cl ]
+        os: [ ubuntu-latest ]
+        c_compiler: [ gcc ]
         include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: clang
 
     steps:
       - name: Checkout code
@@ -44,16 +32,8 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Set up Conan
-        run: pip3 install conan
-
-      - name: Create Conan profile
-        run: conan profile detect
+      - name: Set up GTest
+        run: sudo apt-get install libgtest-dev libgmock-dev libbenchmark-dev -y
 
       - name: Configure CMake
         run: >
