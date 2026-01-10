@@ -15,8 +15,10 @@ if (NOT APPLE)
     set(CMAKE_INSTALL_RPATH $ORIGIN)
 endif ()
 
+FILE(GLOB sources src/*.cpp)
+
 add_library(${PROJECT_NAME} SHARED
-        src/basicLibrary.cpp
+        ${sources}
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 

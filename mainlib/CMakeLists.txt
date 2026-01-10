@@ -15,19 +15,12 @@ if (NOT APPLE)
     set(CMAKE_INSTALL_RPATH $ORIGIN)
 endif ()
 
+FILE(GLOB sources src/*.cpp)
+
 add_library(${PROJECT_NAME} SHARED
-        src/appconfigurator.cpp
-        src/bridge.cpp
-        src/commands.cpp
-        src/configure.cpp
-        src/factory.cpp
-        src/ianimal.cpp
-        src/ifood.cpp
-        src/mathematics.cpp
-        src/modernLibrary.cpp
-        src/singleton.cpp
-        src/visitor.cpp
+        ${sources}
 )
+
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 set_target_properties(

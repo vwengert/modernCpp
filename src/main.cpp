@@ -1,70 +1,54 @@
 #include "basicLibrary.h"
 #include "modernLibrary.h"
 #include "moderncpp_version.h"
+#include <algorithm>
 #include <iostream>
-#include <mutex>
-#include <thread>
 
-std::mutex mutex; // NOLINT(*-avoid-non-const-global-variables)
+#include <cassert>
+#include <vector>
 
-class ThreadGuard
+template< typename T >
+class Stack
 {
-    std::thread& m_thread;
+  private:
+    std::vector< T > m_elements;
 
   public:
-    explicit ThreadGuard( std::thread& thread )
-      : m_thread( thread )
+    void push( const T& element )
     {
+      m_elements.push_back( element );
     }
-
-    ~ThreadGuard()
+    void pop()
     {
-      if( m_thread.joinable() )
-      {
-        m_thread.join();
-      }
+      assert( !m_elements.empty() && "Stack is empty" );
+      m_elements.pop_back();
     }
-
-    ThreadGuard( ThreadGuard const& ) = delete;
-
-    ThreadGuard& operator=( ThreadGuard const& ) = delete;
-
-    ThreadGuard( ThreadGuard&& ) = delete;
-
-    ThreadGuard& operator=( ThreadGuard&& ) = delete;
-};
-
-class BackgroundTask
-{
-  public:
-    void operator()() const
+    T const& top() const
     {
-#ifdef WIN32
-      _sleep( 1 );
-#else
-      sleep( 1 );
-#endif
-      std::lock_guard< std::mutex > guard( mutex );
-      doWork();
+      assert( !m_elements.empty() && "Stack is empty" );
+      return m_elements.back();
     }
-
-    void operator()( const int value, const std::string& text ) const
+    bool empty() const
     {
-#ifdef WIN32
-      _sleep( 1 );
-#else
-      sleep( 1 );
-#endif
-      std::lock_guard< std::mutex > guard( mutex );
-      doWork();
-      std::cout << "Value: " << value << " Text: " << text << std::endl;
+      return m_elements.empty();
+    }
+    size_t size() const
+    {
+      return m_elements.size();
     }
 };
 
 auto main() -> int
 {
-  doWork();
-  doBasicWork();
   std::cout << "Version: " << PROJECT_CPP_VERSION << std::endl;
+
+  Stack< int > intStack;
+  intStack.push( 10 );
+  intStack.push( 20 );
+  std::cout << "Top element: " << intStack.top() << std::endl;
+  intStack.pop();
+  std::cout << "Top element after pop: " << intStack.top() << std::endl;
+  intStack.pop();
+
   return 0;
 }
