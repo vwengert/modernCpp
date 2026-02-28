@@ -1,54 +1,35 @@
-#include "basicLibrary.h"
-#include "modernLibrary.h"
-#include "moderncpp_version.h"
-#include <algorithm>
 #include <iostream>
 
-#include <cassert>
-#include <vector>
-
 template< typename T >
-class Stack
+T min( T a, T b ) // NOLINT
 {
-  private:
-    std::vector< T > m_elements;
+  std::cout << __PRETTY_FUNCTION__ << "\n";
+  return ( a < b ) ? a : b;
+}
 
-  public:
-    void push( const T& element )
-    {
-      m_elements.push_back( element );
-    }
-    void pop()
-    {
-      assert( !m_elements.empty() && "Stack is empty" );
-      m_elements.pop_back();
-    }
-    T const& top() const
-    {
-      assert( !m_elements.empty() && "Stack is empty" );
-      return m_elements.back();
-    }
-    bool empty() const
-    {
-      return m_elements.empty();
-    }
-    size_t size() const
-    {
-      return m_elements.size();
-    }
-};
-
-auto main() -> int
+template< typename T, typename... Args >
+T min( T a, Args... args ) // NOLINT
 {
-  std::cout << "Version: " << PROJECT_CPP_VERSION << std::endl;
+  std::cout << __PRETTY_FUNCTION__ << "\n";
+  return min( a, min( args... ) );
+}
 
-  Stack< int > intStack;
-  intStack.push( 10 );
-  intStack.push( 20 );
-  std::cout << "Top element: " << intStack.top() << std::endl;
-  intStack.pop();
-  std::cout << "Top element after pop: " << intStack.top() << std::endl;
-  intStack.pop();
+template< typename T, typename... Args >
+T sum( T a, Args... args ) // NOLINT
+{
+  if constexpr( sizeof...( args ) == 0 )
+  {
+    return a;
+  }
+  else
+  {
+    return a + sum( args... );
+  }
+}
 
+int main()
+{
+  std::cout << "min(42.0, 7.5)=" << ::min< double >( 42.0, 7.5, 3.0, 7.0, 5., 4.0 ) << std::endl; // NOLINT
+  std::cout << "sum(1, 2, 3, 4, 5)=" << ::sum( 1, 2, 3, 4, 5 ) << std::endl;                      // NOLINT
   return 0;
 }
